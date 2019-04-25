@@ -1,7 +1,28 @@
 
 import React, {Component} from 'react';
+import {Image, ScrollView} from 'react-native';
 import {Platform, StyleSheet} from 'react-native';
-import { Container, Header, Content, Tab, Tabs, Text } from 'native-base';
+import {
+
+  Container,
+  Header,
+  Content,
+  Tab,
+  Tabs,
+  Card,
+  CardItem,
+  Left,
+  Thumbnail,
+  Body,
+  Text,
+  Right,
+  Button,
+  Icon
+
+} from 'native-base';
+
+
+import Post from './Post';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -14,9 +35,14 @@ type Props = {};
 export default class Home extends Component<Props> {
   render() {
     return (
-      <Container>
-        <Text>Home</Text>
-      </Container>
+      <ScrollView>
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+        <Post />
+
+      </ScrollView>
     );
   }
 }

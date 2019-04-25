@@ -28,7 +28,7 @@ export default class App extends Component<Props> {
         </Header>
 
         <Tabs>
-          <Tab heading="Home">
+          <Tab heading="Início">
             <Home />
           </Tab>
           <Tab heading="Perguntas">
