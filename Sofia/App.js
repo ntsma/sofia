@@ -1,7 +1,22 @@
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet} from 'react-native';
-import { Container, Header, Content, Tab, Tabs } from 'native-base';
+
+import {
+  Platform,
+  StyleSheet
+} from 'react-native';
+
+import {
+  Container,
+  Header,
+  Content,
+  Tab,
+  Tabs,
+  Title,
+  Left,
+  Right,
+  Body
+} from 'native-base';
 
 import Tab1 from './tabOne';
 import Tab2 from './tabTwo';
@@ -19,15 +34,22 @@ export default class App extends Component<Props> {
   render() {
     return (
       <Container>
-        <Header hasTabs />
+        <Header hasTabs>
+          <Left/>
+          <Body>
+            <Title>Sofia</Title>
+          </Body>
+          <Right />
+        </Header>
+
         <Tabs>
-          <Tab heading="Tab1">
+          <Tab heading="Home">
             <Tab1 />
           </Tab>
-          <Tab heading="Tab2">
+          <Tab heading="Perguntas">
             <Tab2 />
           </Tab>
-          <Tab heading="Tab3">
+          <Tab heading="Configurações">
             <Tab3 />
           </Tab>
         </Tabs>
