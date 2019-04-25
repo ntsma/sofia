@@ -1,7 +1,7 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet} from 'react-native';
-import { Container, Header, Content, Tab, Tabs } from 'native-base';
+import { Container, Header, Content, Tab, Tabs, Text } from 'native-base';
 
 import Tab1 from './tabOne';
 import Tab2 from './tabTwo';
@@ -15,22 +15,11 @@ const instructions = Platform.select({
 });
 
 type Props = {};
-export default class App extends Component<Props> {
+export default class tabThree extends Component<Props> {
   render() {
     return (
       <Container>
-        <Header hasTabs />
-        <Tabs>
-          <Tab heading="Tab1">
-            <Tab1 />
-          </Tab>
-          <Tab heading="Tab2">
-            <Tab2 />
-          </Tab>
-          <Tab heading="Tab3">
-            <Tab3 />
-          </Tab>
-        </Tabs>
+        <Text>Um</Text>
       </Container>
     );
   }
