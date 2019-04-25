@@ -1,7 +1,7 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet} from 'react-native';
-import { Container, Header, Content, Tab, Tabs } from 'native-base';
+import { Container, Header, Content, Tab, Tabs, Left, Right, Body, Button, Icon, Title } from 'native-base';
 
 import Home from './Home';
 import Questions from './Questions';
@@ -19,7 +19,14 @@ export default class App extends Component<Props> {
   render() {
     return (
       <Container>
-        <Header hasTabs />
+        <Header hasTabs>
+
+          <Body>
+            <Title>Sofia</Title>
+          </Body>
+
+        </Header>
+
         <Tabs>
           <Tab heading="Home">
             <Home />
