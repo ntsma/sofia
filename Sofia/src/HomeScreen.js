@@ -1,7 +1,7 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet} from 'react-native';
-import { Container, Header, Content, Tab, Tabs, Left, Right, Body, Button, Icon, Title } from 'native-base';
+import { Container, Header, Text, Content, Tab, Tabs, Left, Right, Body, Button, Icon, Title } from 'native-base';
 import { createAppContainer, createStackNavigator, StackActions, NavigationActions } from 'react-navigation';
 
 import Home from './Home';
@@ -27,16 +27,19 @@ export default class App extends Component<Props> {
           </Body>
           <Right>
             <Button
-                title="Nova"
-                onPress={() => {
-                  this.props.navigation.dispatch(StackActions.reset({
-                    index: 0,
-                    actions: [
-                      NavigationActions.navigate({ routeName: 'NewQuestion' })
-                    ],
-                  }))
-                }}
-              />
+              iconLeft
+              onPress={() => {
+                this.props.navigation.dispatch(StackActions.reset({
+                  index: 0,
+                  actions: [
+                    NavigationActions.navigate({ routeName: 'NewQuestion' })
+                  ],
+                }))
+              }}
+              >
+              <Icon type="AntDesign" name="plussquareo" />
+              <Text>Nova Pergunta</Text>
+            </Button>
           </Right>
 
         </Header>
