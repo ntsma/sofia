@@ -3,7 +3,8 @@ import { View, Text, Button } from 'react-native';
 import { createAppContainer, createStackNavigator, StackActions, NavigationActions } from 'react-navigation'; // Version can be specified in package.json
 
 import HomeScreen from "./HomeScreen";
-import NewQuestion from "./NewQuestion"
+import NewQuestion from "./NewQuestion";
+
 const AppNavigator = createStackNavigator({
   Home: {
     screen: HomeScreen,

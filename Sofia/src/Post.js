@@ -44,7 +44,7 @@ export default class Post extends Component<Props> {
           </CardItem>
 
           <CardItem cardBody>
-            <Image source={require("./mika.jpg")} style={{height: 200, width: null, flex: 1}} />
+            <Image source={require("./liao.jpg")} style={{height: 200, width: null, flex: 1}} />
           </CardItem>
         </Card>
     );
