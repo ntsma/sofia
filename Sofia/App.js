@@ -1,44 +1,26 @@
+import React from 'react';
+import { View, Text, Button } from 'react-native';
+import { createAppContainer, createStackNavigator, StackActions, NavigationActions } from 'react-navigation'; // Version can be specified in package.json
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet} from 'react-native';
-import { Container, Header, Content, Tab, Tabs, Left, Right, Body, Button, Icon, Title } from 'native-base';
-
-import Home from './Home';
-import Questions from './Questions';
-import Settings from './Settings';
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
-
-type Props = {};
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <Container>
-        <Header hasTabs>
-
-          <Body>
-            <Title>Sofia</Title>
-          </Body>
-
-        </Header>
-
-        <Tabs>
-          <Tab heading="Início">
-            <Home />
-          </Tab>
-          <Tab heading="Perguntas">
-            <Questions />
-          </Tab>
-          <Tab heading="Configurações">
-            <Settings />
-          </Tab>
-        </Tabs>
-      </Container>
-    );
+import HomeScreen from "./HomeScreen";
+import NewQuestion from "./NewQuestion"
+const AppNavigator = createStackNavigator({
+  Home: {
+    screen: HomeScreen,
+    navigationOptions: {
+        header: null,
+      },
+  },
+  NewQuestion: {
+    screen: NewQuestion,
+    navigationOptions: {
+        header: null,
+      },
   }
+}, {
+    initialRouteName: 'Home',
 }
+
+);
+
+export default createAppContainer(AppNavigator);
