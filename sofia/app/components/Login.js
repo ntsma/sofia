@@ -22,6 +22,10 @@ export default class Login extends Component {
       email: "",
       password: "",
       logging: "false"
+<<<<<<< HEAD:sofia/app/components/Login.js
+=======
+
+>>>>>>> developer:sofia/app/components/Login.js
     };
   }
 
@@ -34,14 +38,30 @@ export default class Login extends Component {
   };
 
   async onLoginPress() {
-    const CorrectEmail = "eduardo";
-    const CorrectPassword = "@eduardo";
+    const email = "solicitante@solicitante.com";
+    const password = "123456";
+    var token = "";
 
-    const { email, password } = this.state;
+    fetch("http://plataforma.homolog.huufma.br/api/login", {
+             method: 'POST',
+             headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+              },
+             body: JSON.stringify({
+               email: email,
+               password: password
+             })
+          })
+          .then((response) => response.json())
+          .then((responseJson) => {
+            async () => {
+              try {
+                await AsyncStorage.setItem("token", responseJson.token);
+                await AsyncStorage.setItem("logging", "true");
+              } catch (error) {
 
-    await AsyncStorage.setItem("email", email);
-    await AsyncStorage.setItem("password", password);
-
+<<<<<<< HEAD:sofia/app/components/Login.js
     if (email == CorrectEmail && password == CorrectPassword) {
       await AsyncStorage.setItem("logging", "true");
 
@@ -52,6 +72,16 @@ export default class Login extends Component {
          "E-mail ou senha estão incorretos!"
       )
     }
+=======
+              }
+            };
+
+            this.props.navigation.navigate("HomeScreen");
+          })
+          .catch((error) => {
+             console.debug(error);
+          });
+>>>>>>> developer:sofia/app/components/Login.js
   }
 
   render() {

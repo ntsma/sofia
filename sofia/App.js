@@ -7,6 +7,7 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 import Login from "./app/components/Login";
 import HomeScreen from "./app/components/HomeScreen";
+<<<<<<< HEAD
 import Test from "./app/components/Test";
 
 
@@ -17,6 +18,9 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
+=======
+import NewQuestion from "./app/components/NewQuestion";
+>>>>>>> developer
 
 class Home extends Component<{}> {
 
@@ -46,7 +50,11 @@ class Home extends Component<{}> {
 
   render() {
 
+<<<<<<< HEAD
     if(logging == "true") {
+=======
+    if(logging == "false") {
+>>>>>>> developer
       return (
         <View style={styles.container}>
           <StatusBar barStyle="light-content" backgroundColor="#3c8dbc" />
@@ -83,6 +91,15 @@ const App = createStackNavigator({
       title: "Login"
     }
   },
+<<<<<<< HEAD
+=======
+  NewQuestion: {
+    screen: NewQuestion,
+    navigationOptions: {
+      title: "NewQuestion"
+    }
+  },
+>>>>>>> developer
 });
 
 export default createAppContainer(App);
