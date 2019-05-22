@@ -7,16 +7,6 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 import Login from "./app/components/Login";
 import HomeScreen from "./app/components/HomeScreen";
-import Test from "./app/components/Test";
-
-
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
-
 
 class Home extends Component<{}> {
 
@@ -46,7 +36,7 @@ class Home extends Component<{}> {
 
   render() {
 
-    if(logging == "true") {
+    if(logging == "false") {
       return (
         <View style={styles.container}>
           <StatusBar barStyle="light-content" backgroundColor="#3c8dbc" />
