@@ -27,7 +27,7 @@ export default class Post extends Component<{}> {
       <Card>
         <CardItem>
           <Left>
-            <Thumbnail source={require("./perfil-logo.png")} />
+            <Thumbnail source={require("./logo.png")} />
             <Body>
               <Text>Núcleo de Telessaúde</Text>
               <Text note>Equipe de Comunicação</Text>
