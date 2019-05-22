@@ -54,7 +54,7 @@ export default class HomeScreen extends Component {
   }
 
   async sair() {
-    await AsyncStorage.setItem("email", "eduardo@gmail.com");
+    await AsyncStorage.setItem("token", "");
     await AsyncStorage.setItem("logging", "false");
 
     this.props.navigation.navigate("Login");

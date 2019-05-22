@@ -58,7 +58,6 @@ export default class Login extends Component {
     header: null
   };
 
-
   render() {
     return (
       <Container>
