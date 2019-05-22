@@ -87,7 +87,7 @@ export default class HomeScreen extends Component {
           <Tab heading={ <TabHeading style={{ backgroundColor: "#3c8dbc" }}><Text>Perguntas</Text></TabHeading>}>
             <Button block success style={{ marginTop: 15, marginBottom: 5, marginLeft: 30, marginRight: 30, paddingBottom: 38, paddingTop: 38}}
               onPress={() => {
-                this.props.navigation.navigate("QRCodeReader");
+                this.props.navigation.navigate("NewQuestion");
               }}
               >
               <Icon active type="MaterialIcons" name="question-answer" />

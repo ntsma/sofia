@@ -7,6 +7,7 @@ import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 import Login from "./app/components/Login";
 import HomeScreen from "./app/components/HomeScreen";
+import NewQuestion from "./app/components/NewQuestion";
 
 class Home extends Component<{}> {
 
@@ -36,7 +37,7 @@ class Home extends Component<{}> {
 
   render() {
 
-    if(logging == "false") {
+    if(logging == "true") {
       return (
         <View style={styles.container}>
           <StatusBar barStyle="light-content" backgroundColor="#3c8dbc" />
@@ -71,6 +72,12 @@ const App = createStackNavigator({
     screen: Login,
     navigationOptions: {
       title: "Login"
+    }
+  },
+  NewQuestion: {
+    screen: NewQuestion,
+    navigationOptions: {
+      title: "NewQuestion"
     }
   },
 });
