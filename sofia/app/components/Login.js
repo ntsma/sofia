@@ -22,10 +22,6 @@ export default class Login extends Component {
       email: "",
       password: "",
       logging: "false"
-<<<<<<< HEAD:sofia/app/components/Login.js
-=======
-
->>>>>>> developer:sofia/app/components/Login.js
     };
   }
 
@@ -61,18 +57,6 @@ export default class Login extends Component {
                 await AsyncStorage.setItem("logging", "true");
               } catch (error) {
 
-<<<<<<< HEAD:sofia/app/components/Login.js
-    if (email == CorrectEmail && password == CorrectPassword) {
-      await AsyncStorage.setItem("logging", "true");
-
-      this.props.navigation.navigate("HomeScreen");
-
-    } else {
-      Alert.alert(
-         "E-mail ou senha estão incorretos!"
-      )
-    }
-=======
               }
             };
 
@@ -81,7 +65,6 @@ export default class Login extends Component {
           .catch((error) => {
              console.debug(error);
           });
->>>>>>> developer:sofia/app/components/Login.js
   }
 
   render() {
