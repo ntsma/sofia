@@ -44,9 +44,7 @@ export default class Login extends Component {
   constructor() {
     super();
     this.state = {
-      email: "",
-      password: "",
-      logging: "false"
+      question: ""
     };
   }
 
@@ -57,6 +55,14 @@ export default class Login extends Component {
     },
     header: null
   };
+
+  async onCreateQuestion() {
+    var token = await AsyncStorage.getItem("token");
+
+    console.debug(token);
+
+  }
+
 
   render() {
     return (
@@ -78,9 +84,7 @@ export default class Login extends Component {
             <Textarea style={{ width: Dimensions.get("screen").width, height: Dimensions.get("screen").width}} rowSpan={5} bordered />
 
             <Button block success style={{ marginTop: 15, marginBottom: 5, marginLeft: 30, marginRight: 30}}
-              onPress={() => {
-                this.props.navigation.navigate("NewQuestion");
-              }}
+              onPress={this.onCreateQuestion.bind(this)}
               >
               <Text>Criar</Text>
             </Button>

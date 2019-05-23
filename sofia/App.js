@@ -23,7 +23,7 @@ class Home extends Component<{}> {
   constructor() {
     super();
 
-    logging = "false";
+    logging = this.retrieveData();
   }
 
   componentDidMount() {
@@ -40,6 +40,8 @@ class Home extends Component<{}> {
 
   async retrieveData() {
     const value = await AsyncStorage.getItem('logging');
+
+    Alert.alert(value);
 
     return value
   };

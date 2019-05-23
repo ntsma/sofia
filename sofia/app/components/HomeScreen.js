@@ -62,8 +62,16 @@ export default class HomeScreen extends Component {
 
   }
 
+  async teste() {
+    const l = await AsyncStorage.getItem("logging");
+
+    Alert.alert(l);
+
+  }
 
   render() {
+    this.teste();
+
     return (
       <Container>
         <Header hasTabs androidStatusBarColor="#3c8dbc" style={{ backgroundColor: "#3c8dbc"}}>
