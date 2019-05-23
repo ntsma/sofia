@@ -21,7 +21,8 @@ export default class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      logging: "false"
+      logging: "false",
+      token: ""
 
     };
   }
@@ -34,10 +35,28 @@ export default class Login extends Component {
     header: null
   };
 
+  async login(responseJson) {
+    try {
+      await AsyncStorage.setItem("token", responseJson.token);
+      await AsyncStorage.setItem("logging", "true");
+
+      const t = await AsyncStorage.getItem("logging");
+      this.setState({
+        logging: "true",
+        token: t
+      })
+
+      console.debug("TOKEN")
+      console.debug(this.state.token);
+
+    } catch (error) {
+      console.debug(error);
+    }
+  };
+
   async onLoginPress() {
     const email = "solicitante@solicitante.com";
     const password = "123456";
-    var token = "";
 
     fetch("http://plataforma.homolog.huufma.br/api/login", {
              method: 'POST',
@@ -52,16 +71,13 @@ export default class Login extends Component {
           })
           .then((response) => response.json())
           .then((responseJson) => {
-            async () => {
-              try {
-                await AsyncStorage.setItem("token", responseJson.token);
-                await AsyncStorage.setItem("logging", "true");
-              } catch (error) {
+            this.login(responseJson);
 
-              }
-            };
-
-            this.props.navigation.navigate("HomeScreen");
+            if(this.state.logging == "true") {
+              this.props.navigation.navigate("HomeScreen");
+            } else {
+              Alert.alert("E-mail ou senha incorretos!");
+            }
           })
           .catch((error) => {
              console.debug(error);
