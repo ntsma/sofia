@@ -41,6 +41,7 @@ export default class Login extends Component {
       await AsyncStorage.setItem("logging", "true");
 
       const t = await AsyncStorage.getItem("logging");
+
       this.setState({
         logging: "true",
         token: t
@@ -58,28 +59,26 @@ export default class Login extends Component {
     const email = "solicitante@solicitante.com";
     const password = "123456";
 
-    fetch("http://plataforma.homolog.huufma.br/api/login", {
-             method: 'POST',
-             headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-              },
-             body: JSON.stringify({
-               email: email,
-               password: password
-             })
+          fetch("http://plataforma.homolog.huufma.br/api/login", {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: email,
+              password: password
+            })
           })
           .then((response) => response.json())
           .then((responseJson) => {
             this.login(responseJson);
 
-            if(this.state.logging == "true") {
-              this.props.navigation.navigate("HomeScreen");
-            } else {
-              Alert.alert("E-mail ou senha incorretos!");
-            }
+            this.props.navigation.navigate("HomeScreen");
+
           })
           .catch((error) => {
+             console.log("Houve um problema!")
              console.debug(error);
           });
   }

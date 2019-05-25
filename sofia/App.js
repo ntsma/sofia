@@ -11,19 +11,23 @@ import NewQuestion from "./app/components/NewQuestion";
 
 class Home extends Component<{}> {
 
+  state = {
+    logging: "false"
+  };
+
   constructor() {
     super();
 
-    logging = this.retrieveData();
   }
 
   componentDidMount() {
-    logging: this.retrieveData();
+    this.retrieveData()
+
   }
 
   static navigationOptions = {
     headerStyle: {
-      backgroundColor: "#3c8dbc",
+      backgroundColor: "white",
       elevation: null
     },
     header: null
@@ -31,26 +35,29 @@ class Home extends Component<{}> {
 
   async retrieveData() {
     const value = await AsyncStorage.getItem('logging');
+    const email = await AsyncStorage.getItem('email');
 
-    Alert.alert(value);
+    console.debug(value);
 
-    return value
+    this.setState({
+      logging: value
+    })
   };
 
   render() {
 
-    if(logging == "false") {
+    if(this.state.logging == "true") {
       return (
         <View style={styles.container}>
           <StatusBar barStyle="light-content" backgroundColor="#3c8dbc" />
-          <Login navigation={this.props.navigation} />
+          <HomeScreen navigation={this.props.navigation} />
         </View>
       );
     } else {
       return (
         <View style={styles.container}>
           <StatusBar barStyle="light-content" backgroundColor="#3c8dbc" />
-          <HomeScreen navigation={this.props.navigation} />
+          <Login navigation={this.props.navigation} />
         </View>
       );
     }
