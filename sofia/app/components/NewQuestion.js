@@ -58,8 +58,29 @@ export default class Login extends Component {
 
   async onCreateQuestion() {
     var token = await AsyncStorage.getItem("token");
+    var question = this.state.question;
 
-    console.debug(token);
+    return fetch('http://plataforma.homolog.huufma.br/api/solicitation/handle', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          Authorization: Bearer + " " + token,
+          type_id: 52,
+          mode: "send",
+          description: question
+        }),
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+
+        this.props.navigation.navigate("HomeScreen");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
   }
 
@@ -81,7 +102,7 @@ export default class Login extends Component {
               <Label style={{ fontSize: 20 }}>Descreva sua pergunta</Label>
             </View>
 
-            <Textarea style={{ width: Dimensions.get("screen").width, height: Dimensions.get("screen").width}} rowSpan={5} bordered />
+            <Textarea onChangeText={(question) => this.setState({question})} style={{ width: Dimensions.get("screen").width, height: Dimensions.get("screen").width}} rowSpan={5} bordered />
 
             <Button block success style={{ marginTop: 15, marginBottom: 5, marginLeft: 30, marginRight: 30}}
               onPress={this.onCreateQuestion.bind(this)}
