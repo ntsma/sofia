@@ -33,7 +33,7 @@ import {
   Thumbnail
 } from "native-base";
 
-export default class SubmittedIssue extends Component {
+export default class Issue extends Component {
 
   render() {
     return (
@@ -61,4 +61,4 @@ export default class SubmittedIssue extends Component {
 
 }
 
-AppRegistry.registerComponent("SubmittedIssue", () => SubmittedIssue);
+AppRegistry.registerComponent("Issue", () => Issue);

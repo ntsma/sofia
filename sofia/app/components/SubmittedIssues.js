@@ -37,7 +37,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import { StackNavigator } from "react-navigation";
 
-import SubmittedIssue from "./SubmittedIssue";
+import Issue from "./Issue";
 
 export default class SubmittedIssues extends Component {
   static navigationOptions = {
@@ -106,7 +106,7 @@ export default class SubmittedIssues extends Component {
         <FlatList
           data={this.state.data}
           keyExtractor={item => item.id.toString()}
-          renderItem={({item}) => <SubmittedIssue question={item}/>}
+          renderItem={({item}) => <Issue question={item}/>}
         />
 
       </Container>
