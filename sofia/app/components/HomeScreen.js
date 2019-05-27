@@ -116,7 +116,7 @@ export default class HomeScreen extends Component {
 
               <Button block light style={{ marginTop: 15, marginBottom: 5, marginLeft: 30, marginRight: 30, paddingBottom: 38, paddingTop: 38}}
                 onPress={() => {
-                  this.props.navigation.navigate("QRCodeReader");
+                  this.props.navigation.navigate("SubmittedIssues");
                 }}
                 >
                 <Icon active type="MaterialIcons" name="call-made" />
