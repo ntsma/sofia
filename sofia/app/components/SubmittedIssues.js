@@ -37,8 +37,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import { StackNavigator } from "react-navigation";
 
-import Post from "./Post.js";
-import FAQ from "./FAQ.js";
+import SubmittedIssue from "./SubmittedIssue";
 
 export default class SubmittedIssues extends Component {
   static navigationOptions = {
@@ -47,6 +46,10 @@ export default class SubmittedIssues extends Component {
 
   constructor(props){
     super(props);
+
+    this.state = {
+      "data": []
+    };
   }
 
   componentDidMount() {
@@ -71,6 +74,8 @@ export default class SubmittedIssues extends Component {
       console.debug("OBTENDO QUESTÕES ENVIADAS...");
       console.debug("QUESTÕES");
       console.debug(responseJson.success.data);
+
+      this.setState({"data": responseJson.success.data});
     })
     .catch((error) => {
       console.error(error);
@@ -98,26 +103,11 @@ export default class SubmittedIssues extends Component {
           </Right>
         </Header>
 
-        <ScrollView>
-          <Card>
-            <CardItem cardBody>
-              <Text>Quais são os procedimentos para evitar a contaminação de itens após o uso de medicamentos exagerados.</Text>
-            </CardItem>
-
-            <CardItem>
-              <Left>
-                <Button transparent>
-                  <Icon active type="MaterialIcons" name="search" />
-                  <Text>Visualizar</Text>
-                </Button>
-              </Left>
-
-              <Right>
-                <Text>11h atrás</Text>
-              </Right>
-            </CardItem>
-          </Card>
-        </ScrollView>
+        <FlatList
+          data={this.state.data}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({item}) => <SubmittedIssue question={item}/>}
+        />
 
       </Container>
     );
