@@ -21,13 +21,8 @@ export default class Login extends Component {
     this.state = {
       email: "",
       password: "",
-<<<<<<< HEAD
-      logging: "false"
-=======
       logging: "false",
       token: ""
-
->>>>>>> developer
     };
   }
 

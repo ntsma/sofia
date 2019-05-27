@@ -63,9 +63,9 @@ export default class HomeScreen extends Component {
   }
 
   async teste() {
-    const l = await AsyncStorage.getItem("logging");
+    const l = await AsyncStorage.getItem("token");
 
-    Alert.alert(l);
+    console.debug(l);
 
   }
 
@@ -143,7 +143,7 @@ export default class HomeScreen extends Component {
 
             </ScrollView>
           </Tab>
-          <Tab heading={ <TabHeading style={{ backgroundColor: "#3c8dbc" }} ><Text>Palestras</Text></TabHeading>}>
+          <Tab heading={ <TabHeading style={{ backgroundColor: "#3c8dbc" }} ><Text>Notícias</Text></TabHeading>}>
 
             <ScrollView>
               <Post />

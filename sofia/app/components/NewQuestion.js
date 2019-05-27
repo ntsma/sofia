@@ -60,21 +60,28 @@ export default class Login extends Component {
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
 
+    console.debug("DENTRO DE QUESTION");
+    console.debug(question);
+
+    let formdata = new FormData();
+
+    formdata.append("type_id", 52);
+    formdata.append("mode", 'send');
+    formdata.append("description", question)
+
+    console.debug(formdata);
+
     return fetch('http://plataforma.homolog.huufma.br/api/solicitation/handle', {
         method: 'POST',
         headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
+          Authorization: "Bearer " + token
         },
-        body: JSON.stringify({
-          Authorization: Bearer + " " + token,
-          type_id: 52,
-          mode: "send",
-          description: question
-        }),
+        body: formdata,
       })
       .then((response) => response.json())
       .then((responseJson) => {
+        console.debug("RESPOSTA");
+        console.debug(responseJson);
 
         this.props.navigation.navigate("HomeScreen");
       })
