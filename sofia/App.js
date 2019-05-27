@@ -10,6 +10,7 @@ import HomeScreen from "./app/components/HomeScreen";
 import SubmittedIssues from "./app/components/SubmittedIssues";
 import DraftIssues from "./app/components/DraftIssues";
 import CanceledIssues from "./app/components/CanceledIssues";
+import AnsweredIssues from "./app/components/AnsweredIssues";
 import NewQuestion from "./app/components/NewQuestion";
 
 class Home extends Component<{}> {
@@ -105,6 +106,13 @@ const App = createStackNavigator({
     screen: CanceledIssues,
     navigationOptions: {
       title: "CanceledIssues"
+    }
+  },
+
+  AnsweredIssues: {
+    screen: AnsweredIssues,
+    navigationOptions: {
+      title: "AnsweredIssues"
     }
   },
 
