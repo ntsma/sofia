@@ -12,6 +12,8 @@ import DraftIssues from "./app/components/DraftIssues";
 import CanceledIssues from "./app/components/CanceledIssues";
 import AnsweredIssues from "./app/components/AnsweredIssues";
 import NewQuestion from "./app/components/NewQuestion";
+import Overlay from "./app/components/Overlay";
+
 
 class Home extends Component<{}> {
 
@@ -120,6 +122,13 @@ const App = createStackNavigator({
     screen: SubmittedIssues,
     navigationOptions: {
       title: "SubmittedIssues"
+    }
+  },
+
+  Overlay: {
+    screen: Overlay,
+    navigationOptions: {
+      title: "Overlay"
     }
   },
 });

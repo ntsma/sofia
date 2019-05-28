@@ -106,7 +106,7 @@ export default class SubmittedIssues extends Component {
         <FlatList
           data={this.state.data}
           keyExtractor={item => item.id.toString()}
-          renderItem={({item}) => <Issue question={item}/>}
+          renderItem={({item}) => <Issue navigation={this.props.navigation} question={item}/>}
         />
 
       </Container>

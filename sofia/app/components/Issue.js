@@ -33,21 +33,29 @@ import {
   Thumbnail
 } from "native-base";
 
+import { StackNavigator } from "react-navigation";
+
 export default class Issue extends Component {
 
   render() {
+      const item = this.props.question;
     return (
       <Card>
         <CardItem cardBody>
-          <Text>{this.props.question.description}</Text>
+          <Text>{item.description}</Text>
         </CardItem>
 
         <CardItem>
           <Left>
-            <Button transparent>
-              <Icon active type="MaterialIcons" name="search" />
-              <Text>Visualizar</Text>
-            </Button>
+              <Button transparent
+                  onPress={() => {
+                    this.props.navigation.navigate("Overlay", {item});
+                  }}
+              >
+                <Icon active type="MaterialIcons" name="search" />
+                <Text>Visualizar</Text>
+              </Button>
+
           </Left>
 
           <Right>
