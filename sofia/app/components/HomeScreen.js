@@ -51,6 +51,21 @@ export default class HomeScreen extends Component {
 
   constructor(props){
     super(props);
+
+    this.state = {
+        "numberOfAnsweredIssues": 0,
+        "numberOfSubmittedIssues": 0,
+        "numberOfDraftIssues": 0,
+        "numberOfCanceledIssues": 0,
+    }
+  }
+
+  componentDidMount() {
+      this.getCanceledIssues();
+      this.getDraftIssues();
+      this.getAnsweredIssues();
+      this.getSubmittedIssues();
+
   }
 
   async sair() {
@@ -62,16 +77,115 @@ export default class HomeScreen extends Component {
 
   }
 
-  async teste() {
-    const l = await AsyncStorage.getItem("token");
+  /*Obtendo as questões enviadas para a Sofia pelo Token*/
+  async getDraftIssues() {
+    const token = await AsyncStorage.getItem("token");
 
-    console.debug(l);
+    console.debug("OBTENDO O TOKEN DE ACESSO...");
+    console.debug("TOKEN: " + token);
+
+    return fetch('http://plataforma.homolog.huufma.br/api/solicitant/drafts', {
+      method: 'GET',
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.debug("OBTENDO QUESTÕES RASCUNHOS...");
+      console.debug("QUESTÕES");
+      console.debug(responseJson.success.data);
+
+      this.setState({"numberOfDraftIssues": responseJson.success.data.length});
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  }
+
+  /*Obtendo as questões enviadas para a Sofia pelo Token*/
+  async getAnsweredIssues() {
+    const token = await AsyncStorage.getItem("token");
+
+    console.debug("OBTENDO O TOKEN DE ACESSO...");
+    console.debug("TOKEN: " + token);
+
+    return fetch('http://plataforma.homolog.huufma.br/api/solicitant/answered', {
+      method: 'GET',
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.debug("OBTENDO QUESTÕES RESPONDIDAS...");
+      console.debug("QUESTÕES");
+      console.debug(responseJson.success.data);
+
+      this.setState({"numberOfAnsweredIssues": responseJson.success.data.length});
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  }
+
+  /*Obtendo as questões enviadas para a Sofia pelo Token*/
+  async getCanceledIssues() {
+    const token = await AsyncStorage.getItem("token");
+
+    console.debug("OBTENDO O TOKEN DE ACESSO...");
+    console.debug("TOKEN: " + token);
+
+    return fetch('http://plataforma.homolog.huufma.br/api/solicitant/rejects', {
+      method: 'GET',
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.debug("OBTENDO QUESTÕES CANCELADAS...");
+      console.debug("QUESTÕES");
+      console.debug(responseJson.success.data);
+
+      this.setState({"numberOfCanceledIssues": responseJson.success.data.length});
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  }
+
+  /*Obtendo as questões enviadas para a Sofia pelo Token*/
+  async getSubmittedIssues() {
+    const token = await AsyncStorage.getItem("token");
+
+    console.debug("OBTENDO O TOKEN DE ACESSO...");
+    console.debug("TOKEN: " + token);
+
+    return fetch('http://plataforma.homolog.huufma.br/api/solicitant/sents', {
+      method: 'GET',
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.debug("OBTENDO QUESTÕES ENVIADAS...");
+      console.debug("QUESTÕES");
+      console.debug(responseJson.success.data);
+
+      this.setState({"numberOfSubmittedIssues": responseJson.success.data.length});
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 
   }
 
   render() {
-    this.teste();
-
     return (
       <Container>
         <Header hasTabs androidStatusBarColor="#3c8dbc" style={{ backgroundColor: "#3c8dbc"}}>
@@ -112,6 +226,10 @@ export default class HomeScreen extends Component {
                 >
                 <Icon active type="MaterialIcons" name="call-received" />
                 <Text>Respondidas</Text>
+
+                <Badge>
+                    <Text>{ this.state.numberOfAnsweredIssues }</Text>
+                </Badge>
               </Button>
 
               <Button block light style={{ marginTop: 15, marginBottom: 5, marginLeft: 30, marginRight: 30, paddingBottom: 38, paddingTop: 38}}
@@ -120,7 +238,15 @@ export default class HomeScreen extends Component {
                 }}
                 >
                 <Icon active type="MaterialIcons" name="call-made" />
-                <Text>Enviadas</Text>
+
+                <Text>
+                    Enviadas
+                </Text>
+
+                <Badge>
+                    <Text>{ this.state.numberOfSubmittedIssues }</Text>
+                </Badge>
+
               </Button>
 
               <Button block light style={{ marginTop: 15, marginBottom: 5, marginLeft: 30, marginRight: 30, paddingBottom: 38, paddingTop: 38}}
@@ -130,6 +256,10 @@ export default class HomeScreen extends Component {
                 >
                 <Icon active type="MaterialIcons" name="cancel" />
                 <Text>Canceladas</Text>
+
+                <Badge>
+                    <Text>{ this.state.numberOfCanceledIssues }</Text>
+                </Badge>
               </Button>
 
               <Button block light style={{ marginTop: 15, marginBottom: 5, marginLeft: 30, marginRight: 30, paddingBottom: 38, paddingTop: 38}}
@@ -139,6 +269,10 @@ export default class HomeScreen extends Component {
                 >
                 <Icon active type="MaterialIcons" name="drafts" />
                 <Text>Rascunho</Text>
+
+                <Badge>
+                    <Text>{ this.state.numberOfDraftIssues }</Text>
+                </Badge>
               </Button>
 
             </ScrollView>
