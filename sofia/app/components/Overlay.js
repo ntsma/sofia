@@ -36,6 +36,13 @@ import {
   Thumbnail
 } from "native-base";
 
+import {
+    Rating,
+    AirbnbRating
+
+} from 'react-native-elements';
+
+
 export default class Overlay extends Component {
     static navigationOptions = {
       header: null
@@ -57,6 +64,13 @@ export default class Overlay extends Component {
             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'stretch'}}>
               <Label style={{ fontSize: 20 }}>{this.props.navigation.state.params.item.description}</Label>
             </View>
+
+            <AirbnbRating
+              count={5}
+              reviews={["Péssimo", "Ruim", "Regular", "Boa", "Ótima"]}
+              defaultRating={5}
+              size={20}
+            />
 
           </Form>
          </Content>
