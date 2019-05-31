@@ -63,7 +63,7 @@ export default class AnsweredIssues extends Component {
     console.debug("OBTENDO O TOKEN DE ACESSO...");
     console.debug("TOKEN: " + token);
 
-    return fetch('http://plataforma.homolog.huufma.br/api/solicitant/answered', {
+    return fetch('http://plataforma.homolog.huufma.br/api/solicitant/answered?page=4', {
       method: 'GET',
       headers: {
         Authorization: "Bearer " + token
