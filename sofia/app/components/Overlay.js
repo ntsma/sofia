@@ -15,8 +15,6 @@ import {
   Badge,
   Body,
   Button,
-  Card,
-  CardItem,
   Container,
   Content,
   Form,
@@ -38,15 +36,67 @@ import {
 
 import {
     Rating,
-    AirbnbRating
+    AirbnbRating,
+    Card
 
 } from 'react-native-elements';
 
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class Overlay extends Component {
-    static navigationOptions = {
-      header: null
+  static navigationOptions = {
+    header: null
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      "answer": "",
+      "complement": "",
+      "attributes": "",
+      "permanent_education": "",
+      "references": ""
     };
+  }
+
+  componentDidMount() {
+    this.getSubmittedIssues();
+  }
+
+  /*Obtendo as questões enviadas para a Sofia pelo Token*/
+  async getSubmittedIssues() {
+    const token = await AsyncStorage.getItem("token");
+
+    console.debug("OBTENDO O TOKEN DE ACESSO...");
+    console.debug("TOKEN: " + token);
+
+    return fetch('http://plataforma.homolog.huufma.br/api/answer/read/' + this.props.navigation.state.params.item.id, {
+      method: 'GET',
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.debug("OBTENDO RESPOSTA...");
+      console.debug("RESPOSTA");
+      console.debug(responseJson);
+
+      this.setState({
+        "answer": responseJson.data.answer,
+        "complement": responseJson.data.complement,
+        "attributes": responseJson.data.attributes,
+        "permanent_education": responseJson.data.attributes,
+        "references": responseJson.data.references
+      });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  }
+
 
   render() {
     return (
@@ -65,12 +115,50 @@ export default class Overlay extends Component {
               <Label style={{ fontSize: 20 }}>{this.props.navigation.state.params.item.description}</Label>
             </View>
 
-            <AirbnbRating
-              count={5}
-              reviews={["Péssimo", "Ruim", "Regular", "Boa", "Ótima"]}
-              defaultRating={5}
-              size={20}
-            />
+            <Card title="Resposta">
+              <Text>{this.state.answer}</Text>
+            </Card>
+
+            <Card title="Complemento">
+              <Text>{this.state.complement}</Text>
+            </Card>
+
+            <Card title="Atributos">
+              <Text>{this.state.attributes}</Text>
+            </Card>
+
+            <Card title="Educação Permanente">
+              <Text>{this.state.permanent_education}</Text>
+            </Card>
+
+            <Card title="Referências">
+              <Text>{this.state.references}</Text>
+            </Card>
+
+            <Card title="Avaliação">
+              <AirbnbRating
+                count={5}
+                reviews={["Péssimo", "Ruim", "Regular", "Boa", "Ótima"]}
+                defaultRating={5}
+                size={20}
+              />
+
+              <AirbnbRating
+                count={3}
+                reviews={["Não Atendeu", "Parcialmente", "Totalmente"]}
+                defaultRating={3}
+                size={20}
+              />
+
+            <Button block success style={{ marginLeft: 30, marginRight: 30, marginTop: 30}}
+                onPress={() => {
+
+                  this.props.navigation.navigate("NewQuestion");
+                }}
+                >
+                <Text>Avaliar</Text>
+              </Button>
+            </Card>
 
           </Form>
          </Content>

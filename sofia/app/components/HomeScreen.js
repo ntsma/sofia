@@ -94,9 +94,9 @@ export default class HomeScreen extends Component {
     .then((responseJson) => {
       console.debug("OBTENDO QUESTÕES RASCUNHOS...");
       console.debug("QUESTÕES");
-      console.debug(responseJson.success.data);
+      console.debug(responseJson.data.data);
 
-      this.setState({"numberOfDraftIssues": responseJson.success.data.length});
+      this.setState({"numberOfDraftIssues": responseJson.data.data.length});
     })
     .catch((error) => {
       console.error(error);
@@ -121,9 +121,9 @@ export default class HomeScreen extends Component {
     .then((responseJson) => {
       console.debug("OBTENDO QUESTÕES RESPONDIDAS...");
       console.debug("QUESTÕES");
-      console.debug(responseJson.success.data);
+      console.debug(responseJson.data.data);
 
-      this.setState({"numberOfAnsweredIssues": responseJson.success.data.length});
+      this.setState({"numberOfAnsweredIssues": responseJson.data.data.length});
     })
     .catch((error) => {
       console.error(error);
@@ -148,9 +148,9 @@ export default class HomeScreen extends Component {
     .then((responseJson) => {
       console.debug("OBTENDO QUESTÕES CANCELADAS...");
       console.debug("QUESTÕES");
-      console.debug(responseJson.success.data);
+      console.debug(responseJson.data.data);
 
-      this.setState({"numberOfCanceledIssues": responseJson.success.data.length});
+      this.setState({"numberOfCanceledIssues": responseJson.data.data.length});
     })
     .catch((error) => {
       console.error(error);
@@ -175,9 +175,9 @@ export default class HomeScreen extends Component {
     .then((responseJson) => {
       console.debug("OBTENDO QUESTÕES ENVIADAS...");
       console.debug("QUESTÕES");
-      console.debug(responseJson.success.data);
+      console.debug(responseJson.data.data);
 
-      this.setState({"numberOfSubmittedIssues": responseJson.success.data.length});
+      this.setState({"numberOfSubmittedIssues": responseJson.data.data.length});
     })
     .catch((error) => {
       console.error(error);

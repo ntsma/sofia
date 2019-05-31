@@ -73,9 +73,9 @@ export default class DraftIssues extends Component {
     .then((responseJson) => {
       console.debug("OBTENDO QUESTÕES RASCUNHOS...");
       console.debug("QUESTÕES");
-      console.debug(responseJson.success.data);
+      console.debug(responseJson.data.data);
 
-      this.setState({"data": responseJson.success.data});
+      this.setState({"data": responseJson.data.data});
     })
     .catch((error) => {
       console.error(error);
