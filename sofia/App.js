@@ -13,7 +13,7 @@ import CanceledIssues from "./app/components/CanceledIssues";
 import AnsweredIssues from "./app/components/AnsweredIssues";
 import NewQuestion from "./app/components/NewQuestion";
 import Overlay from "./app/components/Overlay";
-
+import Question from "./app/components/Question";
 
 class Home extends Component<{}> {
 
@@ -94,6 +94,13 @@ const App = createStackNavigator({
     screen: NewQuestion,
     navigationOptions: {
       title: "NewQuestion"
+    }
+  },
+
+  Question: {
+    screen: Question,
+    navigationOptions: {
+      title: "Question"
     }
   },
 

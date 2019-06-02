@@ -348,9 +348,7 @@ export default class HomeScreen extends Component {
 
 
           <Tab heading={ <TabHeading style={{ backgroundColor: "#3c8dbc" }}><Text>FAQ</Text></TabHeading>}>
-            <ScrollView>
-              <FAQ />
-            </ScrollView>
+            <FAQ navigation={this.props.navigation}/>
           </Tab>
 
         </Tabs>

@@ -88,7 +88,7 @@ export default class Login extends Component {
         <View behavior="padding" style={styles.container}>
           <View style={styles.logoContainer}>
             <Image style={styles.logo} source={require("./logo.png")} />
-            <Text style={styles.subtext}>Quiz</Text>
+            <Text style={styles.subtext}>Sofia</Text>
           </View>
           <KeyboardAvoidingView style={styles.keyboard}>
             <View style={styles.window}>
