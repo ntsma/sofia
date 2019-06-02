@@ -18,6 +18,9 @@ import {
 } from "react-native-elements";
 
 export default class FAQ extends Component {
+  static navigationOptions = {
+    header: null
+  };
   render() {
     const questions = [
       { title: "Quem pode ser doadora de leite humano?",
@@ -36,6 +39,28 @@ export default class FAQ extends Component {
 
    return (
      <ThemeProvider>
+       <Header
+         statusBarProps={{ barStyle: 'light-content', backgroundColor: '#3D6DCC' }}
+         barStyleP="light-content"
+         leftComponent={{ icon: 'arrow-back', color: '#fff' }}
+         centerComponent={{ text: 'Sofia', style: { color: '#fff' } }}
+         rightComponent={<View>
+       <Avatar
+         rounded
+         source={require('./logo.png')}
+       />
+       <Badge
+         status="success"
+         containerStyle={{ position: 'absolute', top: -4, right: -4 }}
+       />
+     </View>
+   }
+         containerStyle={{
+           backgroundColor: '#3D6DCC',
+           justifyContent: 'space-around',
+         }}
+       />
+
        <FlatList
         data={questions}
         keyExtractor={(item, index) => item.title}

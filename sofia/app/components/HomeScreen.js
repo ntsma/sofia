@@ -196,7 +196,12 @@ export default class HomeScreen extends Component {
           <Header
             statusBarProps={{ barStyle: 'light-content', backgroundColor: '#3D6DCC' }}
             barStyleP="light-content"
-            leftComponent={{ icon: 'menu', color: '#fff' }}
+            leftComponent={<Icon
+              name="navicon"
+              size={15}
+              color="white"
+              onPress={() => this.props.navigation.navigate("FAQ", this.props.navigation) }
+            />}
             centerComponent={{ text: 'Sofia', style: { color: '#fff' } }}
             rightComponent={<View>
                               <Avatar
