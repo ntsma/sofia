@@ -14,28 +14,32 @@ import {
   View
 } from "react-native";
 
-import {
-  Badge,
-  Body,
-  Button,
-  Card,
-  CardItem,
-  Container,
-  Header,
-  Icon,
-  Left,
-  Right,
-  Tab,
-  TabHeading,
-  Tabs,
-  Text,
-  Title,
-  Thumbnail
-} from "native-base";
-
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { StackNavigator } from "react-navigation";
+
+
+import {
+  Avatar,
+  Badge,
+  Button,
+  Header,
+  ThemeProvider,
+  Text,
+
+} from "react-native-elements";
+
+import TabNavigator from 'react-native-tab-navigator';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {Dimensions, Picker} from 'react-native';
+
+const deviceW = Dimensions.get('window').width
+
+const basePx = 375
+
+function px2dp(px) {
+  return px *  deviceW / basePx;
+}
 
 import Post from "./Post.js";
 import FAQ from "./FAQ.js";
@@ -57,6 +61,7 @@ export default class HomeScreen extends Component {
         "numberOfSubmittedIssues": 0,
         "numberOfDraftIssues": 0,
         "numberOfCanceledIssues": 0,
+        "selectedTab": "home"
     }
   }
 
@@ -187,173 +192,161 @@ export default class HomeScreen extends Component {
 
   render() {
     return (
-      <Container>
-        <Header hasTabs androidStatusBarColor="#3c8dbc" style={{ backgroundColor: "#3c8dbc"}}>
-          <Left>
-            <Image style={{ width: 30, height: 30}} source={require("./logo.png")} />
-          </Left>
-          <Body>
-            <Title>Sofia</Title>
-          </Body>
-          <Right>
-            <Button
-              transparent
-              onPress={this.sair.bind(this)}
+      <ThemeProvider>
+        <View>
+          <Header
+            statusBarProps={{ barStyle: 'light-content', backgroundColor: '#3D6DCC' }}
+            barStyleP="light-content"
+            leftComponent={{ icon: 'menu', color: '#fff' }}
+            centerComponent={{ text: 'Sofia', style: { color: '#fff' } }}
+            rightComponent={<View>
+                              <Avatar
+                                rounded
+                                source={require('./logo.png')}
+                              />
+
+                              <Badge
+                                status="success"
+                                containerStyle={{ position: 'absolute', top: -4, right: -4 }}
+                              />
+                            </View>
+                          }
+            containerStyle={{
+              backgroundColor: '#3D6DCC',
+              justifyContent: 'space-around',
+            }}
+          />
+
+
+        </View>
+
+
+        <TabNavigator>
+            <TabNavigator.Item
+              title="Início"
+              selected={this.state.selectedTab === 'home'}
+              onPress={() => this.setState({selectedTab: 'home'})}
+              renderIcon={() => <Icon name="home" />}
+              renderSelectedIcon={() => <Icon name="home" />}
+              selectedTitleStyle={{color: "#3496f0"}}
             >
-              <Icon type="MaterialIcons" name="exit-to-app" />
-            </Button>
-          </Right>
-        </Header>
+            <View>
+              <View style={{ marginTop: 10, marginBottom: 10, marginLeft: 10, marginRight: 10 }}>
+                <Button
+                  onPress={() => {
+                    this.props.navigation.navigate("NewQuestion");
+                  }}
+                  icon={
+                    <Icon
+                      name="arrow-right"
+                      size={15}
+                      color="white"
+                    />
+                  }
+                  title="  Nova Pergunta"
+                />
+              </View>
 
+              <View style={{ marginTop: 10, marginBottom: 10, marginLeft: 10, marginRight: 10 }}>
+                <Button
+                  onPress={() => {
+                    this.props.navigation.navigate("AnsweredIssues");
+                  }}
+                  icon={
+                    <Icon
+                      name="send"
+                      size={15}
+                      color="white"
+                    />
+                  }
+                  title=" Respondidas"
+                />
+                <Badge
+                  value={ this.state.numberOfAnsweredIssues }
+                  status="error"
+                  containerStyle={{ position: 'absolute', top: -4, right: -4 }}
+                />
+              </View>
 
-        <Tabs>
-          <Tab heading={ <TabHeading style={{ backgroundColor: "#3c8dbc" }}><Text>Perguntas</Text></TabHeading>}>
-            <Button block success style={{ marginTop: 15, marginBottom: 5, marginLeft: 30, marginRight: 30, paddingBottom: 38, paddingTop: 38}}
-              onPress={() => {
+              <View style={{ marginTop: 10, marginBottom: 10, marginLeft: 10, marginRight: 10 }}>
+                <Button
+                  onPress={() => {
+                    this.props.navigation.navigate("SubmittedIssues");
+                  }}
+                  icon={
+                    <Icon
+                      name="send"
+                      size={15}
+                      color="white"
+                    />
+                  }
+                  title=" Enviadas"
+                />
+                <Badge
+                  value={ this.state.numberOfSubmittedIssues }
+                  status="error"
+                  containerStyle={{ position: 'absolute', top: -4, right: -4 }}
+                />
+              </View>
 
-                this.props.navigation.navigate("NewQuestion");
-              }}
-              >
-              <Icon active type="MaterialIcons" name="question-answer" />
-              <Text>Nova Pergunta</Text>
-            </Button>
+              <View style={{ marginTop: 10, marginBottom: 10, marginLeft: 10, marginRight: 10 }}>
+                <Button
+                  onPress={() => {
+                    this.props.navigation.navigate("SubmittedIssues");
+                  }}
+                  icon={
+                    <Icon
+                      name="send"
+                      size={15}
+                      color="white"
+                    />
+                  }
+                  title=" Canceladas"
+                />
+                <Badge
+                  value={this.state.numberOfCanceledIssues}
+                  status="error"
+                  containerStyle={{ position: 'absolute', top: -4, right: -4 }}
+                />
+              </View>
 
-            <ScrollView>
-              <Button block light style={{ marginTop: 15, marginBottom: 5, marginLeft: 30, marginRight: 30, paddingBottom: 38, paddingTop: 38}}
-                onPress={() => {
-                  this.props.navigation.navigate("AnsweredIssues");
-                }}
-                >
-                <Icon active type="MaterialIcons" name="call-received" />
-                <Text>Respondidas</Text>
+              <View style={{ marginTop: 10, marginBottom: 10, marginLeft: 10, marginRight: 10 }}>
+                <Button
+                  onPress={() => {
+                    this.props.navigation.navigate("SubmittedIssues");
+                  }}
+                  icon={
+                    <Icon
+                      name="send"
+                      size={15}
+                      color="white"
+                    />
+                  }
+                  title=" Rascunho"
+                />
+                <Badge
+                  value={this.state.numberOfDraftIssues}
+                  status="error"
+                  containerStyle={{ position: 'absolute', top: -4, right: -4 }}
+                />
+              </View>
 
-                <Badge>
-                    <Text>{ this.state.numberOfAnsweredIssues }</Text>
-                </Badge>
-              </Button>
+            </View>
+            </TabNavigator.Item>
 
-              <Button block light style={{ marginTop: 15, marginBottom: 5, marginLeft: 30, marginRight: 30, paddingBottom: 38, paddingTop: 38}}
-                onPress={() => {
-                  this.props.navigation.navigate("SubmittedIssues");
-                }}
-                >
-                <Icon active type="MaterialIcons" name="call-made" />
-
-                <Text>
-                    Enviadas
-                </Text>
-
-                <Badge>
-                    <Text>{ this.state.numberOfSubmittedIssues }</Text>
-                </Badge>
-
-              </Button>
-
-              <Button block light style={{ marginTop: 15, marginBottom: 5, marginLeft: 30, marginRight: 30, paddingBottom: 38, paddingTop: 38}}
-                onPress={() => {
-                  this.props.navigation.navigate("CanceledIssues");
-                }}
-                >
-                <Icon active type="MaterialIcons" name="cancel" />
-                <Text>Canceladas</Text>
-
-                <Badge>
-                    <Text>{ this.state.numberOfCanceledIssues }</Text>
-                </Badge>
-              </Button>
-
-              <Button block light style={{ marginTop: 15, marginBottom: 5, marginLeft: 30, marginRight: 30, paddingBottom: 38, paddingTop: 38}}
-                onPress={() => {
-                  this.props.navigation.navigate("DraftIssues");
-                }}
-                >
-                <Icon active type="MaterialIcons" name="drafts" />
-                <Text>Rascunho</Text>
-
-                <Badge>
-                    <Text>{ this.state.numberOfDraftIssues }</Text>
-                </Badge>
-              </Button>
-
-            </ScrollView>
-          </Tab>
-          <Tab heading={ <TabHeading style={{ backgroundColor: "#3c8dbc" }} ><Text>Notícias</Text></TabHeading>}>
-
-            <ScrollView>
+            <TabNavigator.Item
+              title="Testes"
+              selected={this.state.selectedTab === 'profile'}
+              onPress={() => this.setState({selectedTab: 'profile'})}
+              renderIcon={() => <Icon name="user" />}
+              renderSelectedIcon={() => <Icon name="user" />}
+              selectedTitleStyle={{color: "#3496f0"}}
+            >
               <Post />
+            </TabNavigator.Item>
+          </TabNavigator>
 
-              <Card>
-                <CardItem>
-                  <Left>
-                    <Thumbnail source={require("./heart.png")} />
-                    <Body>
-                      <Text>Patrino</Text>
-                      <Text note>Equipe de Comunicação</Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-
-                <CardItem cardBody>
-                  <Image source={require("./2.jpg")} style={{height: 200, width: 200, flex: 1}}/>
-                </CardItem>
-
-                <CardItem>
-                  <Left>
-                    <Button transparent>
-                      <Icon active type="MaterialIcons" name="search" />
-                      <Text>Visualizar</Text>
-                    </Button>
-                  </Left>
-
-                  <Right>
-                    <Text>11h ago</Text>
-                  </Right>
-                </CardItem>
-              </Card>
-
-
-              <Card>
-                <CardItem>
-                  <Left>
-                    <Thumbnail source={require("./heart.png")} />
-                    <Body>
-                      <Text>Patrino</Text>
-                      <Text note>Equipe de Comunicação</Text>
-                    </Body>
-                  </Left>
-                </CardItem>
-
-                <CardItem cardBody>
-                  <Image source={require("./3.jpg")} style={{height: 200, width: 200, flex: 1}}/>
-                </CardItem>
-
-                <CardItem>
-                  <Left>
-                    <Button transparent>
-                      <Icon active type="MaterialIcons" name="search" />
-                      <Text>Visualizar</Text>
-                    </Button>
-                  </Left>
-
-                  <Right>
-                    <Text>11h ago</Text>
-                  </Right>
-                </CardItem>
-              </Card>
-
-
-            </ScrollView>
-
-          </Tab>
-
-
-          <Tab heading={ <TabHeading style={{ backgroundColor: "#3c8dbc" }}><Text>FAQ</Text></TabHeading>}>
-            <FAQ navigation={this.props.navigation}/>
-          </Tab>
-
-        </Tabs>
-
-      </Container>
+      </ThemeProvider>
     );
   }
 
