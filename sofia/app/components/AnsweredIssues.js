@@ -15,13 +15,11 @@ import {
 } from "react-native";
 
 import {
-  Badge,
   Body,
   Button,
   Card,
   CardItem,
   Container,
-  Header,
   Icon,
   Left,
   Right,
@@ -32,6 +30,14 @@ import {
   Title,
   Thumbnail
 } from "native-base";
+
+
+import {
+  ThemeProvider,
+  Header,
+  Avatar,
+  Badge
+} from "react-native-elements";
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -85,23 +91,28 @@ export default class AnsweredIssues extends Component {
 
   render() {
     return (
-      <Container>
-        <Header androidStatusBarColor="#3c8dbc" style={{ backgroundColor: "#3c8dbc"}}>
-          <Left>
-            <Button
-              transparent
-              onPress={() => this.props.navigation.navigate("HomeScreen") }
-            >
-              <Icon type="MaterialIcons" name="arrow-back" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Voltar</Title>
-          </Body>
-          <Right>
-
-          </Right>
-        </Header>
+      <ThemeProvider>
+        <Header
+          statusBarProps={{ barStyle: 'light-content', backgroundColor: '#3D6DCC' }}
+          barStyleP="light-content"
+          leftComponent={{ icon: 'arrow-back', color: '#fff' }}
+          centerComponent={{ text: 'Sofia', style: { color: '#fff' } }}
+          rightComponent={<View>
+                            <Avatar
+                              rounded
+                              source={require('./logo.png')}
+                            />
+                            <Badge
+                              status="success"
+                              containerStyle={{ position: 'absolute', top: -4, right: -4 }}
+                            />
+                          </View>
+                        }
+          containerStyle={{
+            backgroundColor: '#3D6DCC',
+            justifyContent: 'space-around',
+          }}
+        />
 
         <FlatList
           data={this.state.data}
@@ -109,10 +120,8 @@ export default class AnsweredIssues extends Component {
           renderItem={({item}) => <Issue navigation={this.props.navigation} question={item}/>}
         />
 
-      </Container>
+    </ThemeProvider>
     );
   }
 
 }
-
-AppRegistry.registerComponent("AnsweredIssues", () => AnsweredIssues);
