@@ -291,7 +291,7 @@ export default class HomeScreen extends Component {
               <View style={{ marginTop: 10, marginBottom: 10, marginLeft: 10, marginRight: 10 }}>
                 <Button
                   onPress={() => {
-                    this.props.navigation.navigate("SubmittedIssues");
+                    this.props.navigation.navigate("CanceledIssues");
                   }}
                   icon={
                     <Icon
@@ -312,7 +312,7 @@ export default class HomeScreen extends Component {
               <View style={{ marginTop: 10, marginBottom: 10, marginLeft: 10, marginRight: 10 }}>
                 <Button
                   onPress={() => {
-                    this.props.navigation.navigate("SubmittedIssues");
+                    this.props.navigation.navigate("DraftIssues");
                   }}
                   icon={
                     <Icon
