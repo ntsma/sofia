@@ -334,14 +334,18 @@ export default class HomeScreen extends Component {
             </TabNavigator.Item>
 
             <TabNavigator.Item
-              title="Testes"
+              title="Notícias"
               selected={this.state.selectedTab === 'profile'}
               onPress={() => this.setState({selectedTab: 'profile'})}
               renderIcon={() => <Icon name="user" />}
               renderSelectedIcon={() => <Icon name="user" />}
               selectedTitleStyle={{color: "#3496f0"}}
             >
-              <Post />
+              <ScrollView>
+                <Post />
+                <Post />
+                <Post />
+              </ScrollView>
             </TabNavigator.Item>
           </TabNavigator>
 
@@ -350,5 +354,3 @@ export default class HomeScreen extends Component {
   }
 
 }
-
-AppRegistry.registerComponent("HomeScreen", () => HomeScreen);
