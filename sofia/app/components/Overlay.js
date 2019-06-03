@@ -161,7 +161,7 @@ export default class Overlay extends Component {
       <Container>
         <Header androidStatusBarColor="#3c8dbc" style={{ backgroundColor: "#3c8dbc"}}>
           <Left>
-            <Image style={{ width: 30, height: 30}} source={require("./logo.png")} />
+            <Image style={{ width: 30, height: 30}} source={require("../resources/logo.png")} />
           </Left>
           <Body>
             <Title>Sofia</Title>

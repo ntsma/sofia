@@ -190,7 +190,7 @@ export default class HomeScreen extends Component {
       <Container>
         <Header hasTabs androidStatusBarColor="#3c8dbc" style={{ backgroundColor: "#3c8dbc"}}>
           <Left>
-            <Image style={{ width: 30, height: 30}} source={require("./logo.png")} />
+            <Image style={{ width: 30, height: 30}} source={require("../resources/logo.png")} />
           </Left>
           <Body>
             <Title>Sofia</Title>
@@ -285,7 +285,7 @@ export default class HomeScreen extends Component {
               <Card>
                 <CardItem>
                   <Left>
-                    <Thumbnail source={require("./heart.png")} />
+                    <Thumbnail source={require("../resources/heart.png")} />
                     <Body>
                       <Text>Patrino</Text>
                       <Text note>Equipe de Comunicação</Text>
@@ -294,7 +294,7 @@ export default class HomeScreen extends Component {
                 </CardItem>
 
                 <CardItem cardBody>
-                  <Image source={require("./2.jpg")} style={{height: 200, width: 200, flex: 1}}/>
+                  <Image source={require("../resources/2.jpg")} style={{height: 200, width: 200, flex: 1}}/>
                 </CardItem>
 
                 <CardItem>
@@ -315,7 +315,7 @@ export default class HomeScreen extends Component {
               <Card>
                 <CardItem>
                   <Left>
-                    <Thumbnail source={require("./heart.png")} />
+                    <Thumbnail source={require("../resources/heart.png")} />
                     <Body>
                       <Text>Patrino</Text>
                       <Text note>Equipe de Comunicação</Text>
@@ -324,7 +324,7 @@ export default class HomeScreen extends Component {
                 </CardItem>
 
                 <CardItem cardBody>
-                  <Image source={require("./3.jpg")} style={{height: 200, width: 200, flex: 1}}/>
+                  <Image source={require("../resources/3.jpg")} style={{height: 200, width: 200, flex: 1}}/>
                 </CardItem>
 
                 <CardItem>
