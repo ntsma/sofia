@@ -133,11 +133,7 @@ export default class Login extends Component {
       <Container>
         <Header androidStatusBarColor="#3c8dbc" style={styles.header}>
           <Left>
-<<<<<<< HEAD
-            <Image style={styles.image} source={require("./logo.png")} />
-=======
-            <Image style={styles.image} source={require("../resources/logo.png")} />
->>>>>>> origin/master
+            <Image style={styles.image} source={require("./resources/logo.png")} />
           </Left>
           <Body>
             <Title>Sofia</Title>
