@@ -15,10 +15,8 @@ import {
 } from "react-native";
 
 import {
-  Badge,
   Body,
   Button,
-  Card,
   CardItem,
   Container,
   Header,
@@ -28,45 +26,37 @@ import {
   Tab,
   TabHeading,
   Tabs,
-  Text,
   Title,
   Thumbnail
 } from "native-base";
+
+import {
+  Card,
+  Text,
+  Badge
+} from "react-native-elements";
 
 import { StackNavigator } from "react-navigation";
 
 export default class Issue extends Component {
 
   render() {
-      const item = this.props.question;
+    const item = this.props.question;
     return (
       <Card>
-        <CardItem cardBody>
-          <Text>{item.description}</Text>
-        </CardItem>
-
-        <CardItem>
-          <Left>
-              <Button transparent
-                  onPress={() => {
-                    this.props.navigation.navigate("Overlay", {item});
-                  }}
-              >
-                <Icon active type="MaterialIcons" name="search" />
-                <Text>Visualizar</Text>
-              </Button>
-
-          </Left>
-
-          <Right>
-            <Text>11h atrás</Text>
-          </Right>
-        </CardItem>
+        <Badge
+          value="Aguardando"
+          status="warning"
+          containerStyle={{ position: 'absolute', top: -4, right: -4 }}
+        />
+        <Text
+          style={{marginBottom: 10}}
+          onPress={() => this.props.navigation.navigate("Overlay", {item})}
+        >
+          {item.description}
+        </Text>
       </Card>
-
     );
   }
 
 }
-
-AppRegistry.registerComponent("Issue", () => Issue);
