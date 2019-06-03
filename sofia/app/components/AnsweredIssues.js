@@ -44,46 +44,9 @@ export default class AnsweredIssues extends Component {
     header: null
   };
 
-  constructor(props){
-    super(props);
-
-    this.state = {
-      "data": []
-    };
-  }
-
-  componentDidMount() {
-    this.getSubmittedIssues();
-  }
-
-  /*Obtendo as questões enviadas para a Sofia pelo Token*/
-  async getSubmittedIssues() {
-    const token = await AsyncStorage.getItem("token");
-
-    console.debug("OBTENDO O TOKEN DE ACESSO...");
-    console.debug("TOKEN: " + token);
-
-    return fetch('http://plataforma.homolog.huufma.br/api/solicitant/answered?page=4', {
-      method: 'GET',
-      headers: {
-        Authorization: "Bearer " + token
-      }
-    })
-    .then((response) => response.json())
-    .then((responseJson) => {
-      console.debug("OBTENDO QUESTÕES RESPONDIDAS...");
-      console.debug("QUESTÕES");
-      console.debug(responseJson.data.data);
-
-      this.setState({"data": responseJson.data.data});
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-
-  }
-
   render() {
+    const answeredIssues = this.props.navigation.state.params.answeredIssues;
+
     return (
       <Container>
         <Header androidStatusBarColor="#3c8dbc" style={{ backgroundColor: "#3c8dbc"}}>
@@ -104,7 +67,7 @@ export default class AnsweredIssues extends Component {
         </Header>
 
         <FlatList
-          data={this.state.data}
+          data={answeredIssues}
           keyExtractor={item => item.id.toString()}
           renderItem={({item}) => <Issue navigation={this.props.navigation} question={item}/>}
         />

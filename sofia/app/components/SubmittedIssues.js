@@ -84,6 +84,8 @@ export default class SubmittedIssues extends Component {
   }
 
   render() {
+    const submittedIssues = this.props.navigation.state.params.submittedIssues;
+
     return (
       <Container>
         <Header androidStatusBarColor="#3c8dbc" style={{ backgroundColor: "#3c8dbc"}}>
@@ -104,7 +106,7 @@ export default class SubmittedIssues extends Component {
         </Header>
 
         <FlatList
-          data={this.state.data}
+          data={submittedIssues}
           keyExtractor={item => item.id.toString()}
           renderItem={({item}) => <Issue navigation={this.props.navigation} question={item}/>}
         />
