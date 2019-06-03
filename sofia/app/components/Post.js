@@ -27,7 +27,7 @@ export default class Post extends Component<{}> {
       <Card>
         <CardItem>
           <Left>
-            <Thumbnail source={require("./logo.png")} />
+            <Thumbnail source={require("../resources/logo.png")} />
             <Body>
               <Text>Núcleo de Telessaúde</Text>
               <Text note>Equipe de Comunicação</Text>
@@ -36,7 +36,7 @@ export default class Post extends Component<{}> {
         </CardItem>
 
         <CardItem cardBody>
-          <Image source={require("./1.jpg")} style={{height: 200, width: 200, flex: 1}}/>
+          <Image source={require("../resources/1.jpg")} style={{height: 200, width: 200, flex: 1}}/>
         </CardItem>
 
         <CardItem>
