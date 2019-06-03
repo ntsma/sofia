@@ -133,7 +133,7 @@ export default class Login extends Component {
       <Container>
         <Header androidStatusBarColor="#3c8dbc" style={styles.header}>
           <Left>
-            <Image style={styles.image} source={require("./images/logo.png")} />
+            <Image style={styles.image} source={require("./logo.png")} />
           </Left>
           <Body>
             <Title>Sofia</Title>
@@ -150,13 +150,17 @@ export default class Login extends Component {
               <Label style={styles.textTitle}>Descreva sua pergunta</Label>
             </View>
 
-            <Textarea style={styles.textArea} rowSpan={10} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
-            
-            <Button success style={styles.button}>
+            <Textarea style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
+
+            <Button success style={styles.button}
+              onPress={this.onCreateQuestion.bind(this)}
+            >
               <Text>Enviar Pergunta</Text>
             </Button>
 
-            <Button light style={styles.button}>
+            <Button light style={styles.button}
+              onPress={this.onCreateDraftQuestion.bind(this)}
+            >
               <Text>Salvar como rascunho</Text>
             </Button>
 
@@ -170,7 +174,7 @@ export default class Login extends Component {
 }
 
 const styles = StyleSheet.create({
-  header: { 
+  header: {
     backgroundColor: "#3c8dbc",
   },
   image: {
@@ -191,16 +195,16 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   title: {
-    flex: 1, 
-    flexDirection: 'row', 
-    justifyContent: 'center', 
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'stretch',
     margin: 10
   },
   textTitle: {
     fontSize: 20
   },
-  textArea: { 
+  textArea: {
     width: '95%',
     backgroundColor: '#f6f6f6'
   }
