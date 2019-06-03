@@ -133,7 +133,9 @@ export default class Login extends Component {
       <Container>
         <Header androidStatusBarColor="#3c8dbc" style={styles.header}>
           <Left>
-            <Image style={styles.image} source={require("../resources/logo.png")} />
+            <Button transparent onPress={() => this.props.navigation.navigate("HomeScreen") } >
+              <Icon type="MaterialIcons" name="arrow-back" />
+            </Button>
           </Left>
           <Body>
             <Title>Sofia</Title>
