@@ -114,5 +114,3 @@ export default class AnsweredIssues extends Component {
   }
 
 }
-
-AppRegistry.registerComponent("AnsweredIssues", () => AnsweredIssues);
