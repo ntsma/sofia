@@ -33,7 +33,7 @@ export default class Question extends Component {
          rightComponent={<View>
        <Avatar
          rounded
-         source={require('./logo.png')}
+         source={require('../resources/logo.png')}
        />
        <Badge
          status="success"
