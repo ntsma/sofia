@@ -131,32 +131,80 @@ export default class Login extends Component {
   render() {
     return (
       <Container>
-        <Header androidStatusBarColor="#3c8dbc" style={{ backgroundColor: "#3c8dbc"}}>
+        <Header androidStatusBarColor="#3c8dbc" style={styles.header}>
           <Left>
-            <Image style={{ width: 30, height: 30}} source={require("./logo.png")} />
+            <Image style={styles.image} source={require("./images/logo.png")} />
           </Left>
           <Body>
             <Title>Sofia</Title>
           </Body>
+          <Right>
+          </Right>
         </Header>
+
         <Content>
-          <Form>
-            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'stretch'}}>
-              <Label style={{ fontSize: 20 }}>Descreva sua pergunta</Label>
+
+          <Form style={styles.container}>
+
+            <View style={styles.title}>
+              <Label style={styles.textTitle}>Descreva sua pergunta</Label>
             </View>
 
-            <Textarea onChangeText={(question) => this.setState({question})} style={{ width: Dimensions.get("screen").width, height: Dimensions.get("screen").width}} rowSpan={5} bordered />
-
-            <Button block success style={{ marginTop: 15, marginBottom: 5, marginLeft: 30, marginRight: 30}}
-              onPress={this.onCreateQuestion.bind(this)}
-              >
-              <Text>Criar</Text>
+            <Textarea style={styles.textArea} rowSpan={10} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
+            
+            <Button success style={styles.button}>
+              <Text>Enviar Pergunta</Text>
             </Button>
+
+            <Button light style={styles.button}>
+              <Text>Salvar como rascunho</Text>
+            </Button>
+
           </Form>
+
          </Content>
+
       </Container>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  header: { 
+    backgroundColor: "#3c8dbc",
+  },
+  image: {
+    width: 40,
+    height: 40
+  },
+  button: {
+    width: '80%',
+    height: 60,
+    marginTop: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  container: {
+    width: '100%',
+    height: '30%',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  title: {
+    flex: 1, 
+    flexDirection: 'row', 
+    justifyContent: 'center', 
+    alignItems: 'stretch',
+    margin: 10
+  },
+  textTitle: {
+    fontSize: 20
+  },
+  textArea: { 
+    width: '95%',
+    backgroundColor: '#f6f6f6'
+  }
+});
+
 
 AppRegistry.registerComponent("NewQuestion", () => NewQuestion);
