@@ -1,110 +1,34 @@
-
+/*CanceledIssues.js*/
 import React, { Component } from "react";
 
 import {
-  Alert,
-  AppRegistry,
   FlatList,
-  Image,
-  Linking,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  View
+
 } from "react-native";
 
 import {
-  Badge,
-  Body,
-  Button,
-  Card,
-  CardItem,
   Container,
-  Header,
-  Icon,
-  Left,
-  Right,
-  Tab,
-  TabHeading,
-  Tabs,
-  Text,
-  Title,
-  Thumbnail
+
 } from "native-base";
 
-import AsyncStorage from '@react-native-community/async-storage';
-
-import { StackNavigator } from "react-navigation";
-
 import Issue from "./Issue";
+import BackHeader from "./BackHeader";
 
 export default class CanceledIssues extends Component {
+  /*Removendo header padrão*/
   static navigationOptions = {
     header: null
   };
 
-  constructor(props){
-    super(props);
-
-    this.state = {
-      "data": []
-    };
-  }
-
-  componentDidMount() {
-    this.getSubmittedIssues();
-  }
-
-  /*Obtendo as questões enviadas para a Sofia pelo Token*/
-  async getSubmittedIssues() {
-    const token = await AsyncStorage.getItem("token");
-
-    console.debug("OBTENDO O TOKEN DE ACESSO...");
-    console.debug("TOKEN: " + token);
-
-    return fetch('http://plataforma.homolog.huufma.br/api/solicitant/rejects', {
-      method: 'GET',
-      headers: {
-        Authorization: "Bearer " + token
-      }
-    })
-    .then((response) => response.json())
-    .then((responseJson) => {
-      console.debug("OBTENDO QUESTÕES CANCELADAS...");
-      console.debug("QUESTÕES");
-      console.debug(responseJson.data.data);
-
-      this.setState({"data": responseJson.data.data});
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-
-  }
-
   render() {
+    const canceledIssues = this.props.navigation.state.params.canceledIssues;
+
     return (
       <Container>
-        <Header androidStatusBarColor="#3c8dbc" style={{ backgroundColor: "#3c8dbc"}}>
-          <Left>
-            <Button
-              transparent
-              onPress={() => this.props.navigation.navigate("HomeScreen") }
-            >
-              <Icon type="MaterialIcons" name="arrow-back" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Voltar</Title>
-          </Body>
-          <Right>
-
-          </Right>
-        </Header>
+        <BackHeader navigation={this.props.navigation} name="Canceladas" />
 
         <FlatList
-          data={this.state.data}
+          data={canceledIssues}
           keyExtractor={item => item.id.toString()}
           renderItem={({item}) => <Issue navigation={this.props.navigation} question={item}/>}
         />
@@ -114,5 +38,3 @@ export default class CanceledIssues extends Component {
   }
 
 }
-
-AppRegistry.registerComponent("CanceledIssues", () => CanceledIssues);
