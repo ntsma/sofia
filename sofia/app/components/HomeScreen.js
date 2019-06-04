@@ -9,29 +9,17 @@ import {
 } from "react-native";
 
 import {
-  Badge,
-  Body,
-  Button,
-  Card,
-  CardItem,
   Container,
-  Header,
-  Icon,
-  Left,
-  Right,
   Tab,
   TabHeading,
   Tabs,
   Text,
-  Title,
-  Thumbnail
 } from "native-base";
 
 import AsyncStorage from '@react-native-community/async-storage';
 
-import Post from "./Post.js";
-import FAQ from "./FAQ.js";
 import MainHeader from "./MainHeader";
+import FAQ from "./FAQ";
 import Home from "./Home";
 import News from "./News";
 
@@ -45,7 +33,7 @@ export default class HomeScreen extends Component {
   render() {
     return (
       <Container>
-        <MainHeader />
+        <MainHeader navigation={this.props.navigation}/>
 
         <Tabs>
           <Tab heading={ <TabHeading style={{ backgroundColor: "#3c8dbc" }}><Text>Perguntas</Text></TabHeading>}>
