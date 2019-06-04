@@ -58,7 +58,7 @@ export default class Home extends Component {
       console.debug("QUESTÕES");
       console.debug(responseJson.data.data);
 
-      this.setState({"draftIssues": responseJson.data.data});
+      this.setState({"draftIssues": responseJson.data});
     })
     .catch((error) => {
       console.error(error);
@@ -85,7 +85,7 @@ export default class Home extends Component {
       console.debug("QUESTÕES");
       console.debug(responseJson.data.data);
 
-      this.setState({"answeredIssues": responseJson.data.data});
+      this.setState({"answeredIssues": responseJson.data});
     })
     .catch((error) => {
       console.error(error);
@@ -112,7 +112,7 @@ export default class Home extends Component {
       console.debug("QUESTÕES");
       console.debug(responseJson.data.data);
 
-      this.setState({"canceledIssues": responseJson.data.data});
+      this.setState({"canceledIssues": responseJson.data});
     })
     .catch((error) => {
       console.error(error);
@@ -139,7 +139,7 @@ export default class Home extends Component {
       console.debug("QUESTÕES");
       console.debug(responseJson.data.data);
 
-      this.setState({"submittedIssues": responseJson.data.data});
+      this.setState({"submittedIssues": responseJson.data});
     })
     .catch((error) => {
       console.error(error);
@@ -148,10 +148,10 @@ export default class Home extends Component {
   }
 
   render() {
-    const answeredIssues = this.state.answeredIssues;
-    const submittedIssues = this.state.submittedIssues;
-    const canceledIssues = this.state.canceledIssues;
-    const draftIssues = this.state.draftIssues;
+    const answeredIssues = this.state.answeredIssues.data;
+    const submittedIssues = this.state.submittedIssues.data;
+    const canceledIssues = this.state.canceledIssues.data;
+    const draftIssues = this.state.draftIssues.data;
 
     return (
       <View>
@@ -175,7 +175,7 @@ export default class Home extends Component {
             <Text>Respondidas</Text>
 
             <Badge>
-                <Text>{ this.state.answeredIssues.length }</Text>
+                <Text>{ this.state.answeredIssues.total }</Text>
             </Badge>
           </Button>
 
@@ -191,7 +191,7 @@ export default class Home extends Component {
             </Text>
 
             <Badge>
-                <Text>{ this.state.submittedIssues.length }</Text>
+                <Text>{ this.state.submittedIssues.total }</Text>
             </Badge>
 
           </Button>
@@ -205,7 +205,7 @@ export default class Home extends Component {
             <Text>Canceladas</Text>
 
             <Badge>
-                <Text>{ this.state.canceledIssues.length }</Text>
+                <Text>{ this.state.canceledIssues.total }</Text>
             </Badge>
           </Button>
 
@@ -218,7 +218,7 @@ export default class Home extends Component {
             <Text>Rascunho</Text>
 
             <Badge>
-                <Text>{ this.state.draftIssues.length }</Text>
+                <Text>{ this.state.draftIssues.total }</Text>
             </Badge>
           </Button>
 
