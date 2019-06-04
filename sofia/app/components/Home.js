@@ -48,7 +48,7 @@ export default class Home extends Component {
       console.debug("QUESTÕES");
       console.debug(responseJson.data.data);
 
-      this.setState({"draftIssues": responseJson.data.data});
+      this.setState({"draftIssues": responseJson.data});
     })
     .catch((error) => {
       console.error(error);
@@ -75,7 +75,7 @@ export default class Home extends Component {
       console.debug("QUESTÕES");
       console.debug(responseJson.data.data);
 
-      this.setState({"answeredIssues": responseJson.data.data});
+      this.setState({"answeredIssues": responseJson.data});
     })
     .catch((error) => {
       console.error(error);
@@ -102,7 +102,7 @@ export default class Home extends Component {
       console.debug("QUESTÕES");
       console.debug(responseJson.data.data);
 
-      this.setState({"canceledIssues": responseJson.data.data});
+      this.setState({"canceledIssues": responseJson.data});
     })
     .catch((error) => {
       console.error(error);
@@ -129,7 +129,7 @@ export default class Home extends Component {
       console.debug("QUESTÕES");
       console.debug(responseJson.data.data);
 
-      this.setState({"submittedIssues": responseJson.data.data});
+      this.setState({"submittedIssues": responseJson.data});
     })
     .catch((error) => {
       console.error(error);
@@ -138,10 +138,10 @@ export default class Home extends Component {
   }
 
   render() {
-    const answeredIssues = this.state.answeredIssues;
-    const submittedIssues = this.state.submittedIssues;
-    const canceledIssues = this.state.canceledIssues;
-    const draftIssues = this.state.draftIssues;
+    const answeredIssues = this.state.answeredIssues.data;
+    const submittedIssues = this.state.submittedIssues.data;
+    const canceledIssues = this.state.canceledIssues.data;
+    const draftIssues = this.state.draftIssues.data;
 
     return (
       <View>
