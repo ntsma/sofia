@@ -133,7 +133,9 @@ export default class Login extends Component {
       <Container>
         <Header androidStatusBarColor="#3c8dbc" style={styles.header}>
           <Left>
-            <Image style={styles.image} source={require("../resources/logo.png")} />
+            <Button transparent onPress={() => this.props.navigation.navigate("HomeScreen") } >
+              <Icon type="MaterialIcons" name="arrow-back" />
+            </Button>
           </Left>
           <Body>
             <Title>Sofia</Title>
@@ -145,25 +147,16 @@ export default class Login extends Component {
         <Content>
 
           <Form style={styles.container}>
-
             <View style={styles.title}>
               <Label style={styles.textTitle}>Descreva sua pergunta</Label>
             </View>
-
             <Textarea style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
-
-            <Button success style={styles.button}
-              onPress={this.onCreateQuestion.bind(this)}
-            >
-              <Text>Enviar Pergunta</Text>
-            </Button>
-
-            <Button light style={styles.button}
-              onPress={this.onCreateDraftQuestion.bind(this)}
-            >
-              <Text>Salvar como rascunho</Text>
-            </Button>
-
+              <Button block success style={styles.button} onPress={this.onCreateQuestion.bind(this)}>
+                <Text>Enviar Pergunta</Text>
+              </Button>
+              <Button block light style={styles.button} onPress={this.onCreateDraftQuestion.bind(this)}>
+                <Text>Salvar como rascunho</Text>
+              </Button>
           </Form>
 
          </Content>
@@ -185,13 +178,11 @@ const styles = StyleSheet.create({
     width: '80%',
     height: 60,
     marginTop: 20,
+    marginLeft: '10%',
     justifyContent: 'center',
     alignItems: 'center',
   },
   container: {
-    width: '100%',
-    height: '30%',
-    justifyContent: 'center',
     alignItems: 'center'
   },
   title: {

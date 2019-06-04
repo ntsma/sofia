@@ -4,6 +4,7 @@ import React, { Component } from "react";
 
 import {
   Image,
+
   ScrollView,
   View
 } from "react-native";
@@ -35,7 +36,7 @@ export default class HomeScreen extends Component {
       <Container>
         <MainHeader navigation={this.props.navigation}/>
 
-        <Tabs>
+        <Tabs style={Platform.OS === 'android' ? { overflow: 'hidden' } : null}>
           <Tab heading={ <TabHeading style={{ backgroundColor: "#3c8dbc" }}><Text>Perguntas</Text></TabHeading>}>
             <Home navigation={this.props.navigation} />
           </Tab>
