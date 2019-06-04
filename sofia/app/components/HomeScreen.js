@@ -4,7 +4,7 @@ import React, { Component } from "react";
 
 import {
   Image,
-
+  Platform,
   ScrollView,
   View
 } from "react-native";
