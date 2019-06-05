@@ -1,18 +1,8 @@
 /*Home.js*/
 
 import React, { Component } from "react";
-
-import {
-  ScrollView,
-  View
-} from "react-native";
-
-import {
-  Badge,
-  Button,
-  Icon,
-  Text,
-} from "native-base";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Badge, Button, Body, Icon, Left, Right, Text} from "native-base";
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -155,71 +145,66 @@ export default class Home extends Component {
 
     return (
       <View>
-        <Button block success style={{ marginTop: 15, marginBottom: 5, marginLeft: 30, marginRight: 30, paddingBottom: 38, paddingTop: 38}}
-          onPress={() => {
-
-            this.props.navigation.navigate("NewQuestion");
-          }}
-          >
+        <Button block success style={styles.button} onPress={() => {this.props.navigation.navigate("NewQuestion");}}>
           <Icon active type="MaterialIcons" name="question-answer" />
           <Text>Nova Pergunta</Text>
         </Button>
 
         <ScrollView>
-          <Button block light style={{ marginTop: 15, marginBottom: 5, marginLeft: 30, marginRight: 30, paddingBottom: 38, paddingTop: 38}}
-            onPress={() => {
-              this.props.navigation.navigate("AnsweredIssues", {answeredIssues});
-            }}
-            >
-            <Icon active type="MaterialIcons" name="call-received" />
-            <Text>Respondidas</Text>
-
-            <Badge>
-                <Text>{ this.state.answeredIssues.total }</Text>
-            </Badge>
+          <Button block light style={styles.button} onPress={() => {this.props.navigation.navigate("AnsweredIssues", {answeredIssues});}}>
+            <Right>
+              <Icon active type="MaterialIcons" name="call-received" />
+            </Right>
+            <Body>
+              <Text>Respondidas</Text>
+            </Body>
+            <Right>
+              <Badge>
+                  <Text>{ this.state.answeredIssues.length }</Text>
+              </Badge>
+            </Right>
           </Button>
 
-          <Button block light style={{ marginTop: 15, marginBottom: 5, marginLeft: 30, marginRight: 30, paddingBottom: 38, paddingTop: 38}}
-            onPress={() => {
-              this.props.navigation.navigate("SubmittedIssues", {submittedIssues});
-            }}
-            >
-            <Icon active type="MaterialIcons" name="call-made" />
-
-            <Text>
-                Enviadas
-            </Text>
-
-            <Badge>
-                <Text>{ this.state.submittedIssues.total }</Text>
-            </Badge>
-
+          <Button block light style={styles.button} onPress={() => {this.props.navigation.navigate("SubmittedIssues", {submittedIssues});}}>
+            <Right>
+              <Icon active type="MaterialIcons" name="call-made" />
+            </Right>
+            <Body>
+              <Text>Enviadas</Text>
+            </Body>
+            <Right>
+              <Badge>
+                  <Text>{ this.state.submittedIssues.length }</Text>
+              </Badge>
+            </Right>
           </Button>
 
-          <Button block light style={{ marginTop: 15, marginBottom: 5, marginLeft: 30, marginRight: 30, paddingBottom: 38, paddingTop: 38}}
-            onPress={() => {
-              this.props.navigation.navigate("CanceledIssues", {canceledIssues});
-            }}
-            >
-            <Icon active type="MaterialIcons" name="cancel" />
-            <Text>Canceladas</Text>
-
-            <Badge>
-                <Text>{ this.state.canceledIssues.total }</Text>
-            </Badge>
+          <Button block light style={styles.button} onPress={() => {this.props.navigation.navigate("CanceledIssues", {canceledIssues});}}>
+            <Right>
+              <Icon active type="MaterialIcons" name="cancel" />
+            </Right>
+            <Body>
+              <Text>Canceladas</Text>
+            </Body>
+            <Right>
+              <Badge>
+                  <Text>{ this.state.canceledIssues.length }</Text>
+              </Badge>
+            </Right>
           </Button>
 
-          <Button block light style={{ marginTop: 15, marginBottom: 5, marginLeft: 30, marginRight: 30, paddingBottom: 38, paddingTop: 38}}
-            onPress={() => {
-              this.props.navigation.navigate("DraftIssues", {draftIssues});
-            }}
-            >
-            <Icon active type="MaterialIcons" name="drafts" />
-            <Text>Rascunho</Text>
-
-            <Badge>
-                <Text>{ this.state.draftIssues.total }</Text>
-            </Badge>
+          <Button block light style={styles.button} onPress={() => {this.props.navigation.navigate("DraftIssues", {draftIssues});}}>
+            <Right>
+              <Icon active type="MaterialIcons" name="drafts" />
+            </Right>
+            <Body>
+              <Text>Rascunho</Text>
+            </Body>
+            <Right>
+              <Badge>
+                  <Text>{ this.state.draftIssues.length }</Text>
+              </Badge>
+            </Right>
           </Button>
 
         </ScrollView>
@@ -228,3 +213,38 @@ export default class Home extends Component {
   }
 
 }
+
+const styles = StyleSheet.create({
+  header: {
+    backgroundColor: "#3c8dbc",
+  },
+  image: {
+    width: 40,
+    height: 40
+  },
+  button: {
+    width: '90%',
+    height: 70,
+    marginTop: 20,
+    marginLeft: '5%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  container: {
+    alignItems: 'center'
+  },
+  title: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'stretch',
+    margin: 10
+  },
+  textTitle: {
+    fontSize: 20
+  },
+  textArea: {
+    width: '95%',
+    backgroundColor: '#f6f6f6'
+  }
+});

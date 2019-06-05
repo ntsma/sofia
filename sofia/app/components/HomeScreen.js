@@ -1,21 +1,7 @@
 /*HomeScreen.js*/
-
 import React, { Component } from "react";
-
-import {
-  Image,
-  Platform,
-  ScrollView,
-  View
-} from "react-native";
-
-import {
-  Container,
-  Tab,
-  TabHeading,
-  Tabs,
-  Text,
-} from "native-base";
+import { Image, Platform, ScrollView, View } from "react-native";
+import { Container, Tab, TabHeading, Tabs, Text} from "native-base";
 
 import AsyncStorage from '@react-native-community/async-storage';
 

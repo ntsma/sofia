@@ -153,6 +153,7 @@ export default class Login extends Component {
             <Textarea style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
               <Button block success style={styles.button} onPress={this.onCreateQuestion.bind(this)}>
                 <Text>Enviar Pergunta</Text>
+                <Icon type="MaterialIcons" name="file-upload"/>
               </Button>
               <Button block light style={styles.button} onPress={this.onCreateDraftQuestion.bind(this)}>
                 <Text>Salvar como rascunho</Text>
@@ -175,10 +176,10 @@ const styles = StyleSheet.create({
     height: 40
   },
   button: {
-    width: '80%',
+    width: '90%',
     height: 60,
-    marginTop: 20,
-    marginLeft: '10%',
+    marginTop: 10,
+    marginLeft: '5%',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -196,7 +197,7 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   textArea: {
-    width: '95%',
+    width: '90%',
     backgroundColor: '#f6f6f6'
   }
 });
