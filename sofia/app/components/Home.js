@@ -160,7 +160,7 @@ export default class Home extends Component {
             </Body>
             <Right>
               <Badge>
-                  <Text>{ this.state.answeredIssues.length }</Text>
+                  <Text>{ this.state.answeredIssues.total }</Text>
               </Badge>
             </Right>
           </Button>
@@ -174,7 +174,7 @@ export default class Home extends Component {
             </Body>
             <Right>
               <Badge>
-                  <Text>{ this.state.submittedIssues.length }</Text>
+                  <Text>{ this.state.submittedIssues.total }</Text>
               </Badge>
             </Right>
           </Button>
@@ -188,7 +188,7 @@ export default class Home extends Component {
             </Body>
             <Right>
               <Badge>
-                  <Text>{ this.state.canceledIssues.length }</Text>
+                  <Text>{ this.state.canceledIssues.total }</Text>
               </Badge>
             </Right>
           </Button>
@@ -202,7 +202,7 @@ export default class Home extends Component {
             </Body>
             <Right>
               <Badge>
-                  <Text>{ this.state.draftIssues.length }</Text>
+                  <Text>{ this.state.draftIssues.total }</Text>
               </Badge>
             </Right>
           </Button>

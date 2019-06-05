@@ -1,4 +1,5 @@
 /*CanceledIssues.js*/
+
 import React, { Component } from "react";
 
 import {
@@ -11,7 +12,7 @@ import {
 
 } from "native-base";
 
-import Issue from "./Issue";
+import CanceledIssue from "./CanceledIssue";
 import BackHeader from "./BackHeader";
 
 export default class CanceledIssues extends Component {
@@ -30,7 +31,7 @@ export default class CanceledIssues extends Component {
         <FlatList
           data={canceledIssues}
           keyExtractor={item => item.id.toString()}
-          renderItem={({item}) => <Issue navigation={this.props.navigation} question={item}/>}
+          renderItem={({item}) => <CanceledIssue navigation={this.props.navigation} question={item}/>}
         />
 
       </Container>
