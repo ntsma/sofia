@@ -70,6 +70,63 @@ class Home extends Component<{}> {
   }
 }
 
+const FadeTransition = (index, position) => {
+  const sceneRange = [index -1, index];
+  const outputOpacity = [0, 1];
+  const transition = position.interpolate({
+    inputRange: sceneRange,
+    outputRange: outputOpacity,
+  });
+
+  return {
+    opacity: transition
+  }
+}
+
+const BottomTransition = (index, position, height) => {
+  const sceneRange = [index -1, index];
+  //const outputOpacity = [0, 1];
+  const outputHeight = [height, 0];
+  const transition = position.interpolate({
+    inputRange: sceneRange,
+    outputRange: outputHeight,
+  });
+
+  return {
+    //opacity: transition
+    transform: [{ translateY: transition }]
+  }
+}
+
+const SideTransition = (index, position, width) => {
+  const sceneRange = [index -1, index];
+  //const outputOpacity = [0, 1];
+  const outputWidth = [width, 0];
+  const transition = position.interpolate({
+    inputRange: sceneRange,
+    outputRange: outputWidth,
+  });
+
+  return {
+    //opacity: transition
+    transform: [{ translateX: transition }]
+  }
+}
+
+const NavigationConfig = () => {
+  return {
+    screenInterpolator: (sceneProps) => {
+      const position = sceneProps.position;
+      const scene = sceneProps.scene;
+      const index = scene.index;
+      const height = sceneProps.layout.initHeight;
+      const width = sceneProps.layout.initWidth;
+
+      return SideTransition(index, position, width);
+    }
+  }
+}
+
 const App = createStackNavigator({
   Home: {
     screen: Home,
@@ -138,6 +195,8 @@ const App = createStackNavigator({
       title: "Overlay"
     }
   },
+}, {
+  transitionConfig: NavigationConfig
 });
 
 export default createAppContainer(App);

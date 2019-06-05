@@ -206,7 +206,8 @@ export default class Home extends Component {
               </Badge>
             </Right>
           </Button>
-
+          <View style={{height: 3}}>
+          </View>
         </ScrollView>
       </View>
     );
