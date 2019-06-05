@@ -14,6 +14,7 @@ import AnsweredIssues from "./app/components/AnsweredIssues";
 import NewQuestion from "./app/components/NewQuestion";
 import Overlay from "./app/components/Overlay";
 import Question from "./app/components/Question";
+import EditQuestion from "./app/components/EditQuestion";
 
 class Home extends Component<{}> {
 
@@ -94,6 +95,13 @@ const App = createStackNavigator({
     screen: NewQuestion,
     navigationOptions: {
       title: "NewQuestion"
+    }
+  },
+
+  EditQuestion: {
+    screen: EditQuestion,
+    navigationOptions: {
+      title: "EditQuestion"
     }
   },
 

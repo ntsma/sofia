@@ -11,7 +11,7 @@ import {
 
 } from "native-base";
 
-import Issue from "./Issue";
+import DraftIssue from "./DraftIssue";
 import BackHeader from "./BackHeader";
 
 export default class DraftIssues extends Component {
@@ -30,7 +30,7 @@ export default class DraftIssues extends Component {
         <FlatList
           data={answeredIssues}
           keyExtractor={item => item.id.toString()}
-          renderItem={({item}) => <Issue navigation={this.props.navigation} question={item}/>}
+          renderItem={({item}) => <DraftIssue navigation={this.props.navigation} question={item} />}
         />
 
       </Container>
