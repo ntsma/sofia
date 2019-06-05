@@ -70,34 +70,6 @@ class Home extends Component<{}> {
   }
 }
 
-const FadeTransition = (index, position) => {
-  const sceneRange = [index -1, index];
-  const outputOpacity = [0, 1];
-  const transition = position.interpolate({
-    inputRange: sceneRange,
-    outputRange: outputOpacity,
-  });
-
-  return {
-    opacity: transition
-  }
-}
-
-const BottomTransition = (index, position, height) => {
-  const sceneRange = [index -1, index];
-  //const outputOpacity = [0, 1];
-  const outputHeight = [height, 0];
-  const transition = position.interpolate({
-    inputRange: sceneRange,
-    outputRange: outputHeight,
-  });
-
-  return {
-    //opacity: transition
-    transform: [{ translateY: transition }]
-  }
-}
-
 const SideTransition = (index, position, width) => {
   const sceneRange = [index -1, index];
   //const outputOpacity = [0, 1];
