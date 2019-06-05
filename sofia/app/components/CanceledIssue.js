@@ -1,5 +1,4 @@
-/*DraftIssue.js*/
-
+/*CanceledIssue.js*/
 import React, { Component } from "react";
 
 import {
@@ -8,7 +7,7 @@ import {
   Badge
 } from "react-native-elements";
 
-export default class DraftIssue extends Component {
+export default class CanceledIssue extends Component {
 
   render() {
     const item = this.props.question;
@@ -16,7 +15,7 @@ export default class DraftIssue extends Component {
       <Card>
         <Text
           style={{marginBottom: 10}}
-          onPress={() => this.props.navigation.navigate("EditQuestion", {item})}
+          onPress={() => this.props.navigation.navigate("ShowObservation", {item})}
         >
           {item.description}
         </Text>

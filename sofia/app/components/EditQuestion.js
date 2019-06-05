@@ -1,10 +1,7 @@
+/*EditQuestion.js*/
+
 import React, { Component } from "react";
 import {
-  Alert,
-  AppRegistry,
-  Dimensions,
-  KeyboardAvoidingView,
-  TouchableOpacity,
   Image,
   TextInput,
   StyleSheet,
@@ -12,7 +9,6 @@ import {
 } from "react-native";
 
 import {
-  Badge,
   Body,
   Button,
   Card,
@@ -20,41 +16,31 @@ import {
   Container,
   Content,
   Form,
-  Header,
   Icon,
   Item,
   Input,
   Label,
-  Left,
-  Right,
-  Tab,
-  TabHeading,
-  Tabs,
   Text,
   Textarea,
   Title,
-  Thumbnail
 } from "native-base";
 
 import AsyncStorage from '@react-native-community/async-storage';
 
-import { StackNavigator } from "react-navigation";
+import BackHeader from "./BackHeader";
 
-export default class Login extends Component {
+export default class EditQuestion extends Component {
+  /*Removendo header padrão*/
+  static navigationOptions = {
+    header: null
+  };
+
   constructor() {
     super();
     this.state = {
       question: ""
     };
   }
-
-  static navigationOptions = {
-    headerStyle: {
-      backgroundColor: "#D95D39",
-      elevation: null
-    },
-    header: null
-  };
 
   async onCreateQuestion() {
     var token = await AsyncStorage.getItem("token");
@@ -91,7 +77,6 @@ export default class Login extends Component {
 
   }
 
-
   async onCreateDraftQuestion() {
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
@@ -127,23 +112,11 @@ export default class Login extends Component {
 
   }
 
-
   render() {
     const item = this.props.navigation.state.params.item;
     return (
       <Container>
-        <Header androidStatusBarColor="#3c8dbc" style={styles.header}>
-          <Left>
-            <Button transparent onPress={() => this.props.navigation.navigate("HomeScreen") } >
-              <Icon type="MaterialIcons" name="arrow-back" />
-            </Button>
-          </Left>
-          <Body>
-            <Title>Sofia</Title>
-          </Body>
-          <Right>
-          </Right>
-        </Header>
+        <BackHeader navigation={this.props.navigation} name="Editar Pergunta"/>
 
         <Content>
 

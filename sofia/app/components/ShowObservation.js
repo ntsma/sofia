@@ -1,0 +1,32 @@
+/*CanceledIssue.js*/
+import React, { Component } from "react";
+
+import {
+  ThemeProvider,
+  Card,
+  Text,
+  Badge
+} from "react-native-elements";
+
+import BackHeader from "./BackHeader";
+
+export default class ShowObservation extends Component {
+  /*Removendo header padrão*/
+  static navigationOptions = {
+    header: null
+  };
+
+  render() {
+    const item = this.props.question;
+    return (
+      <ThemeProvider>
+        <BackHeader navigation={this.props.navigation} name="Observação" />
+
+        <Card title="Observação">
+          <Text style={{marginBottom: 10}}></Text>
+        </Card>
+      </ThemeProvider>
+    );
+  }
+
+}
