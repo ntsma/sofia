@@ -12,8 +12,8 @@ import {
 
 } from "native-base";
 
-import CanceledIssue from "./CanceledIssue";
-import BackHeader from "./BackHeader";
+import CanceledIssue from "../components/CanceledIssue";
+import BackHeader from "../components/BackHeader";
 
 export default class CanceledIssues extends Component {
   /*Removendo header padrão*/

@@ -1,4 +1,4 @@
-/*EditQuestion.js*/
+/*NewQuestion.js*/
 
 import React, { Component } from "react";
 import {
@@ -27,9 +27,9 @@ import {
 
 import AsyncStorage from '@react-native-community/async-storage';
 
-import BackHeader from "./BackHeader";
+import BackHeader from "../components/BackHeader";
 
-export default class EditQuestion extends Component {
+export default class NewQuestion extends Component {
   /*Removendo header padrão*/
   static navigationOptions = {
     header: null
@@ -77,6 +77,7 @@ export default class EditQuestion extends Component {
 
   }
 
+
   async onCreateDraftQuestion() {
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
@@ -112,11 +113,11 @@ export default class EditQuestion extends Component {
 
   }
 
+
   render() {
-    const item = this.props.navigation.state.params.item;
     return (
       <Container>
-        <BackHeader navigation={this.props.navigation} name="Editar Pergunta"/>
+        <BackHeader navigation={this.props.navigation} name="Nova Pergunta"/>
 
         <Content>
 
@@ -124,7 +125,7 @@ export default class EditQuestion extends Component {
             <View style={styles.title}>
               <Label style={styles.textTitle}>Descreva sua pergunta</Label>
             </View>
-            <Textarea value={item.description} style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
+            <Textarea style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
               <Button block success style={styles.button} onPress={this.onCreateQuestion.bind(this)}>
                 <Text>Enviar Pergunta</Text>
                 <Icon type="MaterialIcons" name="file-upload"/>
@@ -132,6 +133,8 @@ export default class EditQuestion extends Component {
               <Button block light style={styles.button} onPress={this.onCreateDraftQuestion.bind(this)}>
                 <Text>Salvar como rascunho</Text>
               </Button>
+              <View style={{height: 3}}>
+              </View>
           </Form>
 
          </Content>
