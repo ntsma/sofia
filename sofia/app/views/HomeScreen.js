@@ -5,10 +5,10 @@ import { Container, Tab, TabHeading, Tabs, Text} from "native-base";
 
 import AsyncStorage from '@react-native-community/async-storage';
 
-import MainHeader from "./MainHeader";
-import FAQ from "./FAQ";
-import Home from "./Home";
-import News from "./News";
+import MainHeader from "../components/MainHeader";
+import FAQ from "../components/FAQ";
+import Home from "../components/Home";
+import News from "../components/News";
 
 export default class HomeScreen extends Component {
   /*Removendo header padrão da tela*/

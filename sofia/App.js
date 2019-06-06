@@ -5,17 +5,17 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
-import Login from "./app/components/Login";
-import HomeScreen from "./app/components/HomeScreen";
-import SubmittedIssues from "./app/components/SubmittedIssues";
-import DraftIssues from "./app/components/DraftIssues";
-import CanceledIssues from "./app/components/CanceledIssues";
-import AnsweredIssues from "./app/components/AnsweredIssues";
-import NewQuestion from "./app/components/NewQuestion";
-import Overlay from "./app/components/Overlay";
-import Question from "./app/components/Question";
-import EditQuestion from "./app/components/EditQuestion";
-import ShowObservation from "./app/components/ShowObservation";
+import Login from "./app/views/Login";
+import HomeScreen from "./app/views/HomeScreen";
+import SubmittedIssues from "./app/views/SubmittedIssues";
+import DraftIssues from "./app/views/DraftIssues";
+import CanceledIssues from "./app/views/CanceledIssues";
+import AnsweredIssues from "./app/views/AnsweredIssues";
+import NewQuestion from "./app/views/NewQuestion";
+import Overlay from "./app/views/Overlay";
+import Question from "./app/views/Question";
+import EditQuestion from "./app/views/EditQuestion";
+import ShowObservation from "./app/views/ShowObservation";
 
 class Home extends Component<{}> {
 
@@ -176,7 +176,7 @@ const App = createStackNavigator({
       title: "Overlay"
     }
   },
-  
+
   ShowObservation: {
     screen: ShowObservation,
     navigationOptions: {

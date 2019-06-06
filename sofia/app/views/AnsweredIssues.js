@@ -1,4 +1,4 @@
-/*SubmittedIssues.js*/
+/*AnsweredIssues.js*/
 import React, { Component } from "react";
 
 import {
@@ -11,24 +11,24 @@ import {
 
 } from "native-base";
 
-import AnsweredIssue from "./AnsweredIssue";
-import BackHeader from "./BackHeader";
+import AnsweredIssue from "../components/AnsweredIssue";
+import BackHeader from "../components/BackHeader";
 
-export default class SubmittedIssues extends Component {
+export default class AnsweredIssues extends Component {
   /*Removendo header padrão*/
   static navigationOptions = {
     header: null
   };
 
   render() {
-    const submittedIssues = this.props.navigation.state.params.submittedIssues;
+    const answeredIssues = this.props.navigation.state.params.answeredIssues;
 
     return (
       <Container>
-        <BackHeader navigation={this.props.navigation} name="Enviados" />
+        <BackHeader navigation={this.props.navigation} name="Respondidas" />
 
         <FlatList
-          data={submittedIssues}
+          data={answeredIssues}
           keyExtractor={item => item.id.toString()}
           renderItem={({item}) => <AnsweredIssue navigation={this.props.navigation} question={item}/>}
         />

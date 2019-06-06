@@ -11,8 +11,8 @@ import {
 
 } from "native-base";
 
-import DraftIssue from "./DraftIssue";
-import BackHeader from "./BackHeader";
+import DraftIssue from "../components/DraftIssue";
+import BackHeader from "../components/BackHeader";
 
 export default class DraftIssues extends Component {
   /*Removendo header padrão*/

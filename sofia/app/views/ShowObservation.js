@@ -8,7 +8,7 @@ import {
   Badge
 } from "react-native-elements";
 
-import BackHeader from "./BackHeader";
+import BackHeader from "../components/BackHeader";
 
 export default class ShowObservation extends Component {
   /*Removendo header padrão*/
