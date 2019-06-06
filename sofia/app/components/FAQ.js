@@ -1,3 +1,5 @@
+/*FAQ.js*/
+
 import React, {Component} from "react";
 
 import {
@@ -7,9 +9,6 @@ import {
 } from 'react-native';
 
 import {
-  Header,
-  Avatar,
-  Badge,
   Card,
   Icon,
   Text,

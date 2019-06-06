@@ -1,3 +1,5 @@
+/*Question.js*/
+
 import React, {Component} from "react";
 
 import {
@@ -7,17 +9,16 @@ import {
 } from 'react-native';
 
 import {
-  Header,
-  Avatar,
-  Badge,
   Card,
-  Icon,
   Text,
   ThemeProvider
 
 } from "react-native-elements";
 
+import BackHeader from "../components/BackHeader";
+
 export default class Question extends Component {
+  /*Removendo header padrão*/
   static navigationOptions = {
     header: null
   };
@@ -25,27 +26,7 @@ export default class Question extends Component {
   render() {
    return (
      <ThemeProvider>
-       <Header
-         statusBarProps={{ barStyle: 'light-content', backgroundColor: '#3D6DCC' }}
-         barStyleP="light-content"
-         leftComponent={{ icon: 'arrow-back', color: '#fff' }}
-         centerComponent={{ text: 'Sofia', style: { color: '#fff' } }}
-         rightComponent={<View>
-       <Avatar
-         rounded
-         source={require('../resources/logo.png')}
-       />
-       <Badge
-         status="success"
-         containerStyle={{ position: 'absolute', top: -4, right: -4 }}
-       />
-     </View>
-   }
-         containerStyle={{
-           backgroundColor: '#3D6DCC',
-           justifyContent: 'space-around',
-         }}
-       />
+       <BackHeader navigation={this.props.navigation} name="FAQ" />
 
        <ScrollView>
         <Card title={this.props.navigation.state.params.item.title}>
