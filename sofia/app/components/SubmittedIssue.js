@@ -11,7 +11,7 @@ export default class DraftIssue extends Component {
       <ListItem
       style={styles.list} 
       thumbnail 
-      onPress={() => this.props.navigation.navigate("EditQuestion", {item})}>
+      onPress={() => this.props.navigation.navigate("Overlay", {item})}>
         <Left>
           <Icon style={styles.inbox} type="MaterialIcons" name="inbox" />
         </Left>

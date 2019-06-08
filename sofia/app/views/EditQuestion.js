@@ -132,6 +132,8 @@ export default class EditQuestion extends Component {
               <Button block light style={styles.button} onPress={this.onCreateDraftQuestion.bind(this)}>
                 <Text>Salvar como rascunho</Text>
               </Button>
+              <View style={{height: 3}}>
+              </View>
           </Form>
 
          </Content>

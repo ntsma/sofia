@@ -41,6 +41,7 @@ import {
 
 } from 'react-native-elements';
 
+import BackHeader from "../components/BackHeader";
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default class Overlay extends Component {
@@ -159,14 +160,7 @@ export default class Overlay extends Component {
   render() {
     return (
       <Container>
-        <Header androidStatusBarColor="#3c8dbc" style={{ backgroundColor: "#3c8dbc"}}>
-          <Left>
-            <Image style={{ width: 30, height: 30}} source={require("../resources/logo.png")} />
-          </Left>
-          <Body>
-            <Title>Sofia</Title>
-          </Body>
-        </Header>
+        <BackHeader navigation={this.props.navigation} name="Respondidas" />
         <Content>
           <Form>
             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'stretch'}}>
