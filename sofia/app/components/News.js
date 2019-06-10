@@ -14,9 +14,9 @@ export default class News extends Component {
   render() {
     return (
       <ScrollView>
-        <Post />
-        <Post />
-        <Post />
+        <Post name="1.jpg" />
+        <Post name="2.jpg" />
+        <Post name="3.jpg" />
 
       </ScrollView>
     );

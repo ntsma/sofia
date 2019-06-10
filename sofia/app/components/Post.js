@@ -21,8 +21,9 @@ import {
 } from "native-base";
 
 export default class Post extends Component<{}> {
-
   render() {
+    const name = "../resources/" + this.props.name;
+
     return (
       <Card>
         <CardItem>
