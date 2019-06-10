@@ -9,7 +9,7 @@ export default class SubmittedIssue extends Component {
     const item = this.props.question;
     return (
       <ListItem thumbnail style={styles.list}
-      onPress={() => this.props.navigation.navigate("Overlay", {item})}>
+      onPress={() => this.props.navigation.navigate("ShowObservation", {item})}>
         <Left>
           <Icon style={styles.inbox} type="MaterialIcons" name="inbox" />
         </Left>

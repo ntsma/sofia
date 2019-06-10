@@ -167,7 +167,7 @@ export default class Overlay extends Component {
               <Label style={{ fontSize: 20 }}>{this.props.navigation.state.params.item.description}</Label>
             </View>
 
-            <Card title="Resposta">
+            <Card title="{this.}">
               <Text>{this.state.answer}</Text>
             </Card>
 

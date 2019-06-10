@@ -38,18 +38,9 @@ export default class DraftIssues extends Component {
     return (
       <Container>
         <BackHeader navigation={this.props.navigation} name="Rascunho"/>
-        <FlatList
-<<<<<<< HEAD
-          data={this.state.draftQuestions}
-          keyExtractor={item => item.question.toString()}
-          renderItem={({item}) => <DraftIssue navigation={this.props.navigation} question={item} />}
-        />
 
         <FlatList
-          data={answeredIssues}
-=======
           data={draftIssues}
->>>>>>> 0cfe4ee211ffb37881de394e233c6b7b90a1c183
           keyExtractor={item => item.id.toString()}
           renderItem={({item}) => <DraftIssue navigation={this.props.navigation} question={item} />}
         />
