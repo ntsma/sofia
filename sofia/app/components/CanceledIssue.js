@@ -8,9 +8,7 @@ export default class CanceledIssue extends Component {
   render() {
     const item = this.props.question;
     return (
-      <ListItem
-      style={styles.list} 
-      thumbnail 
+      <ListItem thumbnail style={styles.list}
       onPress={() => this.props.navigation.navigate("ShowObservation", {item})}>
         <Left>
           <Icon style={styles.inbox} type="MaterialIcons" name="inbox" />

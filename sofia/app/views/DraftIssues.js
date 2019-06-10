@@ -1,15 +1,7 @@
 /*DraftIssues.js*/
 import React, { Component } from "react";
-
-import {
-  FlatList,
-
-} from "react-native";
-
-import {
-  Container,
-
-} from "native-base";
+import { FlatList } from "react-native";
+import { Container } from "native-base";
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -41,13 +33,13 @@ export default class DraftIssues extends Component {
   }
 
   render() {
-    const answeredIssues = this.props.navigation.state.params.draftIssues;
+    const draftIssues = this.props.navigation.state.params.draftIssues;
 
     return (
       <Container>
-        <BackHeader navigation={this.props.navigation} name="Rascunho" />
-
+        <BackHeader navigation={this.props.navigation} name="Rascunho"/>
         <FlatList
+<<<<<<< HEAD
           data={this.state.draftQuestions}
           keyExtractor={item => item.question.toString()}
           renderItem={({item}) => <DraftIssue navigation={this.props.navigation} question={item} />}
@@ -55,12 +47,13 @@ export default class DraftIssues extends Component {
 
         <FlatList
           data={answeredIssues}
+=======
+          data={draftIssues}
+>>>>>>> 0cfe4ee211ffb37881de394e233c6b7b90a1c183
           keyExtractor={item => item.id.toString()}
           renderItem={({item}) => <DraftIssue navigation={this.props.navigation} question={item} />}
         />
-
       </Container>
     );
   }
-
 }
