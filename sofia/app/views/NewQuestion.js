@@ -27,7 +27,10 @@ import {
 
 import AsyncStorage from '@react-native-community/async-storage';
 
+import NetInfo from "@react-native-community/netinfo";
+
 import BackHeader from "../components/BackHeader";
+
 
 export default class NewQuestion extends Component {
   /*Removendo header padrão*/
@@ -42,39 +45,61 @@ export default class NewQuestion extends Component {
     };
   }
 
+  async saveDraftIntoAsyncStorage(question) {
+    var questions = await AsyncStorage.getItem("draftQuestions");
+
+    if(!questions) {
+      await AsyncStorage.setItem("draftQuestions", JSON.stringify([]));
+      var questions = await AsyncStorage.getItem("draftQuestions");
+    }
+
+    questions = JSON.parse(questions);
+
+    questions.push(question);
+
+    await AsyncStorage.setItem("draftQuestions", JSON.stringify(questions));
+
+    var draftQuestions = await AsyncStorage.getItem("draftQuestions");
+
+    console.log("Questões de Rascunho");
+    console.log(draftQuestions);
+  }
+
   async onCreateQuestion() {
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
 
-    console.debug("DENTRO DE QUESTION");
-    console.debug(question);
+    NetInfo.fetch().then(state => {
 
-    let formdata = new FormData();
+      if(state.isConnected) {
+        let formdata = new FormData();
 
-    formdata.append("type_id", 52);
-    formdata.append("mode", 'send');
-    formdata.append("description", question)
+        formdata.append("type_id", 52);
+        formdata.append("mode", 'send');
+        formdata.append("description", question)
 
-    console.debug(formdata);
+        return fetch('http://plataforma.homolog.huufma.br/api/solicitation/handle', {
+            method: 'POST',
+            headers: {
+              Authorization: "Bearer " + token
+            },
+            body: formdata,
+          })
+          .then((response) => response.json())
+          .then((responseJson) => {
+            console.debug("RESPOSTA");
+            console.debug(responseJson);
 
-    return fetch('http://plataforma.homolog.huufma.br/api/solicitation/handle', {
-        method: 'POST',
-        headers: {
-          Authorization: "Bearer " + token
-        },
-        body: formdata,
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.debug("RESPOSTA");
-        console.debug(responseJson);
+            this.props.navigation.navigate("HomeScreen");
+          })
+          .catch((error) => {
+            console.error(error);
+          });
 
-        this.props.navigation.navigate("HomeScreen");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-
+      } else {
+        this.saveDraftIntoAsyncStorage({"question": question});
+      }
+    });
   }
 
 
