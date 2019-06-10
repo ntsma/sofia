@@ -1,30 +1,28 @@
+/*AnsweredIssue.js*/
 import React, { Component } from "react";
 import { StyleSheet } from "react-native";
 import { Badge, Body, Container, Icon, Left, Right, ListItem, Text } from "native-base";
-import { Card } from "react-native-elements";
 
 export default class AnsweredIssue extends Component {
 
   render() {
     const item = this.props.question;
     return (
-    <ListItem
-    style={styles.list} 
-    thumbnail 
-    onPress={() => this.props.navigation.navigate("Overlay", {item})}>
-      <Left>
-        <Icon style={styles.inbox} type="MaterialIcons" name="inbox" />
-      </Left>
-      <Body>
-        <Text numberOfLines={1} style={styles.bodyText}>{item.description}</Text>
-        <Badge style={styles.badge}>
-          <Text style={styles.badgeText}>Aguardando avaliação</Text>
-        </Badge>
-      </Body>
-      <Right>
-        <Icon style={styles.next} type="MaterialIcons" name="chevron-right" />
-      </Right>
-    </ListItem>
+      <ListItem thumbnail style={styles.list}
+      onPress={() => this.props.navigation.navigate("Overlay", {item})}>
+        <Left>
+          <Icon style={styles.inbox} type="MaterialIcons" name="inbox" />
+        </Left>
+        <Body>
+          <Text numberOfLines={1} style={styles.bodyText}>{item.description}</Text>
+          <Badge style={styles.badge}>
+            <Text style={styles.badgeText}>Aguardando avaliação</Text>
+          </Badge>
+        </Body>
+        <Right>
+          <Icon style={styles.next} type="MaterialIcons" name="chevron-right" />
+        </Right>
+      </ListItem>
     );
   }
 }

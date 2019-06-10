@@ -1,16 +1,14 @@
-/*DraftIssue.js*/
+/*SubmittedIssue.js*/
 import React, { Component } from "react";
 import { StyleSheet } from "react-native";
 import { Badge, Body, Container, Icon, Left, Right, ListItem, Text } from "native-base";
 
-export default class DraftIssue extends Component {
+export default class SubmittedIssue extends Component {
 
   render() {
     const item = this.props.question;
     return (
-      <ListItem
-      style={styles.list} 
-      thumbnail 
+      <ListItem thumbnail style={styles.list}
       onPress={() => this.props.navigation.navigate("Overlay", {item})}>
         <Left>
           <Icon style={styles.inbox} type="MaterialIcons" name="inbox" />

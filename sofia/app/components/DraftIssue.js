@@ -8,9 +8,7 @@ export default class DraftIssue extends Component {
   render() {
     const item = this.props.question;
     return (
-      <ListItem
-      style={styles.list} 
-      thumbnail 
+      <ListItem thumbnail style={styles.list}
       onPress={() => this.props.navigation.navigate("EditQuestion", {item})}>
         <Left>
           <Icon style={styles.inbox} type="MaterialIcons" name="inbox" />
