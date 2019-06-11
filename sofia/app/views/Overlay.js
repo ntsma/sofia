@@ -42,6 +42,8 @@ import {
 } from 'react-native-elements';
 
 import BackHeader from "../components/BackHeader";
+import Evaluation from "../components/Evaluation";
+
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default class Overlay extends Component {
@@ -167,7 +169,7 @@ export default class Overlay extends Component {
               <Label style={{ fontSize: 20 }}>{this.props.navigation.state.params.item.description}</Label>
             </View>
 
-            <Card title="{this.}">
+            <Card title="Resposta">
               <Text>{this.state.answer}</Text>
             </Card>
 
@@ -187,33 +189,7 @@ export default class Overlay extends Component {
               <Text>{this.state.references}</Text>
             </Card>
 
-            <Card title="Avaliação">
-              <Label>Grau de Sastifação</Label>
-              <AirbnbRating
-                count={5}
-                reviews={["Péssimo", "Ruim", "Regular", "Boa", "Ótima"]}
-                defaultRating={5}
-                size={20}
-                onFinishRating={this.setSatifaction.bind(this)}
-              />
-
-            <Label>Grau de Atendimento</Label>
-              <AirbnbRating
-                count={3}
-                reviews={["Não Atendeu", "Parcialmente", "Totalmente"]}
-                defaultRating={3}
-                size={20}
-                onFinishRating={this.setAttendance.bind(this)}
-              />
-
-            <Button block success style={{ marginLeft: 30, marginRight: 30, marginTop: 30}}
-                onPress={() => {
-                  this.judge();
-                }}
-                >
-                <Text>Avaliar</Text>
-              </Button>
-            </Card>
+            <Evaluation />
 
           </Form>
          </Content>
