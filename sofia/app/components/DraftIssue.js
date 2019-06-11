@@ -35,12 +35,10 @@ export default class DraftIssue extends Component {
         </Left>
         <Body>
           <Text numberOfLines={1} style={styles.bodyText}>{item.description}</Text>
-          <Badge style={styles.badge}>
-            <Text style={styles.badgeText}>Aguardando avaliação</Text>
-          </Badge>
         </Body>
-        <Right>
-          <Icon style={styles.next} type="MaterialIcons" name="chevron-right" />
+        <Right style={styles.icons}>
+            <Icon containerStyle={{ alignSelf: 'flex-start' }} style={styles.delete} type="MaterialIcons" name="delete-forever" />
+            <Icon containerStyle={{ alignSelf: 'flex-start' }} style={styles.edit} type="MaterialIcons" name="create" />
         </Right>
       </ListItem>
     );
@@ -48,25 +46,32 @@ export default class DraftIssue extends Component {
 }
 
 const styles = StyleSheet.create ({
-  bodyText: {
-    marginTop: -5
-  },
   inbox: {
-    width: 30,
-    height: 30,
+    width: 40,
+    height: 40,
+    fontSize: 40,
+  },
+  icons: {
+    flexDirection: 'row',
+    alignItems: 'flex-start'
+  },
+  delete: {
+    padding: 5,
     fontSize: 30,
+    color: '#fff',
+    backgroundColor: '#ff1f1f',
+    borderRadius: 10,
+    marginRight: 10,
+    marginBottom: -10,
+    marginTop: -7
   },
-  badge: {
-    height: 20,
-    marginTop: 5,
-    marginBottom: -5
-  },
-  badgeText: {
-    fontSize: 8,
-    margin: -2
-  },
-  next: {
-    height: 30,
-    fontSize: 30
+  edit: {
+    padding: 5,
+    fontSize: 30,
+    color: '#fff',
+    backgroundColor: '#5acb56',
+    borderRadius: 10,
+    marginBottom: -10,
+    marginTop: -7
   }
 });
