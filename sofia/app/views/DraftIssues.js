@@ -20,9 +20,14 @@ export default class DraftIssues extends Component {
     this.state = {
       "draftIssues": []
     };
+
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.a();
+  }
+
+  async a() {
     const draftQuestions = await AsyncStorage.getItem("draftQuestions");
 
     this.setState({

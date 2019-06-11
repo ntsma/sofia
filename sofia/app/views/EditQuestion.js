@@ -42,6 +42,12 @@ export default class EditQuestion extends Component {
     };
   }
 
+  componentDidMount() {
+    this.setState({
+      "question": this.props.navigation.state.params.item.description
+    });
+  }
+
   async onCreateQuestion() {
     const item = this.props.navigation.state.params.item;
     var token = await AsyncStorage.getItem("token");
@@ -54,11 +60,11 @@ export default class EditQuestion extends Component {
 
     formdata.append("type_id", 52);
     formdata.append("mode", 'send');
-    formdata.append("description", question)
+    formdata.append("description", question);
 
     console.debug(formdata);
 
-    return fetch('http://plataforma.homolog.huufma.br/api/solicitation/' + item.id, ,{
+    return fetch('http://plataforma.homolog.huufma.br/api/solicitation/' + item.id, {
         method: 'POST',
         headers: {
           Authorization: "Bearer " + token
@@ -95,7 +101,7 @@ export default class EditQuestion extends Component {
     console.debug(formdata);
 
     return fetch('http://plataforma.homolog.huufma.br/api/solicitation/' + item.id, {
-        method: 'POST'},
+        method: 'POST',
         headers: {
           Authorization: "Bearer " + token
         },
@@ -126,7 +132,7 @@ export default class EditQuestion extends Component {
             <View style={styles.title}>
               <Label style={styles.textTitle}>Descreva sua pergunta</Label>
             </View>
-            <Textarea value={item.description} style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
+            <Textarea value={this.state.question} style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
               <Button block success style={styles.button} onPress={this.onCreateQuestion.bind(this)}>
                 <Text>Enviar Pergunta</Text>
                 <Icon type="MaterialIcons" name="file-upload"/>

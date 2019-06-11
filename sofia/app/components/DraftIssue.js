@@ -3,14 +3,21 @@ import React, { Component } from "react";
 import { StyleSheet } from "react-native";
 import { Badge, Body, Container, Icon, Left, Right, ListItem, Text } from "native-base";
 
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class DraftIssue extends Component {
 
-  onDeleteDraftIssue() {
+  async onDeleteDraftIssue() {
+    var token = await AsyncStorage.getItem("token");
     const item = this.props.question;
 
+    console.log(item);
+
     return fetch('http://plataforma.homolog.huufma.br/api/solicitation/destroy/' + item.id, {
-        method: 'GET'
+        method: 'GET',
+        headers: {
+          Authorization: "Bearer " + token
+        },
       })
       .then((response) => response.json())
       .then((responseJson) => {
@@ -28,8 +35,7 @@ export default class DraftIssue extends Component {
   render() {
     const item = this.props.question;
     return (
-      <ListItem thumbnail style={styles.list}
-      onPress={() => this.props.navigation.navigate("EditQuestion", {item})}>
+      <ListItem thumbnail style={styles.list}>
         <Left>
           <Icon style={styles.inbox} type="MaterialIcons" name="inbox" />
         </Left>
@@ -37,8 +43,8 @@ export default class DraftIssue extends Component {
           <Text numberOfLines={1} style={styles.bodyText}>{item.description}</Text>
         </Body>
         <Right style={styles.icons}>
-            <Icon containerStyle={{ alignSelf: 'flex-start' }} style={styles.delete} type="MaterialIcons" name="delete-forever" />
-            <Icon containerStyle={{ alignSelf: 'flex-start' }} style={styles.edit} type="MaterialIcons" name="create" />
+            <Icon containerStyle={{ alignSelf: 'flex-start' }} style={styles.delete} type="MaterialIcons" name="delete-forever" onPress={ this.onDeleteDraftIssue.bind(this) } />
+            <Icon containerStyle={{ alignSelf: 'flex-start' }} style={styles.edit} type="MaterialIcons" name="create" onPress={() => this.props.navigation.navigate("EditQuestion", {item})} />
         </Right>
       </ListItem>
     );
