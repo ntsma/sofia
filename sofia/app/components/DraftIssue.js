@@ -43,7 +43,7 @@ const styles = StyleSheet.create ({
     borderRadius: 10,
     marginRight: 10,
     marginBottom: -10,
-    marginTop: -5
+    marginTop: -7
   },
   edit: {
     padding: 5,
@@ -52,6 +52,6 @@ const styles = StyleSheet.create ({
     backgroundColor: '#5acb56',
     borderRadius: 10,
     marginBottom: -10,
-    marginTop: -5
+    marginTop: -7
   }
 });
