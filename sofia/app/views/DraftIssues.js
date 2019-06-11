@@ -26,14 +26,21 @@ export default class DraftIssues extends Component {
     const draftQuestions = await AsyncStorage.getItem("draftQuestions");
 
     this.setState({
-      "draftQuestions": draftQuestions
+      "draftQuestions": JSON.parse(draftQuestions)
+    });
+
+    var v = (this.state.draftQuestions).concat(this.props.navigation.state.params.draftIssues);
+
+    this.setState({
+      "draftQuestions": v
     });
 
     console.log(this.state.draftQuestions);
+
   }
 
   render() {
-    const draftIssues = this.props.navigation.state.params.draftIssues;
+    const draftIssues = this.state.draftQuestions;
 
     return (
       <Container>
@@ -41,7 +48,7 @@ export default class DraftIssues extends Component {
 
         <FlatList
           data={draftIssues}
-          keyExtractor={item => item.id.toString()}
+          keyExtractor={item => item.id.toString() + this.state.draftQuestions.length + 1}
           renderItem={({item}) => <DraftIssue navigation={this.props.navigation} question={item} />}
         />
       </Container>

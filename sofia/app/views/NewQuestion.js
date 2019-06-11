@@ -97,7 +97,7 @@ export default class NewQuestion extends Component {
           });
 
       } else {
-        this.saveDraftIntoAsyncStorage({"question": question});
+        this.saveDraftIntoAsyncStorage({"id": this.state.question.length + 1, "description": question});
       }
     });
   }
