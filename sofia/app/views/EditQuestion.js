@@ -43,6 +43,7 @@ export default class EditQuestion extends Component {
   }
 
   async onCreateQuestion() {
+    const item = this.props.navigation.state.params.item;
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
 
@@ -57,7 +58,7 @@ export default class EditQuestion extends Component {
 
     console.debug(formdata);
 
-    return fetch('http://plataforma.homolog.huufma.br/api/solicitation/handle', {
+    return fetch('http://plataforma.homolog.huufma.br/api/solicitation/' + item.id, ,{
         method: 'POST',
         headers: {
           Authorization: "Bearer " + token
@@ -78,6 +79,7 @@ export default class EditQuestion extends Component {
   }
 
   async onCreateDraftQuestion() {
+    const item = this.props.navigation.state.params.item;
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
 
@@ -92,8 +94,8 @@ export default class EditQuestion extends Component {
 
     console.debug(formdata);
 
-    return fetch('http://plataforma.homolog.huufma.br/api/solicitation/handle', {
-        method: 'POST',
+    return fetch('http://plataforma.homolog.huufma.br/api/solicitation/' + item.id, {
+        method: 'POST'},
         headers: {
           Authorization: "Bearer " + token
         },

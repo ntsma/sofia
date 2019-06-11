@@ -3,7 +3,27 @@ import React, { Component } from "react";
 import { StyleSheet } from "react-native";
 import { Badge, Body, Container, Icon, Left, Right, ListItem, Text } from "native-base";
 
+
 export default class DraftIssue extends Component {
+
+  onDeleteDraftIssue() {
+    const item = this.props.question;
+
+    return fetch('http://plataforma.homolog.huufma.br/api/solicitation/destroy/' + item.id, {
+        method: 'GET'
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.debug("RESPOSTA");
+        console.debug(responseJson);
+
+        this.props.navigation.navigate("HomeScreen");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+  }
 
   render() {
     const item = this.props.question;
