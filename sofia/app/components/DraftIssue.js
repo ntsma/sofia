@@ -43,8 +43,8 @@ export default class DraftIssue extends Component {
           <Text numberOfLines={1} style={styles.bodyText}>{item.description}</Text>
         </Body>
         <Right style={styles.icons}>
-            <Icon containerStyle={{ alignSelf: 'flex-start' }} style={styles.delete} type="MaterialIcons" name="delete-forever" onPress={ this.onDeleteDraftIssue.bind(this) } />
-            <Icon containerStyle={{ alignSelf: 'flex-start' }} style={styles.edit} type="MaterialIcons" name="create" onPress={() => this.props.navigation.navigate("EditQuestion", {item})} />
+            <Icon style={styles.delete} type="MaterialIcons" name="delete-forever" onPress={ this.onDeleteDraftIssue.bind(this) } />
+            <Icon style={styles.edit} type="MaterialIcons" name="create" onPress={() => this.props.navigation.navigate("EditQuestion", {item})} />
         </Right>
       </ListItem>
     );
