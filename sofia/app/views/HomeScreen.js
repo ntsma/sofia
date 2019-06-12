@@ -9,7 +9,6 @@ import MainHeader from "../components/MainHeader";
 import FAQ from "../components/FAQ";
 import Home from "../components/Home";
 import News from "../components/News";
-import ErrorNoInternetMessage from "../components/ErrorNoInternetMessage";
 
 export default class HomeScreen extends Component {
   /*Removendo header padrão da tela*/
@@ -25,7 +24,6 @@ export default class HomeScreen extends Component {
 
         <Tabs style={Platform.OS === 'android' ? { overflow: 'hidden' } : null}>
           <Tab heading={ <TabHeading style={{ backgroundColor: "#3c8dbc" }}><Text>Perguntas</Text></TabHeading>}>
-            <ErrorNoInternetMessage />
             <Home navigation={this.props.navigation} />
           </Tab>
 
