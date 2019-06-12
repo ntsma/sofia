@@ -173,9 +173,8 @@ export default class Home extends Component {
               <Text>Enviadas</Text>
             </Body>
             <Right>
-              <Badge>
-                <NumberOfIssuesBadge number={this.state.submittedIssues.total}/>
-              </Badge>
+              <NumberOfIssuesBadge number={this.state.submittedIssues.total}/>
+
             </Right>
           </Button>
 
@@ -187,9 +186,7 @@ export default class Home extends Component {
               <Text>Canceladas</Text>
             </Body>
             <Right>
-              <Badge>
-                <NumberOfIssuesBadge number={this.state.canceledIssues.total}/>
-              </Badge>
+              <NumberOfIssuesBadge number={this.state.submittedIssues.total}/>
             </Right>
           </Button>
 
@@ -201,9 +198,7 @@ export default class Home extends Component {
               <Text>Rascunho</Text>
             </Body>
             <Right>
-              <Badge>
-                <NumberOfIssuesBadge number={this.state.draftIssues.total}/>
-              </Badge>
+              <NumberOfIssuesBadge number={this.state.submittedIssues.total}/>
             </Right>
           </Button>
           <View style={{height: 3}}>
