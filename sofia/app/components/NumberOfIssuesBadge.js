@@ -27,7 +27,7 @@ export default class NumberOfIssuesBadge extends Component {
     if(this.state.isConnected) {
       return(
         <Badge>
-            <Text>{ this.props.number }</Text>
+          <Text>{ this.props.number }</Text>
         </Badge>
       );
     } else {
