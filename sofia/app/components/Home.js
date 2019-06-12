@@ -1,12 +1,14 @@
 /*Home.js*/
 
 import React, { Component } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View, RefreshControl } from "react-native";
 import { Badge, Button, Body, Icon, Left, Right, Text} from "native-base";
 
 import AsyncStorage from '@react-native-community/async-storage';
+import NetInfo from "@react-native-community/netinfo";
 
 import NumberOfIssuesBadge from "./NumberOfIssuesBadge";
+import ErrorNoInternetMessage from "./ErrorNoInternetMessage";
 
 export default class Home extends Component {
 
@@ -14,29 +16,45 @@ export default class Home extends Component {
     super(props);
 
     this.state = {
-        "answeredIssues": [],
-        "submittedIssues": [],
-        "draftIssues": [],
-        "canceledIssues": [],
+      "isConnected": false,
+      "refreshing": false,
+      "answeredIssues": [],
+      "submittedIssues": [],
+      "draftIssues": [],
+      "canceledIssues": [],
     }
 
   }
 
+  _onRefresh = () => {
+   this.setState({"refreshing": true});
+
+   this.componentDidMount();
+
+   this.setState({"refreshing": false});
+ }
+
   /*Carregando questões enviadas, respondidas, canceladas e rascunhos*/
   componentDidMount() {
-      this.getCanceledIssues();
-      this.getDraftIssues();
-      this.getAnsweredIssues();
-      this.getSubmittedIssues();
+    console.log(this.state.isConnected);
+
+    NetInfo.fetch().then(state => {
+      console.log(state.isConnected);
+      this.setState({
+        "isConnected": state.isConnected
+      });
+    });
+
+    this.getCanceledIssues();
+    this.getDraftIssues();
+    this.getAnsweredIssues();
+    this.getSubmittedIssues();
 
   }
 
   /*Obtendo as questões rascunhos para a Sofia pelo Token*/
   async getDraftIssues() {
     const token = await AsyncStorage.getItem("token");
-
-    console.debug("OBTENDO O TOKEN DE ACESSO...");
-    console.debug("TOKEN: " + token);
 
     return fetch('http://plataforma.homolog.huufma.br/api/solicitant/drafts', {
       method: 'GET',
@@ -46,10 +64,6 @@ export default class Home extends Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.debug("OBTENDO QUESTÕES RASCUNHOS...");
-      console.debug("QUESTÕES");
-      console.debug(responseJson.data.data);
-
       this.setState({"draftIssues": responseJson.data});
     })
     .catch((error) => {
@@ -62,9 +76,6 @@ export default class Home extends Component {
   async getAnsweredIssues() {
     const token = await AsyncStorage.getItem("token");
 
-    console.debug("OBTENDO O TOKEN DE ACESSO...");
-    console.debug("TOKEN: " + token);
-
     return fetch('http://plataforma.homolog.huufma.br/api/solicitant/answered', {
       method: 'GET',
       headers: {
@@ -73,10 +84,6 @@ export default class Home extends Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.debug("OBTENDO QUESTÕES RESPONDIDAS...");
-      console.debug("QUESTÕES");
-      console.debug(responseJson.data.data);
-
       this.setState({"answeredIssues": responseJson.data});
     })
     .catch((error) => {
@@ -89,9 +96,6 @@ export default class Home extends Component {
   async getCanceledIssues() {
     const token = await AsyncStorage.getItem("token");
 
-    console.debug("OBTENDO O TOKEN DE ACESSO...");
-    console.debug("TOKEN: " + token);
-
     return fetch('http://plataforma.homolog.huufma.br/api/solicitant/rejects', {
       method: 'GET',
       headers: {
@@ -100,10 +104,6 @@ export default class Home extends Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.debug("OBTENDO QUESTÕES CANCELADAS...");
-      console.debug("QUESTÕES");
-      console.debug(responseJson.data.data);
-
       this.setState({"canceledIssues": responseJson.data});
     })
     .catch((error) => {
@@ -116,9 +116,6 @@ export default class Home extends Component {
   async getSubmittedIssues() {
     const token = await AsyncStorage.getItem("token");
 
-    console.debug("OBTENDO O TOKEN DE ACESSO...");
-    console.debug("TOKEN: " + token);
-
     return fetch('http://plataforma.homolog.huufma.br/api/solicitant/sents', {
       method: 'GET',
       headers: {
@@ -127,10 +124,6 @@ export default class Home extends Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.debug("OBTENDO QUESTÕES ENVIADAS...");
-      console.debug("QUESTÕES");
-      console.debug(responseJson.data.data);
-
       this.setState({"submittedIssues": responseJson.data});
     })
     .catch((error) => {
@@ -147,13 +140,22 @@ export default class Home extends Component {
 
     return (
       <View>
+        <ErrorNoInternetMessage isConnected={this.state.isConnected} />
+
         <Button block success style={styles.button} onPress={() => {this.props.navigation.navigate("NewQuestion");}}>
           <Icon active type="MaterialIcons" name="question-answer" />
           <Text>Nova Pergunta</Text>
         </Button>
 
-        <ScrollView>
-          <Button block light style={styles.button} onPress={() => {this.props.navigation.navigate("AnsweredIssues", {answeredIssues});}}>
+        <ScrollView
+          refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={this._onRefresh}
+              />
+            }
+          >
+          <Button disabled={!this.state.isConnected} block light style={styles.button} onPress={() => {this.props.navigation.navigate("AnsweredIssues", {answeredIssues});}}>
             <Right>
               <Icon active type="MaterialIcons" name="call-received" />
             </Right>
@@ -161,11 +163,11 @@ export default class Home extends Component {
               <Text>Respondidas</Text>
             </Body>
             <Right>
-              <NumberOfIssuesBadge number={this.state.answeredIssues.total}/>
+              <NumberOfIssuesBadge number={this.state.answeredIssues.total} isConnected={this.state.isConnected} />
             </Right>
           </Button>
 
-          <Button block light style={styles.button} onPress={() => {this.props.navigation.navigate("SubmittedIssues", {submittedIssues});}}>
+          <Button disabled={!this.state.isConnected} block light style={styles.button} onPress={() => {this.props.navigation.navigate("SubmittedIssues", {submittedIssues});}}>
             <Right>
               <Icon active type="MaterialIcons" name="call-made" />
             </Right>
@@ -173,12 +175,12 @@ export default class Home extends Component {
               <Text>Enviadas</Text>
             </Body>
             <Right>
-              <NumberOfIssuesBadge number={this.state.submittedIssues.total}/>
+              <NumberOfIssuesBadge number={this.state.submittedIssues.total} isConnected={this.state.isConnected} />
 
             </Right>
           </Button>
 
-          <Button block light style={styles.button} onPress={() => {this.props.navigation.navigate("CanceledIssues", {canceledIssues});}}>
+          <Button disabled={!this.state.isConnected} block light style={styles.button} onPress={() => {this.props.navigation.navigate("CanceledIssues", {canceledIssues});}}>
             <Right>
               <Icon active type="MaterialIcons" name="cancel" />
             </Right>
@@ -186,11 +188,11 @@ export default class Home extends Component {
               <Text>Canceladas</Text>
             </Body>
             <Right>
-              <NumberOfIssuesBadge number={this.state.submittedIssues.total}/>
+              <NumberOfIssuesBadge number={this.state.submittedIssues.total} isConnected={this.state.isConnected} />
             </Right>
           </Button>
 
-          <Button block light style={styles.button} onPress={() => {this.props.navigation.navigate("DraftIssues", {draftIssues});}}>
+          <Button disabled={!this.state.isConnected} block light style={styles.button} onPress={() => {this.props.navigation.navigate("DraftIssues", {draftIssues});}}>
             <Right>
               <Icon active type="MaterialIcons" name="drafts" />
             </Right>
@@ -198,7 +200,7 @@ export default class Home extends Component {
               <Text>Rascunho</Text>
             </Body>
             <Right>
-              <NumberOfIssuesBadge number={this.state.submittedIssues.total}/>
+              <NumberOfIssuesBadge number={this.state.submittedIssues.total} isConnected={this.state.isConnected} />
             </Right>
           </Button>
           <View style={{height: 3}}>
