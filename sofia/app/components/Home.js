@@ -6,6 +6,8 @@ import { Badge, Button, Body, Icon, Left, Right, Text} from "native-base";
 
 import AsyncStorage from '@react-native-community/async-storage';
 
+import NumberOfIssuesBadge from "./NumberOfIssuesBadge";
+
 export default class Home extends Component {
 
   constructor(props){
@@ -159,9 +161,7 @@ export default class Home extends Component {
               <Text>Respondidas</Text>
             </Body>
             <Right>
-              <Badge>
-                  <Text>{ this.state.answeredIssues.total }</Text>
-              </Badge>
+              <NumberOfIssuesBadge number={this.state.answeredIssues.total}/>
             </Right>
           </Button>
 
@@ -174,7 +174,7 @@ export default class Home extends Component {
             </Body>
             <Right>
               <Badge>
-                  <Text>{ this.state.submittedIssues.total }</Text>
+                <NumberOfIssuesBadge number={this.state.submittedIssues.total}/>
               </Badge>
             </Right>
           </Button>
@@ -188,7 +188,7 @@ export default class Home extends Component {
             </Body>
             <Right>
               <Badge>
-                  <Text>{ this.state.canceledIssues.total }</Text>
+                <NumberOfIssuesBadge number={this.state.canceledIssues.total}/>
               </Badge>
             </Right>
           </Button>
@@ -202,7 +202,7 @@ export default class Home extends Component {
             </Body>
             <Right>
               <Badge>
-                  <Text>{ this.state.draftIssues.total }</Text>
+                <NumberOfIssuesBadge number={this.state.draftIssues.total}/>
               </Badge>
             </Right>
           </Button>

@@ -41,6 +41,8 @@ import {
 
 } from 'react-native-elements';
 
+import EvaluateButton from "./EvaluateButton";
+
 export default class Evaluation extends Component {
 
   constructor(props) {
@@ -50,6 +52,18 @@ export default class Evaluation extends Component {
       "sastifaction": 0,
       "attendance": 0
     };
+  }
+
+  componentDidMount() {
+    const evaluation_satisfaction_status_id = this.props.data.evaluation_satisfaction_status_id;
+    const evaluation_attendance_status_id = this.props.data.evaluation_attendance_status_id;
+
+    this.setState({
+      "sastifaction": [31, 30, 29, 28, 27].indexOf(evaluation_satisfaction_status_id),
+      "attendance": [34, 33, 32].indexOf(evaluation_attendance_status_id)
+
+    })
+
   }
 
   setSatifaction(text) {
@@ -114,28 +128,22 @@ export default class Evaluation extends Component {
         <Label>Grau de Satisfação</Label>
         <AirbnbRating
           count={5}
+          readonly={true}
           reviews={["Péssimo", "Ruim", "Regular", "Boa", "Ótima"]}
-          defaultRating={5}
+          defaultRating={this.state.attendance}
           size={20}
-          onFinishRating={this.setSatifaction.bind(this)}
         />
 
       <Label>Grau de Atendimento</Label>
         <AirbnbRating
           count={3}
           reviews={["Não Atendeu", "Parcialmente", "Totalmente"]}
-          defaultRating={3}
+          defaultRating={this.state.attendance}
           size={20}
           onFinishRating={this.setAttendance.bind(this)}
         />
 
-      <Button block success style={{ marginLeft: 30, marginRight: 30, marginTop: 30}}
-          onPress={() => {
-            this.judge();
-          }}
-          >
-          <Text>Avaliar</Text>
-        </Button>
+      <EvaluateButton buttonIsVisible={false} />
       </Card>
     );
   }

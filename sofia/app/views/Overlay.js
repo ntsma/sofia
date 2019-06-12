@@ -55,6 +55,7 @@ export default class Overlay extends Component {
     super(props);
 
     this.state = {
+      "data": null,
       "answer": "",
       "complement": "",
       "attributes": "",
@@ -146,6 +147,7 @@ export default class Overlay extends Component {
       console.debug(responseJson);
 
       this.setState({
+        "data": responseJson.data,
         "answer": responseJson.data.answer,
         "complement": responseJson.data.complement,
         "attributes": responseJson.data.attributes,
@@ -192,6 +194,10 @@ export default class Overlay extends Component {
                   <Text style={styles.title}>Referências</Text>
                   <Text style={styles.text}>{this.state.references}</Text>
                 </View>
+
+                <View style={styles.section}>
+                  <Evaluation data={this.state.data} />
+                </View>
               </View>
           }
         </Content>
@@ -225,7 +231,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: '500',
-    paddingBottom: 5, 
+    paddingBottom: 5,
     marginBottom: 5,
     borderBottomColor: '#bbb',
     borderBottomWidth: 0.5,
