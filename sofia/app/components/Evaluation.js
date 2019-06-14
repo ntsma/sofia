@@ -8,7 +8,8 @@ import {
   Image,
   TextInput,
   StyleSheet,
-  View
+  View,
+  Modal
 } from "react-native";
 
 import {
@@ -42,6 +43,7 @@ import {
 } from 'react-native-elements';
 
 import EvaluateButton from "./EvaluateButton";
+import RatedPopUp from "./RatedPopUp";
 
 export default class Evaluation extends Component {
 
@@ -50,9 +52,15 @@ export default class Evaluation extends Component {
 
     this.state = {
       "sastifaction": 0,
-      "attendance": 0
+      "attendance": 0,
+      isModalRateVisible: false,
     };
   }
+
+  changeModalRateVisibility = (bool) => (
+    this.setState({ isModalRateVisible : bool })
+  )
+
 
   componentDidMount() {
     const evaluation_satisfaction_status_id = this.props.data.evaluation_satisfaction_status_id;
@@ -122,6 +130,12 @@ export default class Evaluation extends Component {
 
   }
 
+  onPressRate(){
+    this.changeModalRateVisibility(true);
+    this.setAttendance();
+    //console.log('çodal', this.isModalVisible)
+  }
+
   render() {
     return (
       <Card title="Avaliação">
@@ -140,9 +154,11 @@ export default class Evaluation extends Component {
           reviews={["Não Atendeu", "Parcialmente", "Totalmente"]}
           defaultRating={this.state.attendance}
           size={20}
-          onFinishRating={this.setAttendance.bind(this)}
+          onFinishRating={this.onPressRate.bind(this)}
         />
-
+        <Modal transparent={true} visible={this.state.isModalRateVisible} onRequestClose={() => this.changeModalRateVisibility(false)} animationType='fade'>
+          <RatedPopUp changeModalRateVisibility={this.changeModalRateVisibility}/>
+        </Modal>
       <EvaluateButton buttonIsVisible={false} />
       </Card>
     );
