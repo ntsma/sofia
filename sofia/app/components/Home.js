@@ -23,7 +23,6 @@ export default class Home extends Component {
       "draftIssues": [],
       "canceledIssues": [],
     }
-
   }
 
   _onRefresh = () => {
@@ -36,19 +35,19 @@ export default class Home extends Component {
 
   /*Carregando questões enviadas, respondidas, canceladas e rascunhos*/
   componentDidMount() {
-    console.log(this.state.isConnected);
 
     NetInfo.fetch().then(state => {
       console.log(state.isConnected);
+
       this.setState({
         "isConnected": state.isConnected
       });
-    });
 
-    this.getCanceledIssues();
-    this.getDraftIssues();
-    this.getAnsweredIssues();
-    this.getSubmittedIssues();
+      this.getCanceledIssues();
+      this.getDraftIssues();
+      this.getAnsweredIssues();
+      this.getSubmittedIssues();
+    });
 
   }
 
@@ -124,6 +123,7 @@ export default class Home extends Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
+      console.log(responseJson.data.length);
       this.setState({"submittedIssues": responseJson.data});
     })
     .catch((error) => {
@@ -133,10 +133,10 @@ export default class Home extends Component {
   }
 
   render() {
-    const answeredIssues = this.state.answeredIssues.data;
-    const submittedIssues = this.state.submittedIssues.data;
-    const canceledIssues = this.state.canceledIssues.data;
-    const draftIssues = this.state.draftIssues.data;
+    const answeredIssues = this.state.answeredIssues;
+    const submittedIssues = this.state.submittedIssues;
+    const canceledIssues = this.state.canceledIssues;
+    const draftIssues = this.state.draftIssues;
 
     return (
       <View>
@@ -163,7 +163,7 @@ export default class Home extends Component {
               <Text>Respondidas</Text>
             </Body>
             <Right>
-              <NumberOfIssuesBadge number={this.state.answeredIssues.total} isConnected={this.state.isConnected} />
+              <NumberOfIssuesBadge number={this.state.answeredIssues.length} isConnected={this.state.isConnected} />
             </Right>
           </Button>
 
@@ -175,7 +175,7 @@ export default class Home extends Component {
               <Text>Enviadas</Text>
             </Body>
             <Right>
-              <NumberOfIssuesBadge number={this.state.submittedIssues.total} isConnected={this.state.isConnected} />
+              <NumberOfIssuesBadge number={this.state.submittedIssues.length} isConnected={this.state.isConnected} />
 
             </Right>
           </Button>
@@ -188,7 +188,7 @@ export default class Home extends Component {
               <Text>Canceladas</Text>
             </Body>
             <Right>
-              <NumberOfIssuesBadge number={this.state.submittedIssues.total} isConnected={this.state.isConnected} />
+              <NumberOfIssuesBadge number={this.state.canceledIssues.length} isConnected={this.state.isConnected} />
             </Right>
           </Button>
 
@@ -200,7 +200,7 @@ export default class Home extends Component {
               <Text>Rascunho</Text>
             </Body>
             <Right>
-              <NumberOfIssuesBadge number={this.state.submittedIssues.total} isConnected={this.state.isConnected} />
+              <NumberOfIssuesBadge number={this.state.draftIssues.length} isConnected={this.state.isConnected} />
             </Right>
           </Button>
           <View style={{height: 3}}>
