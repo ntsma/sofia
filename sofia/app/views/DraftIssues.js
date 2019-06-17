@@ -30,6 +30,9 @@ export default class DraftIssues extends Component {
   async a() {
     var draftQuestions = await AsyncStorage.getItem("draftQuestions");
 
+    console.log("DRAFT QUESTIONS");
+    console.log(draftQuestions);
+
     if(draftQuestions == null) {
       draftQuestions = "[]";
     }
@@ -38,12 +41,16 @@ export default class DraftIssues extends Component {
       "draftIssues": JSON.parse(draftQuestions)
     });
 
+    console.log("DRAFT ISSUES");
+    console.log(this.state.draftIssues);
+
     var v = this.state.draftIssues.concat(this.props.navigation.state.params.draftIssues);
 
     this.setState({
       "draftIssues": v
     });
 
+    console.log("DRAFT QUESTIONS");
     console.log(this.state.draftIssues);
 
   }
