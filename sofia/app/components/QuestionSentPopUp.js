@@ -42,18 +42,28 @@ render(){
 
 const styles = StyleSheet.create ({
   contentContainer: {
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop:'30%',
-    //borderRadius: 20,
-  //  paddingBottom:'25%',
-  //  position:'',
+
+    //  borderRadius: 20,
+    //  paddingBottom:'25%',
+    //  position:'',
   },
   modal: {
+    margin: '10%',
+    height: '50%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 5,
+    elevation: 20,
     paddingTop: 10,
     alignSelf : 'center',
     alignItems: 'center',
     textAlign: 'center',
+
     backgroundColor:'white',
     borderRadius: 17.5,
   },
@@ -63,10 +73,11 @@ const styles = StyleSheet.create ({
     fontWeight: 'bold',
   },
   okText: {
-    paddingVertical: 10,
-    paddingLeft: '50%',
-    paddingRight: 10,
-    width:'100%',
+    //paddingVertical: 10,
+    //paddingLeft: '50%',
+    padding: 10,
+    width:'80%',
+    textAlign: 'center',
     backgroundColor:'#3c8dbc',
     color: 'white',
     borderRadius: 10,

@@ -47,7 +47,10 @@ export default class NewQuestion extends Component {
   constructor() {
     super();
     this.state = {
-
+      question: "",
+      senderId: appConfig.senderID,
+      isDraftModalVisible: false,
+      isModalVisible: false,
     };
 
     this.notif = new NotifService(this.onRegister.bind(this), this.onNotif.bind(this));
@@ -176,10 +179,10 @@ export default class NewQuestion extends Component {
     //console.log('çodal', this.isModalVisible)
   }
 
-onPressButtonDraft(){
-  this.changeModalDraftVisibility(true);
-  this.onCreateDraftQuestion();
-  //console.log('çodal', this.isModalVisible)
+  onPressButtonDraft(){
+    this.changeModalDraftVisibility(true);
+    this.onCreateDraftQuestion();
+    //console.log('çodal', this.isModalVisible)
 }
 
   render() {
@@ -188,7 +191,6 @@ onPressButtonDraft(){
         <BackHeader navigation={this.props.navigation} name="Nova Pergunta"/>
 
         <Content>
-
           <Form style={styles.container}>
             <View style={styles.title}>
               <Label style={styles.textTitle}>Descreva sua pergunta</Label>
