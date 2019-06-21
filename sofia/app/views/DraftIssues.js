@@ -57,8 +57,6 @@ export default class DraftIssues extends Component {
 
   }
 
-<<<<<<< HEAD
-
   changeDraftDeletedModalVisibility = (bool) => (
   this.setState({ isDraftDeletedModalVisible : bool })
 )

@@ -140,9 +140,6 @@ export default class Overlay extends Component {
         Authorization: "Bearer " + token
       }
     })
-    })
-    .then((response) => response.json())
-    .then((respo
     .then((response) => response.json())
     .then((responseJson) => {
       console.debug("OBTENDO RESPOSTA...");

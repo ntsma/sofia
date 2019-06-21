@@ -137,6 +137,12 @@ onPressRate(){
 
   }
 
+  onPressRate(){
+    this.changeModalRateVisibility(true);
+    this.setAttendance();
+    //console.log('çodal', this.isModalVisible)
+  }
+
   render() {
     return (
       <Card title="Avaliação">

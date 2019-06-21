@@ -153,6 +153,17 @@ changeModalQuestionVisibility = (bool) => (
 
   }
 
+  onPressButtonSend(){
+    this.changeModalQuestionVisibility(true);
+    this.onCreateQuestion();
+    //console.log('çodal', this.isModalVisible)
+  }
+
+onPressButtonDraft(){
+  this.changeModalDraftVisibility(true);
+  this.onCreateDraftQuestion();
+  //console.log('çodal', this.isModalVisible)
+}
 
   onPressButtonSend(){
     this.changeModalQuestionVisibility(true);
