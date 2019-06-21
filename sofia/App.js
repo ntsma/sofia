@@ -16,6 +16,7 @@ import Overlay from "./app/views/Overlay";
 import Question from "./app/views/Question";
 import EditQuestion from "./app/views/EditQuestion";
 import ShowObservation from "./app/views/ShowObservation";
+import EditCanceledIssue from "./app/views/EditCanceledIssue";
 
 class Home extends Component<{}> {
 
@@ -181,6 +182,13 @@ const App = createStackNavigator({
     screen: ShowObservation,
     navigationOptions: {
       title: "ShowObservation"
+    }
+  },
+
+  EditCanceledIssue: {
+    screen: EditCanceledIssue,
+    navigationOptions: {
+      title: "EditCanceledIssue"
     }
   },
 }, {

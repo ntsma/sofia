@@ -67,8 +67,6 @@ onPressRate(){
   //console.log('çodal', this.isModalVisible)
 }
 
-
-
   componentDidMount() {
     const evaluation_satisfaction_status_id = this.props.data.evaluation_satisfaction_status_id;
     const evaluation_attendance_status_id = this.props.data.evaluation_attendance_status_id;
@@ -88,6 +86,8 @@ onPressRate(){
     this.setState({
       "sastifaction": sastifaction
     });
+
+    console.log(this.state);
   }
 
   setAttendance(text) {
@@ -97,43 +97,7 @@ onPressRate(){
     this.setState({
       "attendance": attendance
     });
-  }
-
-  async judge() {
-    const sastifaction = this.state.sastifaction;
-    const attendance = this.state.attendance;
-
-    const token = await AsyncStorage.getItem("token");
-
-    console.debug("OBTENDO O TOKEN DE ACESSO...");
-    console.debug("TOKEN: " + token);
-
-    let formdata = new FormData();
-
-    formdata.append("satisfaction", sastifaction);
-    formdata.append("attendance", attendance);
-    formdata.append("avoided_forwarding", false);
-    formdata.append("induced_forwarding", false);
-    formdata.append("observation", "");
-
-    console.debug(formdata);
-
-    return fetch('http://plataforma.homolog.huufma.br//api/solicitation/evaluate/' + this.props.navigation.state.params.item.id, {
-      method: 'POST',
-      headers: {
-        Authorization: "Bearer " + token
-      },
-      body: formdata
-    })
-    .then((response) => response.json())
-    .then((responseJson) => {
-
-      console.debug(responseJson);
-
-    })
-    .catch((error) => {
-      console.error(error);
-    });
+    console.log(this.state);
 
   }
 
@@ -144,14 +108,17 @@ onPressRate(){
   }
 
   render() {
+    console.log("OOOOOOOOOO");
+    console.log(this.props.data);
+
     return (
       <Card title="Avaliação">
         <Label>Grau de Satisfação</Label>
         <AirbnbRating
           count={5}
-          readonly={true}
+          defaultRating={this.state.sastifaction}
           reviews={["Péssimo", "Ruim", "Regular", "Boa", "Ótima"]}
-          defaultRating={this.state.attendance}
+          onFinishRating={this.setSatifaction.bind(this)}
           size={20}
         />
 
@@ -161,12 +128,13 @@ onPressRate(){
           reviews={["Não Atendeu", "Parcialmente", "Totalmente"]}
           defaultRating={this.state.attendance}
           size={20}
-          onFinishRating={this.onPressRate.bind(this)}
+          onFinishRating={this.setAttendance.bind(this)}
         />
         <Modal transparent={true} visible={this.state.isModalRateVisible} onRequestClose={() => this.changeModalRateVisibility(false)} animationType='fade'>
           <RatedPopUp changeModalRateVisibility={this.changeModalRateVisibility}/>
         </Modal>
-      <EvaluateButton buttonIsVisible={false} />
+
+        <EvaluateButton data={this.props.data} sastifaction={this.state.sastifaction} attendance={this.state.attendance} buttonIsVisible={(this.props.data.status_id == 21) ? true : false} />
       </Card>
     );
   }
