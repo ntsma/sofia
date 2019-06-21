@@ -55,6 +55,27 @@ export default class DraftIssues extends Component {
 
   }
 
+  /*Obtendo as questões rascunhos para a Sofia pelo Token*/
+  async getDraftIssues() {
+    console.log("AAA");
+    const token = await AsyncStorage.getItem("token");
+
+    return fetch('http://plataforma.homolog.huufma.br/api/solicitant/drafts', {
+      method: 'GET',
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      this.setState({"di": responseJson.data});
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  }
+
   render() {
     const draftIssues = this.state.draftIssues;
 
