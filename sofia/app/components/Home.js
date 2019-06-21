@@ -53,6 +53,7 @@ export default class Home extends Component {
 
   /*Obtendo as questões rascunhos para a Sofia pelo Token*/
   async getDraftIssues() {
+    console.log("AAA");
     const token = await AsyncStorage.getItem("token");
 
     return fetch('http://plataforma.homolog.huufma.br/api/solicitant/drafts', {

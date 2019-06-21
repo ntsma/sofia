@@ -109,7 +109,7 @@ export default class Overlay extends Component {
 
     console.debug(formdata);
 
-    return fetch('http://plataforma.homolog.huufma.br//api/solicitation/evaluate/' + this.props.navigation.state.params.item.id, {
+    return fetch('http://plataforma.homolog.huufma.br/api/solicitation/evaluate/' + this.props.navigation.state.params.item.id, {
       method: 'POST',
       headers: {
         Authorization: "Bearer " + token

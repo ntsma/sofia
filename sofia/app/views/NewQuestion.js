@@ -32,9 +32,10 @@ import NetInfo from "@react-native-community/netinfo";
 
 import BackHeader from "../components/BackHeader";
 
+import QuestionSentPopUp from "../components/QuestionSentPopUp";
+
 import DraftPopUp from "../components/DraftPopUp";
 
-import QuestionSentPopUp from "../components/QuestionSentPopUp";
 
 export default class NewQuestion extends Component {
   /*Removendo header padrão*/
@@ -52,13 +53,12 @@ export default class NewQuestion extends Component {
   }
 
   changeModalDraftVisibility = (bool) => (
-    this.setState({ isDraftModalVisible : bool })
-  )
+  this.setState({ isDraftModalVisible : bool })
+)
 
-  changeModalQuestionVisibility = (bool) => (
-    this.setState({ isModalVisible : bool })
-  )
-
+changeModalQuestionVisibility = (bool) => (
+  this.setState({ isModalVisible : bool })
+)
 
   async saveDraftIntoAsyncStorage(question) {
     var questions = await AsyncStorage.getItem("draftQuestions");
@@ -165,6 +165,19 @@ onPressButtonDraft(){
   //console.log('çodal', this.isModalVisible)
 }
 
+  onPressButtonSend(){
+    this.changeModalQuestionVisibility(true);
+    this.onCreateQuestion();
+    //console.log('çodal', this.isModalVisible)
+  }
+
+  onPressButtonDraft(){
+    this.changeModalDraftVisibility(true);
+    this.onCreateDraftQuestion();
+    //console.log('çodal', this.isModalVisible)
+  }
+
+
   render() {
     return (
       <Container>
@@ -187,7 +200,7 @@ onPressButtonDraft(){
               <Button block light style={styles.button} onPress={this.onPressButtonDraft.bind(this)}>
                 <Text>Salvar como rascunho</Text>
               </Button>
-             <Modal transparent={true} visible={this.state.isDraftModalVisible} onRequestClose={() => this.changeModalDraftVisibility(false)} animationType='fade'>
+              <Modal transparent={true} visible={this.state.isDraftModalVisible} onRequestClose={() => this.changeModalDraftVisibility(false)} animationType='fade'>
                 <DraftPopUp  changeModalDraftVisibility={this.changeModalDraftVisibility}/>
               </Modal>
               <View style={{height: 3}}>

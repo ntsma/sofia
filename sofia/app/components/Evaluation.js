@@ -58,8 +58,15 @@ export default class Evaluation extends Component {
   }
 
   changeModalRateVisibility = (bool) => (
-    this.setState({ isModalRateVisible : bool })
-  )
+  this.setState({ isModalRateVisible : bool })
+)
+
+onPressRate(){
+  this.changeModalRateVisibility(true);
+  this.setAttendance();
+  //console.log('çodal', this.isModalVisible)
+}
+
 
 
   componentDidMount() {
