@@ -16,7 +16,7 @@ export default class CanceledIssue extends Component {
         <Body>
           <Text numberOfLines={1} style={styles.bodyText}>{item.description}</Text>
           <Badge style={styles.badge}>
-            <Text style={styles.badgeText}>Aguardando avaliação</Text>
+            <Text style={styles.badgeText}>Cancelada</Text>
           </Badge>
         </Body>
         <Right>
