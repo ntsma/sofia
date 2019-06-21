@@ -5,7 +5,8 @@ import {
   Image,
   TextInput,
   StyleSheet,
-  View
+  View,
+  Modal
 } from "react-native";
 
 import {
@@ -31,6 +32,10 @@ import NetInfo from "@react-native-community/netinfo";
 
 import BackHeader from "../components/BackHeader";
 
+import QuestionSentPopUp from "../components/QuestionSentPopUp";
+
+import DraftPopUp from "../components/DraftPopUp";
+
 
 export default class NewQuestion extends Component {
   /*Removendo header padrão*/
@@ -41,9 +46,19 @@ export default class NewQuestion extends Component {
   constructor() {
     super();
     this.state = {
-      question: ""
+      question: "",
+      isDraftModalVisible: false,
+      isModalVisible: false,
     };
   }
+
+  changeModalDraftVisibility = (bool) => (
+  this.setState({ isDraftModalVisible : bool })
+)
+
+changeModalQuestionVisibility = (bool) => (
+  this.setState({ isModalVisible : bool })
+)
 
   async saveDraftIntoAsyncStorage(question) {
     var questions = await AsyncStorage.getItem("draftQuestions");
@@ -139,6 +154,19 @@ export default class NewQuestion extends Component {
   }
 
 
+  onPressButtonSend(){
+    this.changeModalQuestionVisibility(true);
+    this.onCreateQuestion();
+    //console.log('çodal', this.isModalVisible)
+  }
+
+  onPressButtonDraft(){
+    this.changeModalDraftVisibility(true);
+    this.onCreateDraftQuestion();
+    //console.log('çodal', this.isModalVisible)
+  }
+
+
   render() {
     return (
       <Container>
@@ -151,13 +179,19 @@ export default class NewQuestion extends Component {
               <Label style={styles.textTitle}>Descreva sua pergunta</Label>
             </View>
             <Textarea style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
-              <Button block success style={styles.button} onPress={this.onCreateQuestion.bind(this)}>
+              <Button block success style={styles.button} onPress={this.onPressButtonSend.bind(this)}>
                 <Text>Enviar Pergunta</Text>
                 <Icon type="MaterialIcons" name="file-upload"/>
               </Button>
-              <Button block light style={styles.button} onPress={this.onCreateDraftQuestion.bind(this)}>
+              <Modal transparent={true} visible={this.state.isModalVisible} onRequestClose={() => this.changeModalQuestionVisibility(false)} animationType='fade'>
+                <QuestionSentPopUp changeModalQuestionVisibility={this.changeModalQuestionVisibility}/>
+              </Modal>
+              <Button block light style={styles.button} onPress={this.onPressButtonDraft.bind(this)}>
                 <Text>Salvar como rascunho</Text>
               </Button>
+              <Modal transparent={true} visible={this.state.isDraftModalVisible} onRequestClose={() => this.changeModalDraftVisibility(false)} animationType='fade'>
+                <DraftPopUp  changeModalDraftVisibility={this.changeModalDraftVisibility}/>
+              </Modal>
               <View style={{height: 3}}>
               </View>
           </Form>
