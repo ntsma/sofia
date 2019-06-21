@@ -3,27 +3,9 @@ import React, { Component } from "react";
 import { StyleSheet } from "react-native";
 import { Badge, Body, Container, Icon, Left, Right, ListItem, Text } from "native-base";
 
+import BadgeContent from "../components/BadgeContent";
+
 export default class AnsweredIssue extends Component {
-
-  constructor() {
-      super()
-      this.state = {
-         myText: '',
-         color: '',
-      }
-   }
-   
-   componentWillMount() {
-    this.updateBadge();
-  }
-
-  updateBadge() {
-    const id = this.props.question.status_id;
-
-    if(this.props.question.description == "O que é dengue") {
-      this.state.color = "#00a65a ";
-    }
-  }
 
   render() {
     const item = this.props.question;
@@ -35,9 +17,7 @@ export default class AnsweredIssue extends Component {
         </Left>
         <Body>
           <Text numberOfLines={1} style={styles.bodyText}>{item.description}</Text>
-          <Badge style={[styles.badge, {backgroundColor: this.state.color}]}>
-            <Text style={styles.badgeText}>this.state.myText</Text>
-          </Badge>
+          <BadgeContent status_id={item.status_id}/>
         </Body>
         <Right>
           <Icon style={styles.next} type="MaterialIcons" name="chevron-right" />
@@ -55,15 +35,6 @@ const styles = StyleSheet.create ({
     width: 30,
     height: 30,
     fontSize: 30,
-  },
-  badge: {
-    height: 20,
-    marginTop: 5,
-    marginBottom: -5
-  },
-  badgeText: {
-    fontSize: 10,
-    margin: -2
   },
   next: {
     height: 30,
