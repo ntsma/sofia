@@ -5,6 +5,26 @@ import { Badge, Body, Container, Icon, Left, Right, ListItem, Text } from "nativ
 
 export default class AnsweredIssue extends Component {
 
+  constructor() {
+      super()
+      this.state = {
+         myText: '',
+         color: '',
+      }
+   }
+   
+   componentWillMount() {
+    this.updateBadge();
+  }
+
+  updateBadge() {
+    const id = this.props.question.status_id;
+
+    if(this.props.question.description == "O que é dengue") {
+      this.state.color = "#00a65a ";
+    }
+  }
+
   render() {
     const item = this.props.question;
     return (
@@ -15,8 +35,8 @@ export default class AnsweredIssue extends Component {
         </Left>
         <Body>
           <Text numberOfLines={1} style={styles.bodyText}>{item.description}</Text>
-          <Badge style={styles.badge}>
-            <Text style={styles.badgeText}>Aguardando avaliação</Text>
+          <Badge style={[styles.badge, {backgroundColor: this.state.color}]}>
+            <Text style={styles.badgeText}>this.state.myText</Text>
           </Badge>
         </Body>
         <Right>
@@ -42,7 +62,7 @@ const styles = StyleSheet.create ({
     marginBottom: -5
   },
   badgeText: {
-    fontSize: 8,
+    fontSize: 10,
     margin: -2
   },
   next: {

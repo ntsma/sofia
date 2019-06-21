@@ -56,6 +56,7 @@ export default class Overlay extends Component {
 
     this.state = {
       "data": null,
+      "status_description": "",
       "answer": "",
       "complement": "",
       "attributes": "",
@@ -148,6 +149,7 @@ export default class Overlay extends Component {
 
       this.setState({
         "data": responseJson.data,
+        "status_description": responseJson.data.status_description,
         "answer": responseJson.data.answer,
         "complement": responseJson.data.complement,
         "attributes": responseJson.data.attributes,
@@ -173,6 +175,7 @@ export default class Overlay extends Component {
               </Container>
               :
               <View style={styles.container}>
+                <Text style={styles.text}>{this.state.status_description}</Text>
                 <Text style={styles.header}>{this.props.navigation.state.params.item.description}</Text>
                 <View style={styles.section}>
                   <Text style={styles.title}>Resposta</Text>
