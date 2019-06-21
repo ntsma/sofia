@@ -23,7 +23,9 @@ export default class ShowObservation extends Component {
         <BackHeader navigation={this.props.navigation} name="Observação" />
 
         <Card title="Observação">
-          <Text style={{marginBottom: 10}}></Text>
+          <Text style={{marginBottom: 10}}>
+            { this.props.navigation.state.params.item.solicitation_observations_description }
+          </Text>
         </Card>
       </ThemeProvider>
     );
