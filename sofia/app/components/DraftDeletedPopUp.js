@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, TouchableHighlight, TouchableOpacity, Dimensions, Button} from 'react-native';
 
-export default class QuestionSentPopUp extends Component {
+export default class DraftDeletedPopUp extends Component {
   constructor(props){
     super(props);
     this.state = {
-      width: Dimensions.get('window').width,
+      width: Dimensions.get('window').width
     };
     Dimensions.addEventListener('change', (e) => {
       this.setState(e.window);
@@ -14,22 +14,22 @@ export default class QuestionSentPopUp extends Component {
 
 
 
-closeQuestionModal = () => {
-  this.props.changeModalQuestionVisibility(false);
+closeDraftDeletedModal = () => {
+this.props.changeDraftDeletedModalVisibility(false);
 }
 
 render(){
   return(
     <TouchableOpacity activeOpacity={1} disabled={true} style={styles.contentContainer}>
       <View style={styles.modal}>
-      <TouchableHighlight onPress={() => this.closeQuestionModal()} style={styles.closeButtonText}>
+      <TouchableHighlight onPress={() => this.closeDraftDeletedModal} style={styles.closeButtonText}>
         <Text>x</Text>
       </TouchableHighlight>
         <View style={styles.textView}>
-          <Text style={styles.text}>Pergunta enviada!</Text>
+          <Text style={styles.text}>Rascunho excluído!</Text>
         </View>
         <View style={styles.buttonView}>
-          <TouchableHighlight onPress={() => this.closeQuestionModal()} style={styles.touchableHighlight}>
+          <TouchableHighlight onPress={() => this.closeDraftDeletedModal} style={styles.touchableHighlight}>
             <Text style={styles.okText}>OK</Text>
           </TouchableHighlight>
         </View>
@@ -39,6 +39,7 @@ render(){
 }
 
 }
+
 
 const styles = StyleSheet.create ({
   contentContainer: {
@@ -114,6 +115,5 @@ const styles = StyleSheet.create ({
     height:25,
     backgroundColor:'rgba(243,38,19,1)',
     borderRadius:17.5,
-
   }
 });

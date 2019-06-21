@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, TouchableHighlight, TouchableOpacity, Dimensions, Button} from 'react-native';
 
-export default class QuestionSentPopUp extends Component {
+export default class DeleteConfirmationPopUp extends Component {
   constructor(props){
     super(props);
     this.state = {
       width: Dimensions.get('window').width,
+      //isDeleteConfirmationModalVisible: this.props,
     };
     Dimensions.addEventListener('change', (e) => {
       this.setState(e.window);
@@ -14,31 +15,41 @@ export default class QuestionSentPopUp extends Component {
 
 
 
-closeQuestionModal = () => {
-  this.props.changeModalQuestionVisibility(false);
+closeDeleteConfirmationModal = () => {
+  this.props.changeDeleteConfirmationModalVisibility(false);
 }
 
 render(){
-  return(
-    <TouchableOpacity activeOpacity={1} disabled={true} style={styles.contentContainer}>
-      <View style={styles.modal}>
-      <TouchableHighlight onPress={() => this.closeQuestionModal()} style={styles.closeButtonText}>
-        <Text>x</Text>
-      </TouchableHighlight>
-        <View style={styles.textView}>
-          <Text style={styles.text}>Pergunta enviada!</Text>
+  const { isDeleteConfirmationModalVisible } = this.props;
+  if(this.props.isDeleteConfirmationModalVisible) {
+    return(
+      <TouchableOpacity activeOpacity={1} disabled={true} style={styles.contentContainer}>
+        <View style={styles.modal}>
+        <TouchableHighlight onPress={() => this.closeDeleteConfirmationModal()} style={styles.closeButtonText}>
+          <Text>x</Text>
+        </TouchableHighlight>
+          <View style={styles.textView}>
+            <Text style={styles.text}>Tem certeza de que deseja excluir este rascunho?</Text>
+          </View>
+          /* <View style={styles.buttonView}>
+            <TouchableHighlight onPress={() => this.closeDeleteConfirmationModal()} style={styles.touchableHighlight}>
+              <Text style={styles.okText}>Não</Text>
+            </TouchableHighlight>
+          </View> */ 
         </View>
-        <View style={styles.buttonView}>
-          <TouchableHighlight onPress={() => this.closeQuestionModal()} style={styles.touchableHighlight}>
-            <Text style={styles.okText}>OK</Text>
-          </TouchableHighlight>
-        </View>
-      </View>
-    </TouchableOpacity>
-  )
+      </TouchableOpacity>
+    )
+  } else {
+    return (
+      null
+    )
+  }
+
 }
 
 }
+
+
 
 const styles = StyleSheet.create ({
   contentContainer: {
