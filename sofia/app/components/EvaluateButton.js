@@ -34,8 +34,48 @@ import {
   Thumbnail
 } from "native-base";
 
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class EvaluateButton extends Component {
+
+  async judge() {
+    const sastifaction = this.props.sastifaction;
+    const attendance = this.props.attendance;
+
+    const token = await AsyncStorage.getItem("token");
+
+    console.debug("OBTENDO O TOKEN DE ACESSO...");
+    console.debug("TOKEN: " + token);
+
+    let formdata = new FormData();
+
+    formdata.append("satisfaction", sastifaction);
+    formdata.append("attendance", attendance);
+    formdata.append("avoided_forwarding", false);
+    formdata.append("induced_forwarding", false);
+    formdata.append("observation", "");
+
+    console.debug(formdata);
+
+    return fetch('http://plataforma.homolog.huufma.br/api/solicitation/evaluate/' + this.props.data.solicitation_id, {
+      method: 'POST',
+      headers: {
+        Authorization: "Bearer " + token
+      },
+      body: formdata
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+
+      console.debug(responseJson);
+
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+
+  }
+
   render() {
     if(this.props.buttonIsVisible) {
       return (
