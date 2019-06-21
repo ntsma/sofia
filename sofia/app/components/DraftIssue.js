@@ -1,36 +1,65 @@
 /*DraftIssue.js*/
 import React, { Component } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Alert } from "react-native";
 import { Badge, Body, Container, Icon, Left, Right, ListItem, Text } from "native-base";
+
 
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default class DraftIssue extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      isDraftDeletedModalVisible: this.props.isDraftDeletedModalVisible,
+    };
+
+  }
+
   async onDeleteDraftIssue() {
+    this.props.changeDraftDeletedModalVisibility(true);
     var token = await AsyncStorage.getItem("token");
     const item = this.props.question;
 
-    console.log(item);
+    console.log('item', item);
+      return fetch('http://plataforma.homolog.huufma.br/api/solicitation/destroy/' + item.id, {
+          method: 'GET',
+          headers: {
+            Authorization: "Bearer " + token
+          },
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          console.debug("RESPOSTA");
+          console.debug(responseJson);
 
-    return fetch('http://plataforma.homolog.huufma.br/api/solicitation/destroy/' + item.id, {
-        method: 'GET',
-        headers: {
-          Authorization: "Bearer " + token
-        },
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.debug("RESPOSTA");
-        console.debug(responseJson);
+          this.props.navigation.navigate("HomeScreen");
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
 
-        this.props.navigation.navigate("HomeScreen");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+onPressYes(){
+ this.onDeleteDraftIssue.bind(this);
+ this.props.changeDraftDeletedModalVisibility('true')
 
-  }
+}
+
+button() {
+  Alert.alert(
+  'Atenção',
+  'Tem certeza de que deseja excluir este rascunho? Você não poderá recuperá-lo após essa exclusão.',
+  [
+    {
+      text: 'Sim',
+      onPress: this.onDeleteDraftIssue.bind(this),
+    },
+    {text: 'Não', onPress: () => console.log('no props question', this.props.question) },
+  ],
+  {cancelable: true},
+);
+}
 
   render() {
     const item = this.props.question;
@@ -43,7 +72,7 @@ export default class DraftIssue extends Component {
           <Text numberOfLines={1} style={styles.bodyText}>{item.description}</Text>
         </Body>
         <Right style={styles.icons}>
-            <Icon style={styles.delete} type="MaterialIcons" name="delete-forever" onPress={ this.onDeleteDraftIssue.bind(this) } />
+            <Icon style={styles.delete} type="MaterialIcons" name="delete-forever" onPress={this.button.bind(this)} />
             <Icon style={styles.edit} type="MaterialIcons" name="create" onPress={() => this.props.navigation.navigate("EditQuestion", {item})} />
         </Right>
       </ListItem>
