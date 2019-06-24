@@ -55,8 +55,8 @@ export default class Login extends Component {
   };
 
   async onLoginPress() {
-    const email = "solicitante@solicitante.com";
-    const password = "123456";
+    const email = this.state.email;
+    const password = this.state.password;
 
           fetch("http://plataforma.homolog.huufma.br/api/login", {
             method: 'POST',
