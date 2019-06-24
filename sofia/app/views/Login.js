@@ -58,6 +58,9 @@ export default class Login extends Component {
     const email = this.state.email;
     const password = this.state.password;
 
+    console.log(email);
+    console.log(password);
+
           fetch("http://plataforma.homolog.huufma.br/api/login", {
             method: 'POST',
             headers: {
