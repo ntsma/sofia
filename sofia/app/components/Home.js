@@ -22,6 +22,7 @@ export default class Home extends Component {
       "submittedIssues": [],
       "draftIssues": [],
       "canceledIssues": [],
+      "waitingEvaluate": false
     }
   }
 
@@ -85,6 +86,16 @@ export default class Home extends Component {
     .then((response) => response.json())
     .then((responseJson) => {
       this.setState({"answeredIssues": responseJson.data});
+
+      var answeredIssues = responseJson.data;
+
+      for(index in answeredIssues) {
+        if(answeredIssues[index].status_id == 21) {
+          this.setState({
+            "waitingEvaluate": true
+          });
+        }
+      }
     })
     .catch((error) => {
       console.error(error);
@@ -143,7 +154,7 @@ export default class Home extends Component {
       <View>
         <ErrorNoInternetMessage isConnected={this.state.isConnected} />
 
-        <Button block success style={styles.button} onPress={() => {this.props.navigation.navigate("NewQuestion");}}>
+        <Button disabled={this.state.waitingEvaluate} block success style={styles.button} onPress={() => {this.props.navigation.navigate("NewQuestion");}}>
           <Icon active type="MaterialIcons" name="question-answer" />
           <Text>Nova Pergunta</Text>
         </Button>
