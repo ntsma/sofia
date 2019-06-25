@@ -49,6 +49,8 @@ export default class Login extends Component {
       console.debug("TOKEN")
       console.debug(this.state.token);
 
+      this.props.navigation.navigate("HomeScreen");
+
     } catch (error) {
       console.debug(error);
     }
@@ -75,9 +77,6 @@ export default class Login extends Component {
           .then((response) => response.json())
           .then((responseJson) => {
             this.login(responseJson);
-
-            this.props.navigation.navigate("HomeScreen");
-
           })
           .catch((error) => {
              console.log("Houve um problema!")

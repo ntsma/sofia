@@ -30,6 +30,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import NetInfo from "@react-native-community/netinfo";
 
+import ImagePicker from 'react-native-image-picker';
+
 import BackHeader from "../components/BackHeader";
 
 import QuestionSentPopUp from "../components/QuestionSentPopUp";
@@ -46,19 +48,49 @@ export default class NewQuestion extends Component {
   constructor() {
     super();
     this.state = {
-      question: "",
-      isDraftModalVisible: false,
-      isModalVisible: false,
+      "source": "",
+      "question": "",
+      "isDraftModalVisible": false,
+      "isModalVisible": false,
     };
   }
 
   changeModalDraftVisibility = (bool) => (
-  this.setState({ isDraftModalVisible : bool })
-)
+    this.setState({ isDraftModalVisible : bool })
+  )
 
-changeModalQuestionVisibility = (bool) => (
-  this.setState({ isModalVisible : bool })
-)
+  changeModalQuestionVisibility = (bool) => (
+    this.setState({ isModalVisible : bool })
+  )
+
+  onUploadFile() {
+    const options = {
+      title: 'Escolha uma imagem',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+
+      if (response.didCancel) {
+        console.log('Usuário cancelou a image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+
+        this.setState({
+          "source": response
+        });
+
+        console.log("Carregando imagem...")
+        console.log(this.state.source.fileName);
+      }
+    });
+
+  }
+
 
   async saveDraftIntoAsyncStorage(question) {
     var questions = await AsyncStorage.getItem("draftQuestions");
@@ -190,6 +222,12 @@ onPressButtonDraft(){
               <Label style={styles.textTitle}>Descreva sua pergunta</Label>
             </View>
             <Textarea style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
+
+              <Button block success style={styles.button} onPress={() => this.onUploadFile() }>
+                <Text>Anexar</Text>
+                <Icon type="MaterialIcons" name="file-upload"/>
+              </Button>
+
               <Button block success style={styles.button} onPress={this.onPressButtonSend.bind(this)}>
                 <Text>Enviar Pergunta</Text>
                 <Icon type="MaterialIcons" name="file-upload"/>
