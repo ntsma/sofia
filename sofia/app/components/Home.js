@@ -36,6 +36,7 @@ export default class Home extends Component {
 
   /*Carregando questões enviadas, respondidas, canceladas e rascunhos*/
   componentDidMount() {
+    console.log(this.state.waitingEvaluate);
 
     NetInfo.fetch().then(state => {
       console.log(state.isConnected);
@@ -54,7 +55,6 @@ export default class Home extends Component {
 
   /*Obtendo as questões rascunhos para a Sofia pelo Token*/
   async getDraftIssues() {
-    console.log("AAA");
     const token = await AsyncStorage.getItem("token");
 
     return fetch('http://plataforma.homolog.huufma.br/api/solicitant/drafts', {
@@ -88,6 +88,10 @@ export default class Home extends Component {
       this.setState({"answeredIssues": responseJson.data});
 
       var answeredIssues = responseJson.data;
+
+      this.setState({
+        "waitingEvaluate": false
+      });
 
       for(index in answeredIssues) {
         if(answeredIssues[index].status_id == 21) {
@@ -135,7 +139,6 @@ export default class Home extends Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log(responseJson.data.length);
       this.setState({"submittedIssues": responseJson.data});
     })
     .catch((error) => {
