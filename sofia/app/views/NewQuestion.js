@@ -51,7 +51,7 @@ export default class NewQuestion extends Component {
   constructor() {
     super();
     this.state = {
-      "file_ids": [],
+      "file_ids": "",
       "source": "",
       "question": "",
       "isDraftModalVisible": false,
@@ -131,9 +131,15 @@ export default class NewQuestion extends Component {
           })
           .then(response => response.json())
           .then(response => {
-            console.log("upload succes", response);
+            console.log("upload success", response);
             alert("Foto carregada com sucesso!");
-            this.setState({"file_ids": response.files });
+
+            ids = "";
+            for(index in response.files) {
+              ids += response.files[index].fileID + ", ";
+            }
+
+            this.setState({"file_ids": ids });
           })
           .catch(error => {
             console.log("upload error", error);
@@ -196,6 +202,9 @@ export default class NewQuestion extends Component {
           })
           .catch((error) => {
             console.error(error);
+
+            this.props.navigation.navigate("HomeScreen");
+
           });
 
       } else {
@@ -236,6 +245,9 @@ export default class NewQuestion extends Component {
       })
       .catch((error) => {
         console.error(error);
+
+        this.props.navigation.navigate("HomeScreen");
+
       });
 
   }

@@ -17,6 +17,7 @@ import Question from "./app/views/Question";
 import EditQuestion from "./app/views/EditQuestion";
 import ShowObservation from "./app/views/ShowObservation";
 import EditCanceledIssue from "./app/views/EditCanceledIssue";
+import ShowDetails from "./app/views/ShowDetails";
 
 class Home extends Component<{}> {
 
@@ -184,6 +185,14 @@ const App = createStackNavigator({
       title: "ShowObservation"
     }
   },
+
+  ShowDetails: {
+    screen: ShowDetails,
+    navigationOptions: {
+      title: "ShowDetails"
+    }
+  },
+
 
   EditCanceledIssue: {
     screen: EditCanceledIssue,
