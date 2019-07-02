@@ -49,14 +49,19 @@ export default class Login extends Component {
       console.debug("TOKEN")
       console.debug(this.state.token);
 
+      this.props.navigation.navigate("HomeScreen");
+
     } catch (error) {
       console.debug(error);
     }
   };
 
   async onLoginPress() {
-    const email = "solicitante@solicitante.com";
-    const password = "123456";
+    const email = this.state.email;
+    const password = this.state.password;
+
+    console.log(email);
+    console.log(password);
 
           fetch("http://plataforma.homolog.huufma.br/api/login", {
             method: 'POST',
@@ -72,9 +77,6 @@ export default class Login extends Component {
           .then((response) => response.json())
           .then((responseJson) => {
             this.login(responseJson);
-
-            this.props.navigation.navigate("HomeScreen");
-
           })
           .catch((error) => {
              console.log("Houve um problema!")

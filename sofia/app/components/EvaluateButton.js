@@ -44,9 +44,6 @@ export default class EvaluateButton extends Component {
 
     const token = await AsyncStorage.getItem("token");
 
-    console.debug("OBTENDO O TOKEN DE ACESSO...");
-    console.debug("TOKEN: " + token);
-
     let formdata = new FormData();
 
     formdata.append("satisfaction", sastifaction);
@@ -55,6 +52,7 @@ export default class EvaluateButton extends Component {
     formdata.append("induced_forwarding", false);
     formdata.append("observation", "");
 
+    console.log(this.props.data);
     console.debug(formdata);
 
     return fetch('http://plataforma.homolog.huufma.br/api/solicitation/evaluate/' + this.props.data.solicitation_id, {
@@ -66,8 +64,10 @@ export default class EvaluateButton extends Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-
+      console.log("EEEEEE");
       console.debug(responseJson);
+
+      this.props.navigation.navigate("HomeScreen");
 
     })
     .catch((error) => {
