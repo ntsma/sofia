@@ -63,7 +63,7 @@ export default class Login extends Component {
     console.log(email);
     console.log(password);
 
-          fetch("http://plataforma.homolog.huufma.br/api/login", {
+          fetch("http://sofia.huufma.br/api/login", {
             method: 'POST',
             headers: {
               Accept: 'application/json',
