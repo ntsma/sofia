@@ -86,13 +86,13 @@ export default class Login extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
         <View behavior="padding" style={styles.container}>
           <View style={styles.logoContainer}>
             <Image style={styles.logo} source={require("../resources/logo.png")} />
             <Text style={styles.subtext}>Sofia</Text>
           </View>
           <KeyboardAvoidingView style={styles.keyboard}>
+
             <View style={styles.window}>
               <TextInput
                 placeholder="E-mail"
@@ -123,8 +123,6 @@ export default class Login extends Component {
             </TouchableOpacity>
           </KeyboardAvoidingView>
         </View>
-
-      </View>
     );
   }
 }
@@ -135,14 +133,15 @@ const styles = StyleSheet.create({
     backgroundColor: "white"
   },
   logoContainer: {
+    flexDirection: "row",
     alignItems: "center",
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center"
   },
   logo: {
-    width: 200,
-    height: 200
+    width: 100,
+    height: 100
   },
   subtext: {
     color: "black",
@@ -153,7 +152,8 @@ const styles = StyleSheet.create({
     fontSize: 50
   },
   keyboard: {
-    margin: 20,
+    marginLeft: 20,
+    marginRight: 20,
     padding: 20,
     alignSelf: "stretch"
   },
