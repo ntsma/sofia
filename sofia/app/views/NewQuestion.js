@@ -1,6 +1,9 @@
 /*NewQuestion.js*/
 
 import React, { Component } from "react";
+
+import {Platform} from "react-native";
+
 import {
   Image,
   TextInput,
@@ -48,6 +51,7 @@ export default class NewQuestion extends Component {
   constructor() {
     super();
     this.state = {
+      "file_ids": [],
       "source": "",
       "question": "",
       "isDraftModalVisible": false,
@@ -63,7 +67,26 @@ export default class NewQuestion extends Component {
     this.setState({ isModalVisible : bool })
   )
 
-  onUploadFile() {
+  createFormData(photo, body) {
+    const data = new FormData();
+
+    data.append("photos[]", [{
+      name: photo.fileName,
+      type: photo.type,
+      uri:
+        Platform.OS === "android" ? photo.uri : photo.uri.replace("file://", "")
+    }]);
+
+    Object.keys(body).forEach(key => {
+      data.append(key, body[key]);
+    });
+
+    return data;
+  };
+
+  async onUploadFile() {
+    var token = await AsyncStorage.getItem("token");
+
     const options = {
       title: 'Escolha uma imagem',
       storageOptions: {
@@ -86,9 +109,38 @@ export default class NewQuestion extends Component {
 
         console.log("Carregando imagem...")
         console.log(this.state.source.fileName);
+
+        console.log("TOKEN");
+        console.log(token);
+
+        console.log("BODY");
+        console.log(this.createFormData(this.state.source, { userId: "123" }));
+
+        const data = new FormData();
+
+        data.append('photos[]', {uri: response.uri, name: response.fileName, type: 'image/jpg'})
+
+          fetch("http://plataforma.homolog.huufma.br/api/solicitation/file/upload", {
+            method: "POST",
+            Accept: 'application/json',
+            "Content-Type": 'multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d',
+            headers: {
+              Authorization: "Bearer " + token
+            },
+            body: data
+          })
+          .then(response => response.json())
+          .then(response => {
+            console.log("upload succes", response);
+            alert("Foto carregada com sucesso!");
+            this.setState({"file_ids": response.files });
+          })
+          .catch(error => {
+            console.log("upload error", error);
+            alert("O carregamento da foto falhou!");
+          });
       }
     });
-
   }
 
 
@@ -123,7 +175,10 @@ export default class NewQuestion extends Component {
 
         formdata.append("type_id", 52);
         formdata.append("mode", 'send');
-        formdata.append("description", question)
+        formdata.append("description", question);
+        formdata.append("file_ids", this.state.file_ids);
+
+        console.log(formdata);
 
         return fetch('http://plataforma.homolog.huufma.br/api/solicitation/handle', {
             method: 'POST',
@@ -223,7 +278,7 @@ onPressButtonDraft(){
             </View>
             <Textarea style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
 
-              <Button block success style={styles.button} onPress={() => this.onUploadFile() }>
+              <Button block success style={styles.button} onPress={this.onUploadFile.bind(this) }>
                 <Text>Anexar</Text>
                 <Icon type="MaterialIcons" name="file-upload"/>
               </Button>
