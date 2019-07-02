@@ -9,7 +9,7 @@ import {
   TextInput,
   StyleSheet,
   View,
-  Modal
+  Modal,
 } from "react-native";
 
 import {
@@ -26,7 +26,7 @@ import {
   Label,
   Text,
   Textarea,
-  Title,
+  Title, Left,
 } from "native-base";
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -278,22 +278,28 @@ onPressButtonDraft(){
             </View>
             <Textarea style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
 
-              <Button block success style={styles.button} onPress={this.onUploadFile.bind(this) }>
-                <Text>Anexar</Text>
-                <Icon type="MaterialIcons" name="file-upload"/>
-              </Button>
+              <View style={styles.buttonContainer}>
+                <Button block light style={[styles.button, styles.anexo]} onPress={this.onUploadFile.bind(this) }>
+                  <Text>Anexar</Text>
+                  <Left>
+                    <Icon type="MaterialIcons" name="attach-file"/>
+                  </Left>
+                </Button>
+                <Button block light style={[styles.button, styles.enviar]} onPress={this.onPressButtonDraft.bind(this)}>
+                  <Text>Salvar rascunho</Text>
+                </Button>
+              </View>
 
               <Button block success style={styles.button} onPress={this.onPressButtonSend.bind(this)}>
                 <Text>Enviar Pergunta</Text>
                 <Icon type="MaterialIcons" name="file-upload"/>
               </Button>
+
               <Modal transparent={true} visible={this.state.isModalVisible} onRequestClose={() => this.changeModalQuestionVisibility(false)} animationType='fade'>
                 <QuestionSentPopUp changeModalQuestionVisibility={this.changeModalQuestionVisibility}/>
               </Modal>
-              <Button block light style={styles.button} onPress={this.onPressButtonDraft.bind(this)}>
-                <Text>Salvar como rascunho</Text>
-              </Button>
-              <Modal transparent={true} visible={this.state.isDraftModalVisible} onRequestClose={() => this.changeModalDraftVisibility(false)} animationType='fade'>
+
+              <Modal transparent={true} visible={this.state.isDraftModalVisible} animationType='fade'>
                 <DraftPopUp  changeModalDraftVisibility={this.changeModalDraftVisibility}/>
               </Modal>
               <View style={{height: 3}}>
@@ -322,6 +328,20 @@ const styles = StyleSheet.create({
     marginLeft: '5%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  enviar: {
+    width: '53%',
+    marginLeft: '2%',
+    alignItems: 'center'
+  },
+  anexo: {
+    width: '35%',
+    marginLeft: 0,
   },
   container: {
     alignItems: 'center'
