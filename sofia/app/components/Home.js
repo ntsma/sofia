@@ -22,6 +22,7 @@ export default class Home extends Component {
       "submittedIssues": [],
       "draftIssues": [],
       "canceledIssues": [],
+      "waitingEvaluate": false
     }
   }
 
@@ -35,6 +36,7 @@ export default class Home extends Component {
 
   /*Carregando questões enviadas, respondidas, canceladas e rascunhos*/
   componentDidMount() {
+    console.log(this.state.waitingEvaluate);
 
     NetInfo.fetch().then(state => {
       console.log(state.isConnected);
@@ -53,7 +55,6 @@ export default class Home extends Component {
 
   /*Obtendo as questões rascunhos para a Sofia pelo Token*/
   async getDraftIssues() {
-    console.log("AAA");
     const token = await AsyncStorage.getItem("token");
 
     return fetch('http://plataforma.homolog.huufma.br/api/solicitant/drafts', {
@@ -85,6 +86,20 @@ export default class Home extends Component {
     .then((response) => response.json())
     .then((responseJson) => {
       this.setState({"answeredIssues": responseJson.data});
+
+      var answeredIssues = responseJson.data;
+
+      this.setState({
+        "waitingEvaluate": false
+      });
+
+      for(index in answeredIssues) {
+        if(answeredIssues[index].status_id == 21) {
+          this.setState({
+            "waitingEvaluate": true
+          });
+        }
+      }
     })
     .catch((error) => {
       console.error(error);
@@ -124,7 +139,6 @@ export default class Home extends Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log(responseJson.data.length);
       this.setState({"submittedIssues": responseJson.data});
     })
     .catch((error) => {
@@ -143,7 +157,7 @@ export default class Home extends Component {
       <View>
         <ErrorNoInternetMessage isConnected={this.state.isConnected} />
 
-        <Button block success style={styles.button} onPress={() => {this.props.navigation.navigate("NewQuestion");}}>
+        <Button disabled={this.state.waitingEvaluate} block success style={styles.button} onPress={() => {this.props.navigation.navigate("NewQuestion");}}>
           <Icon active type="MaterialIcons" name="question-answer" />
           <Text>Nova Pergunta</Text>
         </Button>

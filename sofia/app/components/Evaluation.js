@@ -134,7 +134,7 @@ onPressRate(){
           <RatedPopUp changeModalRateVisibility={this.changeModalRateVisibility}/>
         </Modal>
 
-        <EvaluateButton data={this.props.data} sastifaction={this.state.sastifaction} attendance={this.state.attendance} buttonIsVisible={(this.props.data.status_id == 21) ? true : false} />
+        <EvaluateButton navigation={this.props.navigation} data={this.props.data} sastifaction={this.state.sastifaction} attendance={this.state.attendance} buttonIsVisible={(this.props.data.status_id == 21) ? true : false} />
       </Card>
     );
   }

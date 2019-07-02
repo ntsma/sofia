@@ -5,14 +5,13 @@ import { Badge, Text } from "native-base";
 export default class BadgeContent extends Component {
 
 	render () {
-		console.log(this.props.status_id);
 		switch(this.props.status_id)
 		{
 			case 1:
 				return (
 					<Badge style={[styles.badge, {backgroundColor: "#e4e4e4"}]}>
-            			<Text style={styles.badgeText}>ativo</Text>
-        			</Badge>
+        			<Text style={styles.badgeText}>ativo</Text>
+    			</Badge>
     			);
     			break;
 			case 2:

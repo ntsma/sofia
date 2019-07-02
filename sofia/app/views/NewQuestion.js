@@ -1,6 +1,9 @@
 /*NewQuestion.js*/
 
 import React, { Component } from "react";
+
+import {Platform} from "react-native";
+
 import {
   Image,
   TextInput,
@@ -30,6 +33,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import NetInfo from "@react-native-community/netinfo";
 
+import ImagePicker from 'react-native-image-picker';
+
 import BackHeader from "../components/BackHeader";
 
 import QuestionSentPopUp from "../components/QuestionSentPopUp";
@@ -46,19 +51,98 @@ export default class NewQuestion extends Component {
   constructor() {
     super();
     this.state = {
-      question: "",
-      isDraftModalVisible: false,
-      isModalVisible: false,
+      "file_ids": [],
+      "source": "",
+      "question": "",
+      "isDraftModalVisible": false,
+      "isModalVisible": false,
     };
   }
 
   changeModalDraftVisibility = (bool) => (
-  this.setState({ isDraftModalVisible : bool })
-)
+    this.setState({ isDraftModalVisible : bool })
+  )
 
-changeModalQuestionVisibility = (bool) => (
-  this.setState({ isModalVisible : bool })
-)
+  changeModalQuestionVisibility = (bool) => (
+    this.setState({ isModalVisible : bool })
+  )
+
+  createFormData(photo, body) {
+    const data = new FormData();
+
+    data.append("photos[]", [{
+      name: photo.fileName,
+      type: photo.type,
+      uri:
+        Platform.OS === "android" ? photo.uri : photo.uri.replace("file://", "")
+    }]);
+
+    Object.keys(body).forEach(key => {
+      data.append(key, body[key]);
+    });
+
+    return data;
+  };
+
+  async onUploadFile() {
+    var token = await AsyncStorage.getItem("token");
+
+    const options = {
+      title: 'Escolha uma imagem',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+
+      if (response.didCancel) {
+        console.log('Usuário cancelou a image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else {
+
+        this.setState({
+          "source": response
+        });
+
+        console.log("Carregando imagem...")
+        console.log(this.state.source.fileName);
+
+        console.log("TOKEN");
+        console.log(token);
+
+        console.log("BODY");
+        console.log(this.createFormData(this.state.source, { userId: "123" }));
+
+        const data = new FormData();
+
+        data.append('photos[]', {uri: response.uri, name: response.fileName, type: 'image/jpg'})
+
+          fetch("http://plataforma.homolog.huufma.br/api/solicitation/file/upload", {
+            method: "POST",
+            Accept: 'application/json',
+            "Content-Type": 'multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d',
+            headers: {
+              Authorization: "Bearer " + token
+            },
+            body: data
+          })
+          .then(response => response.json())
+          .then(response => {
+            console.log("upload succes", response);
+            alert("Foto carregada com sucesso!");
+            this.setState({"file_ids": response.files });
+          })
+          .catch(error => {
+            console.log("upload error", error);
+            alert("O carregamento da foto falhou!");
+          });
+      }
+    });
+  }
+
 
   async saveDraftIntoAsyncStorage(question) {
     var questions = await AsyncStorage.getItem("draftQuestions");
@@ -91,7 +175,10 @@ changeModalQuestionVisibility = (bool) => (
 
         formdata.append("type_id", 52);
         formdata.append("mode", 'send');
-        formdata.append("description", question)
+        formdata.append("description", question);
+        formdata.append("file_ids", this.state.file_ids);
+
+        console.log(formdata);
 
         return fetch('http://plataforma.homolog.huufma.br/api/solicitation/handle', {
             method: 'POST',
@@ -190,6 +277,12 @@ onPressButtonDraft(){
               <Label style={styles.textTitle}>Descreva sua pergunta</Label>
             </View>
             <Textarea style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
+
+              <Button block success style={styles.button} onPress={this.onUploadFile.bind(this) }>
+                <Text>Anexar</Text>
+                <Icon type="MaterialIcons" name="file-upload"/>
+              </Button>
+
               <Button block success style={styles.button} onPress={this.onPressButtonSend.bind(this)}>
                 <Text>Enviar Pergunta</Text>
                 <Icon type="MaterialIcons" name="file-upload"/>
