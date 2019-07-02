@@ -51,7 +51,7 @@ export default class NewQuestion extends Component {
   constructor() {
     super();
     this.state = {
-      "file_ids": [],
+      "file_ids": "",
       "source": "",
       "question": "",
       "isDraftModalVisible": false,
@@ -120,7 +120,7 @@ export default class NewQuestion extends Component {
 
         data.append('photos[]', {uri: response.uri, name: response.fileName, type: 'image/jpg'})
 
-          fetch("http://plataforma.homolog.huufma.br/api/solicitation/file/upload", {
+          fetch("http://sofia.huufma.br/api/solicitation/file/upload", {
             method: "POST",
             Accept: 'application/json',
             "Content-Type": 'multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d',
@@ -131,9 +131,15 @@ export default class NewQuestion extends Component {
           })
           .then(response => response.json())
           .then(response => {
-            console.log("upload succes", response);
+            console.log("upload success", response);
             alert("Foto carregada com sucesso!");
-            this.setState({"file_ids": response.files });
+
+            ids = "";
+            for(index in response.files) {
+              ids += response.files[index].fileID + ", ";
+            }
+
+            this.setState({"file_ids": ids });
           })
           .catch(error => {
             console.log("upload error", error);
@@ -180,7 +186,7 @@ export default class NewQuestion extends Component {
 
         console.log(formdata);
 
-        return fetch('http://plataforma.homolog.huufma.br/api/solicitation/handle', {
+        return fetch('http://sofia.huufma.br/api/solicitation/handle', {
             method: 'POST',
             headers: {
               Authorization: "Bearer " + token
@@ -196,6 +202,9 @@ export default class NewQuestion extends Component {
           })
           .catch((error) => {
             console.error(error);
+
+            this.props.navigation.navigate("HomeScreen");
+
           });
 
       } else {
@@ -220,7 +229,7 @@ export default class NewQuestion extends Component {
 
     console.debug(formdata);
 
-    return fetch('http://plataforma.homolog.huufma.br/api/solicitation/handle', {
+    return fetch('http://sofia.huufma.br/api/solicitation/handle', {
         method: 'POST',
         headers: {
           Authorization: "Bearer " + token
@@ -236,6 +245,9 @@ export default class NewQuestion extends Component {
       })
       .catch((error) => {
         console.error(error);
+
+        this.props.navigation.navigate("HomeScreen");
+
       });
 
   }

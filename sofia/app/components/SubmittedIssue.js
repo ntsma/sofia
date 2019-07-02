@@ -3,21 +3,21 @@ import React, { Component } from "react";
 import { StyleSheet } from "react-native";
 import { Badge, Body, Container, Icon, Left, Right, ListItem, Text } from "native-base";
 
+import BadgeContent from "../components/BadgeContent";
+
 export default class SubmittedIssue extends Component {
 
   render() {
     const item = this.props.question;
     return (
       <ListItem thumbnail style={styles.list}
-      onPress={() => this.props.navigation.navigate("ShowObservation", {item})}>
+      onPress={() => this.props.navigation.navigate("ShowDetails", {item})}>
         <Left>
           <Icon style={styles.inbox} type="MaterialIcons" name="inbox" />
         </Left>
         <Body>
           <Text numberOfLines={1} style={styles.bodyText}>{item.description}</Text>
-          <Badge style={styles.badge}>
-            <Text style={styles.badgeText}>Aguardando avaliação</Text>
-          </Badge>
+          <BadgeContent status_id={item.status_id}/>
         </Body>
         <Right>
           <Icon style={styles.next} type="MaterialIcons" name="chevron-right" />

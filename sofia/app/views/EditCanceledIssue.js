@@ -64,7 +64,7 @@ export default class EditQuestion extends Component {
 
     console.debug(formdata);
 
-    return fetch('http://plataforma.homolog.huufma.br/api/solicitation/' + item.id, {
+    return fetch('http://sofia.huufma.br/api/solicitation/' + item.id, {
         method: 'POST',
         headers: {
           Authorization: "Bearer " + token
@@ -86,7 +86,7 @@ export default class EditQuestion extends Component {
 
   render() {
     const item = this.props.navigation.state.params.item;
-    
+
     return (
       <Container>
         <BackHeader navigation={this.props.navigation} name="Atualizar Pergunta"/>
