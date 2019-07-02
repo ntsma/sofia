@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import { StyleSheet } from "react-native";
 import { Badge, Body, Container, Icon, Left, Right, ListItem, Text } from "native-base";
 
+import BadgeContent from "../components/BadgeContent";
+
 export default class SubmittedIssue extends Component {
 
   render() {
@@ -15,9 +17,7 @@ export default class SubmittedIssue extends Component {
         </Left>
         <Body>
           <Text numberOfLines={1} style={styles.bodyText}>{item.description}</Text>
-          <Badge style={styles.badge}>
-            <Text style={styles.badgeText}>Aguardando avaliação</Text>
-          </Badge>
+          <BadgeContent status_id={item.status_id}/>
         </Body>
         <Right>
           <Icon style={styles.next} type="MaterialIcons" name="chevron-right" />
