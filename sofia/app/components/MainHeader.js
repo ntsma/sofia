@@ -3,8 +3,8 @@
 import React, { Component } from "react";
 
 import {
-  Image
-
+  Image,
+  BackHandler
 } from "react-native";
 
 import {
@@ -26,7 +26,8 @@ export default class MainHeader extends Component {
     await AsyncStorage.setItem("token", "");
     await AsyncStorage.setItem("logging", "false");
 
-    this.props.navigation.navigate("Login");
+    BackHandler.exitApp();
+    return true;
 
   }
 
