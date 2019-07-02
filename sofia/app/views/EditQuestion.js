@@ -64,7 +64,7 @@ export default class EditQuestion extends Component {
 
     console.debug(formdata);
 
-    return fetch('http://plataforma.homolog.huufma.br/api/solicitation/' + item.id, {
+    return fetch('http://sofia.huufma.br/api/solicitation/' + item.id, {
         method: 'POST',
         headers: {
           Authorization: "Bearer " + token
@@ -100,7 +100,7 @@ export default class EditQuestion extends Component {
 
     console.debug(formdata);
 
-    return fetch('http://plataforma.homolog.huufma.br/api/solicitation/' + item.id, {
+    return fetch('http://sofia.huufma.br/api/solicitation/' + item.id, {
         method: 'POST',
         headers: {
           Authorization: "Bearer " + token

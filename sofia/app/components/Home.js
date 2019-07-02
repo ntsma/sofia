@@ -57,7 +57,7 @@ export default class Home extends Component {
   async getDraftIssues() {
     const token = await AsyncStorage.getItem("token");
 
-    return fetch('http://plataforma.homolog.huufma.br/api/solicitant/drafts', {
+    return fetch('http://sofia.huufma.br/api/solicitant/drafts', {
       method: 'GET',
       headers: {
         Authorization: "Bearer " + token
@@ -77,7 +77,7 @@ export default class Home extends Component {
   async getAnsweredIssues() {
     const token = await AsyncStorage.getItem("token");
 
-    return fetch('http://plataforma.homolog.huufma.br/api/solicitant/answered', {
+    return fetch('http://sofia.huufma.br/api/solicitant/answered', {
       method: 'GET',
       headers: {
         Authorization: "Bearer " + token
@@ -111,7 +111,7 @@ export default class Home extends Component {
   async getCanceledIssues() {
     const token = await AsyncStorage.getItem("token");
 
-    return fetch('http://plataforma.homolog.huufma.br/api/solicitant/rejects', {
+    return fetch('http://sofia.huufma.br/api/solicitant/rejects', {
       method: 'GET',
       headers: {
         Authorization: "Bearer " + token
@@ -131,7 +131,7 @@ export default class Home extends Component {
   async getSubmittedIssues() {
     const token = await AsyncStorage.getItem("token");
 
-    return fetch('http://plataforma.homolog.huufma.br/api/solicitant/sents', {
+    return fetch('http://sofia.huufma.br/api/solicitant/sents', {
       method: 'GET',
       headers: {
         Authorization: "Bearer " + token

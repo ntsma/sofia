@@ -22,7 +22,7 @@ export default class DraftIssue extends Component {
     const item = this.props.question;
 
     console.log('item', item);
-      return fetch('http://plataforma.homolog.huufma.br/api/solicitation/destroy/' + item.id, {
+      return fetch('http://sofia.huufma.br/api/solicitation/destroy/' + item.id, {
           method: 'GET',
           headers: {
             Authorization: "Bearer " + token

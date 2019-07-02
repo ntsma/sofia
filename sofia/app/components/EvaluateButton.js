@@ -55,7 +55,7 @@ export default class EvaluateButton extends Component {
     console.log(this.props.data);
     console.debug(formdata);
 
-    return fetch('http://plataforma.homolog.huufma.br/api/solicitation/evaluate/' + this.props.data.solicitation_id, {
+    return fetch('http://sofia.huufma.br/api/solicitation/evaluate/' + this.props.data.solicitation_id, {
       method: 'POST',
       headers: {
         Authorization: "Bearer " + token

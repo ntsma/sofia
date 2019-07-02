@@ -120,7 +120,7 @@ export default class NewQuestion extends Component {
 
         data.append('photos[]', {uri: response.uri, name: response.fileName, type: 'image/jpg'})
 
-          fetch("http://plataforma.homolog.huufma.br/api/solicitation/file/upload", {
+          fetch("http://sofia.huufma.br/api/solicitation/file/upload", {
             method: "POST",
             Accept: 'application/json',
             "Content-Type": 'multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d',
@@ -186,7 +186,7 @@ export default class NewQuestion extends Component {
 
         console.log(formdata);
 
-        return fetch('http://plataforma.homolog.huufma.br/api/solicitation/handle', {
+        return fetch('http://sofia.huufma.br/api/solicitation/handle', {
             method: 'POST',
             headers: {
               Authorization: "Bearer " + token
@@ -229,7 +229,7 @@ export default class NewQuestion extends Component {
 
     console.debug(formdata);
 
-    return fetch('http://plataforma.homolog.huufma.br/api/solicitation/handle', {
+    return fetch('http://sofia.huufma.br/api/solicitation/handle', {
         method: 'POST',
         headers: {
           Authorization: "Bearer " + token
