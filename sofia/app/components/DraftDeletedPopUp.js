@@ -15,7 +15,8 @@ export default class DraftDeletedPopUp extends Component {
 
 
 closeDraftDeletedModal = () => {
-this.props.changeDraftDeletedModalVisibility(false);
+  console.log('closed', this.props)
+  this.props.changeDraftDeletedModalVisibility(false);
 }
 
 render(){
@@ -106,14 +107,12 @@ const styles = StyleSheet.create ({
     paddingVertical: 10,
     alignSelf : 'flex-end',
     position: 'absolute',
-    backgroundColor:'red',
     borderWidth:1,
     borderColor:'rgba(243,38,19,1)', //rgba(242, 38, 19, 1)
     alignItems:'center',
     justifyContent:'center',
     width:25,
     height:25,
-    backgroundColor:'rgba(243,38,19,1)',
     borderRadius:17.5,
   }
 });
