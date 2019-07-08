@@ -107,21 +107,24 @@ export default class Home extends Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      this.setState({"answeredIssues": responseJson.data});
-
       var answeredIssues = responseJson.data;
 
       this.setState({
         "waitingEvaluate": false
       });
 
+      var special = [];
+
       for(index in answeredIssues) {
         if(answeredIssues[index].status_id == 21) {
-          this.setState({
-            "waitingEvaluate": true
-          });
+          special.push(answeredIssues[index]);
+          answeredIssues.splice(index, 1);
+
         }
       }
+
+      this.setState({"answeredIssues": special.concat(answeredIssues)});
+
     })
     .catch((error) => {
       console.error(error);
