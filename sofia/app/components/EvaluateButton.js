@@ -67,7 +67,8 @@ export default class EvaluateButton extends Component {
       console.log("EEEEEE");
       console.debug(responseJson);
 
-      this.props.navigation.navigate("HomeScreen");
+      shouldUpdate = true;
+      this.props.navigation.navigate("HomeScreen", {shouldUpdate});
 
     })
     .catch((error) => {

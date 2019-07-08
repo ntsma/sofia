@@ -14,7 +14,7 @@ export default class DraftDeletedPopUp extends Component {
 
 
 
-closeDraftDeletedModal = () => {
+closeDraftDeletedModal() {
   console.log('closed', this.props)
   this.props.changeDraftDeletedModalVisibility(false);
 }
@@ -30,7 +30,7 @@ render(){
           <Text style={styles.text}>Rascunho excluído!</Text>
         </View>
         <View style={styles.buttonView}>
-          <TouchableHighlight onPress={() => this.closeDraftDeletedModal} style={styles.touchableHighlight}>
+          <TouchableHighlight onPress={() => this.closeDraftDeletedModal()} style={styles.touchableHighlight}>
             <Text style={styles.okText}>OK</Text>
           </TouchableHighlight>
         </View>

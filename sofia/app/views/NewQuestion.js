@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 
-import {Platform} from "react-native";
+import {Platform, Alert} from "react-native";
 
 import {
   Image,
@@ -198,13 +198,17 @@ export default class NewQuestion extends Component {
             console.debug("RESPOSTA");
             console.debug(responseJson);
 
-            this.props.navigation.navigate("HomeScreen");
+            this.setState({
+              question: ""
+            });
+
+            shouldUpdate = true;
+            this.props.navigation.navigate("HomeScreen", {shouldUpdate});
+
           })
           .catch((error) => {
             console.error(error);
-
-            this.props.navigation.navigate("HomeScreen");
-
+            Alert.alert("Houve um problema!")
           });
 
       } else {
@@ -241,12 +245,17 @@ export default class NewQuestion extends Component {
         console.debug("RESPOSTA");
         console.debug(responseJson);
 
-        this.props.navigation.navigate("HomeScreen");
+        this.setState({
+          question: ""
+        });
+
+        shouldUpdate = true;
+        this.props.navigation.navigate("HomeScreen", {shouldUpdate});
       })
       .catch((error) => {
         console.error(error);
 
-        this.props.navigation.navigate("HomeScreen");
+        Alert.alert("Houve um problema!");
 
       });
 
@@ -276,7 +285,7 @@ onPressButtonDraft(){
             <View style={styles.title}>
               <Label style={styles.textTitle}>Descreva sua pergunta</Label>
             </View>
-            <Textarea style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
+            <Textarea value={this.state.question} style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
 
               <Button block success style={styles.button} onPress={this.onUploadFile.bind(this) }>
                 <Text>Anexar</Text>

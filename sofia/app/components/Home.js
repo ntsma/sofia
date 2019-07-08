@@ -10,6 +10,8 @@ import NetInfo from "@react-native-community/netinfo";
 import NumberOfIssuesBadge from "./NumberOfIssuesBadge";
 import ErrorNoInternetMessage from "./ErrorNoInternetMessage";
 
+import {get} from "../controllers/Issues.js";
+
 export default class Home extends Component {
 
   constructor(props){
@@ -35,8 +37,13 @@ export default class Home extends Component {
  }
 
   /*Carregando questões enviadas, respondidas, canceladas e rascunhos*/
+
   componentDidMount() {
-    console.log(this.state.waitingEvaluate);
+    this.b();
+  }
+
+  b() {
+    console.log(this.state);
 
     NetInfo.fetch().then(state => {
       console.log(state.isConnected);
@@ -51,6 +58,18 @@ export default class Home extends Component {
       this.getSubmittedIssues();
     });
 
+  }
+
+  componentWillUnmount() {
+    this.state = {
+      "isConnected": false,
+      "refreshing": false,
+      "answeredIssues": [],
+      "submittedIssues": [],
+      "draftIssues": [],
+      "canceledIssues": [],
+      "waitingEvaluate": false
+    }
   }
 
   /*Obtendo as questões rascunhos para a Sofia pelo Token*/
@@ -77,6 +96,9 @@ export default class Home extends Component {
   async getAnsweredIssues() {
     const token = await AsyncStorage.getItem("token");
 
+    console.log("CELULAR");
+    console.log(get(token.toString()));
+
     return fetch('http://sofia.huufma.br/api/solicitant/answered', {
       method: 'GET',
       headers: {
@@ -85,21 +107,28 @@ export default class Home extends Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      this.setState({"answeredIssues": responseJson.data});
-
       var answeredIssues = responseJson.data;
 
       this.setState({
         "waitingEvaluate": false
       });
 
+      var special = [];
+
       for(index in answeredIssues) {
         if(answeredIssues[index].status_id == 21) {
           this.setState({
             "waitingEvaluate": true
           });
+
+          special.push(answeredIssues[index]);
+          answeredIssues.splice(index, 1);
+
         }
       }
+
+      this.setState({"answeredIssues": special.concat(answeredIssues)});
+
     })
     .catch((error) => {
       console.error(error);
@@ -148,25 +177,44 @@ export default class Home extends Component {
   }
 
   onNavigateNewIssue() {
-    if(this.state.waitingEvaluate) {
+    /*if(this.state.waitingEvaluate) {
       Alert.alert("Primeiro leia todas as questões respondidas!");
     } else {
       this.props.navigation.navigate("NewQuestion");
+
+    }*/
+    this.props.navigation.navigate("NewQuestion");
+
+  }
+
+  atu() {
+    try {
+      if(this.props.navigation.state.params.shouldUpdate) {
+        if(this.props.navigation.state.params.shouldUpdate == true) {
+          this.b();
+
+          this.props.navigation.state.params.shouldUpdate = false;
+        }
+      }
+    } catch(e) {
 
     }
   }
 
   render() {
+
+    this.atu();
+
     const answeredIssues = this.state.answeredIssues;
     const submittedIssues = this.state.submittedIssues;
     const canceledIssues = this.state.canceledIssues;
     const draftIssues = this.state.draftIssues;
-
+    const estado = this.state;
     return (
       <View>
         <ErrorNoInternetMessage isConnected={this.state.isConnected} />
 
-        <Button disabled={this.state.waitingEvaluate} block success style={styles.button} onPress={() => this.onNavigateNewIssue()}>
+        <Button block success style={styles.button} onPress={() => this.onNavigateNewIssue()}>
           <Icon active type="MaterialIcons" name="question-answer" />
           <Text>Nova Pergunta</Text>
         </Button>
@@ -179,7 +227,7 @@ export default class Home extends Component {
               />
             }
           >
-          <Button disabled={!this.state.isConnected} block light style={styles.button} onPress={() => {this.props.navigation.navigate("AnsweredIssues", {answeredIssues});}}>
+          <Button disabled={!this.state.isConnected} block light style={styles.button} onPress={() => {this.props.navigation.navigate("AnsweredIssues", {answeredIssues, estado});}}>
             <Right>
               <Icon active type="MaterialIcons" name="call-received" />
             </Right>
@@ -187,7 +235,7 @@ export default class Home extends Component {
               <Text>Respondidas</Text>
             </Body>
             <Right>
-              <NumberOfIssuesBadge number={this.state.answeredIssues.length} isConnected={this.state.isConnected} />
+              <NumberOfIssuesBadge number={this.state.answeredIssues.length} isConnected={this.state.isConnected} waitingEvaluate={this.state.waitingEvaluate}/>
             </Right>
           </Button>
 
