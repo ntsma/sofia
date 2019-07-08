@@ -207,7 +207,7 @@ export default class Home extends Component {
       <View>
         <ErrorNoInternetMessage isConnected={this.state.isConnected} />
 
-        <Button disabled={this.state.waitingEvaluate} block success style={styles.button} onPress={() => this.onNavigateNewIssue()}>
+        <Button block success style={styles.button} onPress={() => this.onNavigateNewIssue()}>
           <Icon active type="MaterialIcons" name="question-answer" />
           <Text>Nova Pergunta</Text>
         </Button>
