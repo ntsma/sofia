@@ -95,7 +95,7 @@ export default class NewQuestion extends Component {
       },
     };
 
-    ImagePicker.showImagePicker(options, (response) => {
+    ImagePicker.launchImageLibrary(options, (response) => {
 
       if (response.didCancel) {
         console.log('Usuário cancelou a image picker');

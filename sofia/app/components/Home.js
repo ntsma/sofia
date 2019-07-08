@@ -1,8 +1,8 @@
 /*Home.js*/
 
 import React, { Component } from "react";
-import { ScrollView, StyleSheet, View, RefreshControl } from "react-native";
-import { Badge, Button, Body, Icon, Left, Right, Text} from "native-base";
+import {Alert, ScrollView, StyleSheet, View, RefreshControl } from "react-native";
+import {Badge, Button, Body, Icon, Left, Right, Text} from "native-base";
 
 import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from "@react-native-community/netinfo";
@@ -147,6 +147,15 @@ export default class Home extends Component {
 
   }
 
+  onNavigateNewIssue() {
+    if(this.state.waitingEvaluate) {
+      Alert.alert("Primeiro leia todas as questões respondidas!");
+    } else {
+      this.props.navigation.navigate("NewQuestion");
+
+    }
+  }
+
   render() {
     const answeredIssues = this.state.answeredIssues;
     const submittedIssues = this.state.submittedIssues;
@@ -157,7 +166,7 @@ export default class Home extends Component {
       <View>
         <ErrorNoInternetMessage isConnected={this.state.isConnected} />
 
-        <Button disabled={this.state.waitingEvaluate} block success style={styles.button} onPress={() => {this.props.navigation.navigate("NewQuestion");}}>
+        <Button disabled={this.state.waitingEvaluate} block success style={styles.button} onPress={() => this.onNavigateNewIssue()}>
           <Icon active type="MaterialIcons" name="question-answer" />
           <Text>Nova Pergunta</Text>
         </Button>
