@@ -33,7 +33,8 @@ export default class DraftIssue extends Component {
           console.debug("RESPOSTA");
           console.debug(responseJson);
 
-          this.props.navigation.navigate("HomeScreen");
+          shouldUpdate = true;
+          this.props.navigation.navigate("HomeScreen", {shouldUpdate});
         })
         .catch((error) => {
           console.error(error);

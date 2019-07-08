@@ -28,10 +28,6 @@ export default class AnsweredIssues extends Component {
 
     return (
       <Container>
-        <Button block light onPress={() => this.update() }>
-
-            <Text>Respondidas</Text>
-        </Button>
         <BackHeader navigation={this.props.navigation} name="Respondidas"/>
         <FlatList
           data={answeredIssues}
