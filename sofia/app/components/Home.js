@@ -10,6 +10,8 @@ import NetInfo from "@react-native-community/netinfo";
 import NumberOfIssuesBadge from "./NumberOfIssuesBadge";
 import ErrorNoInternetMessage from "./ErrorNoInternetMessage";
 
+import {get} from "../controllers/Issues.js";
+
 export default class Home extends Component {
 
   constructor(props){
@@ -35,8 +37,13 @@ export default class Home extends Component {
  }
 
   /*Carregando questões enviadas, respondidas, canceladas e rascunhos*/
+
   componentDidMount() {
-    console.log(this.state.waitingEvaluate);
+    this.b();
+  }
+
+  b() {
+    console.log(this.state);
 
     NetInfo.fetch().then(state => {
       console.log(state.isConnected);
@@ -51,6 +58,18 @@ export default class Home extends Component {
       this.getSubmittedIssues();
     });
 
+  }
+
+  componentWillUnmount() {
+    this.state = {
+      "isConnected": false,
+      "refreshing": false,
+      "answeredIssues": [],
+      "submittedIssues": [],
+      "draftIssues": [],
+      "canceledIssues": [],
+      "waitingEvaluate": false
+    }
   }
 
   /*Obtendo as questões rascunhos para a Sofia pelo Token*/
@@ -76,6 +95,9 @@ export default class Home extends Component {
   /*Obtendo as questões respondidas para a Sofia pelo Token*/
   async getAnsweredIssues() {
     const token = await AsyncStorage.getItem("token");
+
+    console.log("CELULAR");
+    console.log(get(token.toString()));
 
     return fetch('http://sofia.huufma.br/api/solicitant/answered', {
       method: 'GET',
@@ -148,20 +170,39 @@ export default class Home extends Component {
   }
 
   onNavigateNewIssue() {
-    if(this.state.waitingEvaluate) {
+    /*if(this.state.waitingEvaluate) {
       Alert.alert("Primeiro leia todas as questões respondidas!");
     } else {
       this.props.navigation.navigate("NewQuestion");
+
+    }*/
+    this.props.navigation.navigate("NewQuestion");
+
+  }
+
+  atu() {
+    try {
+      if(this.props.navigation.state.params.shouldUpdate) {
+        if(this.props.navigation.state.params.shouldUpdate == true) {
+          this.b();
+
+          this.props.navigation.state.params.shouldUpdate = false;
+        }
+      }
+    } catch(e) {
 
     }
   }
 
   render() {
+
+    this.atu();
+
     const answeredIssues = this.state.answeredIssues;
     const submittedIssues = this.state.submittedIssues;
     const canceledIssues = this.state.canceledIssues;
     const draftIssues = this.state.draftIssues;
-
+    const estado = this.state;
     return (
       <View>
         <ErrorNoInternetMessage isConnected={this.state.isConnected} />
@@ -179,7 +220,7 @@ export default class Home extends Component {
               />
             }
           >
-          <Button disabled={!this.state.isConnected} block light style={styles.button} onPress={() => {this.props.navigation.navigate("AnsweredIssues", {answeredIssues});}}>
+          <Button disabled={!this.state.isConnected} block light style={styles.button} onPress={() => {this.props.navigation.navigate("AnsweredIssues", {answeredIssues, estado});}}>
             <Right>
               <Icon active type="MaterialIcons" name="call-received" />
             </Right>

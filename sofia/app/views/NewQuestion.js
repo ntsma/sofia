@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 
-import {Platform} from "react-native";
+import {Platform, Alert} from "react-native";
 
 import {
   Image,
@@ -198,13 +198,17 @@ export default class NewQuestion extends Component {
             console.debug("RESPOSTA");
             console.debug(responseJson);
 
-            this.props.navigation.navigate("HomeScreen");
+            this.setState({
+              question: ""
+            });
+
+            shouldUpdate = true;
+            this.props.navigation.navigate("HomeScreen", {shouldUpdate});
+
           })
           .catch((error) => {
             console.error(error);
-
-            this.props.navigation.navigate("HomeScreen");
-
+            Alert.alert("Houve um problema!")
           });
 
       } else {
@@ -241,12 +245,13 @@ export default class NewQuestion extends Component {
         console.debug("RESPOSTA");
         console.debug(responseJson);
 
-        this.props.navigation.navigate("HomeScreen");
+        shouldUpdate = true;
+        this.props.navigation.navigate("HomeScreen", {shouldUpdate});
       })
       .catch((error) => {
         console.error(error);
 
-        this.props.navigation.navigate("HomeScreen");
+        Alert.alert("Houve um problema!");
 
       });
 
