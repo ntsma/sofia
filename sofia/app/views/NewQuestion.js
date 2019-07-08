@@ -245,6 +245,10 @@ export default class NewQuestion extends Component {
         console.debug("RESPOSTA");
         console.debug(responseJson);
 
+        this.setState({
+          question: ""
+        });
+
         shouldUpdate = true;
         this.props.navigation.navigate("HomeScreen", {shouldUpdate});
       })
@@ -281,7 +285,7 @@ onPressButtonDraft(){
             <View style={styles.title}>
               <Label style={styles.textTitle}>Descreva sua pergunta</Label>
             </View>
-            <Textarea style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
+            <Textarea value={this.state.question} style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
 
               <Button block success style={styles.button} onPress={this.onUploadFile.bind(this) }>
                 <Text>Anexar</Text>
