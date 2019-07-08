@@ -117,6 +117,10 @@ export default class Home extends Component {
 
       for(index in answeredIssues) {
         if(answeredIssues[index].status_id == 21) {
+          this.setState({
+            "waitingEvaluate": true
+          });
+
           special.push(answeredIssues[index]);
           answeredIssues.splice(index, 1);
 
@@ -231,7 +235,7 @@ export default class Home extends Component {
               <Text>Respondidas</Text>
             </Body>
             <Right>
-              <NumberOfIssuesBadge number={this.state.answeredIssues.length} isConnected={this.state.isConnected} />
+              <NumberOfIssuesBadge number={this.state.answeredIssues.length} isConnected={this.state.isConnected} waitingEvaluate={this.state.waitingEvaluate}/>
             </Right>
           </Button>
 
