@@ -69,6 +69,7 @@ export default class Home extends Component {
 
     NetInfo.fetch().then(state => {
       if(state.isConnected && draftQuestions.length > 0) {
+
         for(index in draftQuestions) {
           console.log("Entrou");
 
@@ -323,7 +324,7 @@ export default class Home extends Component {
               <Icon active type="MaterialIcons" name="cancel" />
             </Right>
             <Body>
-              <Text>Canceladas</Text>
+              <Text>Devolvidas</Text>
             </Body>
             <Right>
               <NumberOfIssuesBadge number={this.state.canceledIssues.length} isConnected={this.state.isConnected} />
