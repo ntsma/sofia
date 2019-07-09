@@ -190,6 +190,7 @@ export default class NewQuestion extends Component {
         formdata.append("type_id", 52);
         formdata.append("mode", 'send');
         formdata.append("description", question);
+        formdata.append("mobile", 1);
         formdata.append("file_ids", this.state.file_ids);
 
         console.log(formdata);
@@ -234,6 +235,7 @@ export default class NewQuestion extends Component {
 
     formdata.append("type_id", 52);
     formdata.append("mode", 'draft');
+    formdata.append("mobile", 1);
     formdata.append("description", question)
 
     console.debug(formdata);
