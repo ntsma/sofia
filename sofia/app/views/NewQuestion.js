@@ -168,6 +168,14 @@ export default class NewQuestion extends Component {
 
     console.log("Questões de Rascunho");
     console.log(draftQuestions);
+
+    this.setState({
+      question: ""
+    });
+
+    shouldUpdate = true;
+    this.props.navigation.navigate("HomeScreen", {shouldUpdate});
+
   }
 
   async onCreateQuestion() {
@@ -196,7 +204,12 @@ export default class NewQuestion extends Component {
           .then((response) => response.json())
           .then((responseJson) => {
 
-            console.log("Rascunho enviado com sucesso!")
+            this.setState({
+              question: ""
+            });
+
+            shouldUpdate = true;
+            this.props.navigation.navigate("HomeScreen", {shouldUpdate});
           })
           .catch((error) => {
             console.error(error);
