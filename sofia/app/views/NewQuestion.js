@@ -168,6 +168,14 @@ export default class NewQuestion extends Component {
 
     console.log("Questões de Rascunho");
     console.log(draftQuestions);
+
+    this.setState({
+      question: ""
+    });
+
+    shouldUpdate = true;
+    this.props.navigation.navigate("HomeScreen", {shouldUpdate});
+
   }
 
   async onCreateQuestion() {
@@ -195,8 +203,6 @@ export default class NewQuestion extends Component {
           })
           .then((response) => response.json())
           .then((responseJson) => {
-            console.debug("RESPOSTA");
-            console.debug(responseJson);
 
             this.setState({
               question: ""
@@ -204,7 +210,6 @@ export default class NewQuestion extends Component {
 
             shouldUpdate = true;
             this.props.navigation.navigate("HomeScreen", {shouldUpdate});
-
           })
           .catch((error) => {
             console.error(error);
@@ -212,7 +217,7 @@ export default class NewQuestion extends Component {
           });
 
       } else {
-        this.saveDraftIntoAsyncStorage({"id": this.state.question.length + 1, "description": question});
+        this.saveDraftIntoAsyncStorage({"id": this.state.question.length + 1, "description": question, "file_ids": this.state.file_ids});
       }
     });
   }
