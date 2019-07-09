@@ -18,6 +18,7 @@ export default class Home extends Component {
     super(props);
 
     this.state = {
+      "shouldEmpty": false,
       "isConnected": false,
       "refreshing": false,
       "answeredIssues": [],
@@ -32,8 +33,23 @@ export default class Home extends Component {
    this.setState({"refreshing": true});
 
    this.componentDidMount();
+   this.onSendDraftIssues();
+
+   if(this.state.shouldEmpty == true) {
+     this.onEmptyDraftIssues();
+   }
 
    this.setState({"refreshing": false});
+ }
+
+ /*Esvaziando listas de rascunhos enviados offline*/
+ async onEmptyDraftIssues() {
+   await AsyncStorage.setItem("draftQuestions", JSON.stringify([]));
+
+   this.setState({
+     "shouldEmpty": false
+   });
+
  }
 
   /*Carregando questões enviadas, respondidas, canceladas e rascunhos*/
@@ -41,6 +57,56 @@ export default class Home extends Component {
   componentDidMount() {
     this.b();
   }
+
+  async onSendDraftIssues() {
+    var token = await AsyncStorage.getItem("token");
+    var draftQuestions = await AsyncStorage.getItem("draftQuestions");
+
+    draftQuestions = JSON.parse(draftQuestions);
+
+    console.log(draftQuestions);
+    console.log(draftQuestions.length)
+
+    NetInfo.fetch().then(state => {
+      if(state.isConnected && draftQuestions.length > 0) {
+        for(index in draftQuestions) {
+          console.log("Entrou");
+
+          let formdata = new FormData();
+
+          formdata.append("type_id", 52);
+          formdata.append("mode", 'send');
+          formdata.append("description", draftQuestions[index].description);
+          formdata.append("file_ids", draftQuestions[index].file_ids);
+
+          console.log(formdata);
+
+          return fetch('http://sofia.huufma.br/api/solicitation/handle', {
+              method: 'POST',
+              headers: {
+                Authorization: "Bearer " + token
+              },
+              body: formdata,
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+              this.setState({
+                "shouldEmpty": true
+              });
+
+              console.log("Enviado com sucesso!");
+              Alert.alert("Solicitação enviada com succeso!");
+
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+
+        }
+      }
+    });
+  }
+
 
   b() {
     console.log(this.state);
