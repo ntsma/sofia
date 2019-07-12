@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 
-import {Platform} from "react-native";
+import {Platform, Alert} from "react-native";
 
 import {
   Image,
@@ -95,7 +95,7 @@ export default class NewQuestion extends Component {
       },
     };
 
-    ImagePicker.showImagePicker(options, (response) => {
+    ImagePicker.launchImageLibrary(options, (response) => {
 
       if (response.didCancel) {
         console.log('Usuário cancelou a image picker');
@@ -168,6 +168,14 @@ export default class NewQuestion extends Component {
 
     console.log("Questões de Rascunho");
     console.log(draftQuestions);
+
+    this.setState({
+      question: ""
+    });
+
+    shouldUpdate = true;
+    this.props.navigation.navigate("HomeScreen", {shouldUpdate});
+
   }
 
   async onCreateQuestion() {
@@ -195,20 +203,21 @@ export default class NewQuestion extends Component {
           })
           .then((response) => response.json())
           .then((responseJson) => {
-            console.debug("RESPOSTA");
-            console.debug(responseJson);
 
-            this.props.navigation.navigate("HomeScreen");
+            this.setState({
+              question: ""
+            });
+
+            shouldUpdate = true;
+            this.props.navigation.navigate("HomeScreen", {shouldUpdate});
           })
           .catch((error) => {
             console.error(error);
-
-            this.props.navigation.navigate("HomeScreen");
-
+            Alert.alert("Houve um problema!")
           });
 
       } else {
-        this.saveDraftIntoAsyncStorage({"id": this.state.question.length + 1, "description": question});
+        this.saveDraftIntoAsyncStorage({"id": this.state.question.length + 1, "description": question, "file_ids": this.state.file_ids});
       }
     });
   }
@@ -241,12 +250,17 @@ export default class NewQuestion extends Component {
         console.debug("RESPOSTA");
         console.debug(responseJson);
 
-        this.props.navigation.navigate("HomeScreen");
+        this.setState({
+          question: ""
+        });
+
+        shouldUpdate = true;
+        this.props.navigation.navigate("HomeScreen", {shouldUpdate});
       })
       .catch((error) => {
         console.error(error);
 
-        this.props.navigation.navigate("HomeScreen");
+        Alert.alert("Houve um problema!");
 
       });
 
@@ -264,18 +278,6 @@ onPressButtonDraft(){
   //console.log('çodal', this.isModalVisible)
 }
 
-  onPressButtonSend(){
-    this.changeModalQuestionVisibility(true);
-    this.onCreateQuestion();
-    //console.log('çodal', this.isModalVisible)
-  }
-
-  onPressButtonDraft(){
-    this.changeModalDraftVisibility(true);
-    this.onCreateDraftQuestion();
-    //console.log('çodal', this.isModalVisible)
-  }
-
 
   render() {
     return (
@@ -288,7 +290,7 @@ onPressButtonDraft(){
             <View style={styles.title}>
               <Label style={styles.textTitle}>Descreva sua pergunta</Label>
             </View>
-            <Textarea style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
+            <Textarea value={this.state.question} style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
 
               <View style={styles.buttonContainer}>
                 <Button block light style={[styles.button, styles.anexo]} onPress={this.onUploadFile.bind(this) }>

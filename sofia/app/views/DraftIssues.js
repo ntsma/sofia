@@ -19,7 +19,7 @@ export default class DraftIssues extends Component {
     super(props);
     this.state = {
       "draftIssues": [],
-      isDraftDeletedModalVisible: false,
+      "isDraftDeletedModalVisible": false,
     };
   //  this.changeDraftDeletedModalVisibility= this.changeDraftDeletedModalVisibility.bind(this)
   }
@@ -53,8 +53,6 @@ export default class DraftIssues extends Component {
 
     console.log("DRAFT QUESTIONS");
     console.log(this.state.draftIssues);
-    console.log('draft deleted modal', this.props.navigation.changeModalRateVisibility);
-
   }
 
   changeDraftDeletedModalVisibility = (bool) => (
@@ -73,8 +71,8 @@ export default class DraftIssues extends Component {
           renderItem={({item}) => <DraftIssue changeDraftDeletedModalVisibility={this.changeDraftDeletedModalVisibility.bind(this)}  isDraftDeletedModalVisible={this.state.isDraftDeletedModalVisible} navigation={this.props.navigation} question={item}/>}
         />
 
-        <Modal transparent={true} visible={this.state.isDraftDeletedModalVisible} onRequestClose={() => this.props.changeDraftDeletedModalVisibility(false)} animationType='fade'>
-          <DraftDeletedPopUp changeDraftDeletedModalVisibility={this.props.changeDraftDeletedModalVisibility}/>
+        <Modal transparent={true} visible={this.state.isDraftDeletedModalVisible} onRequestClose={() => this.changeDraftDeletedModalVisibility(false)} animationType='fade'>
+          <DraftDeletedPopUp changeDraftDeletedModalVisibility={this.changeDraftDeletedModalVisibility.bind(this)}/>
         </Modal>
       </Container>
     );

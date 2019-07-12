@@ -17,7 +17,7 @@ export default class DraftIssue extends Component {
   }
 
   async onDeleteDraftIssue() {
-    this.props.changeDraftDeletedModalVisibility(true);
+    //this.props.changeDraftDeletedModalVisibility(true);
     var token = await AsyncStorage.getItem("token");
     const item = this.props.question;
 
@@ -33,7 +33,8 @@ export default class DraftIssue extends Component {
           console.debug("RESPOSTA");
           console.debug(responseJson);
 
-          this.props.navigation.navigate("HomeScreen");
+          shouldUpdate = true;
+          this.props.navigation.navigate("HomeScreen", {shouldUpdate});
         })
         .catch((error) => {
           console.error(error);
@@ -41,8 +42,9 @@ export default class DraftIssue extends Component {
     }
 
 onPressYes(){
- this.onDeleteDraftIssue.bind(this);
- this.props.changeDraftDeletedModalVisibility('true')
+ console.log('onpressyes props', this.props);
+ this.props.changeDraftDeletedModalVisibility(true);
+ this.onDeleteDraftIssue();
 
 }
 
@@ -53,7 +55,7 @@ button() {
   [
     {
       text: 'Sim',
-      onPress: this.onDeleteDraftIssue.bind(this),
+      onPress: this.onPressYes.bind(this),
     },
     {text: 'Não', onPress: () => console.log('no props question', this.props.question) },
   ],

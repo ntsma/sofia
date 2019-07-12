@@ -20,7 +20,7 @@ closeDeleteConfirmationModal = () => {
 }
 
 render(){
-  const { isDeleteConfirmationModalVisible } = this.props;
+  //const { isDeleteConfirmationModalVisible } = this.props;
   if(this.props.isDeleteConfirmationModalVisible) {
     return(
       <TouchableOpacity activeOpacity={1} disabled={true} style={styles.contentContainer}>

@@ -11,6 +11,8 @@ import {
   View
 } from "react-native";
 
+import { Icon } from "native-base"
+
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { StackNavigator } from "react-navigation";
@@ -21,6 +23,8 @@ export default class Login extends Component {
     this.state = {
       email: "",
       password: "",
+      visible: true, 
+      icon: "eye-off", 
       logging: "false",
       token: ""
     };
@@ -34,6 +38,13 @@ export default class Login extends Component {
     header: null
   };
 
+  changePasswordVisibility (){
+    this.setState(prevState =>  ({ 
+      icon: prevState.icon === 'eye' ? 'eye-off' : 'eye', 
+      visible: !prevState.visible,  
+    })); 
+  }
+  
   async login(responseJson) {
     try {
       await AsyncStorage.setItem("token", responseJson.token);
@@ -86,13 +97,13 @@ export default class Login extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
         <View behavior="padding" style={styles.container}>
           <View style={styles.logoContainer}>
             <Image style={styles.logo} source={require("../resources/logo.png")} />
             <Text style={styles.subtext}>Sofia</Text>
           </View>
           <KeyboardAvoidingView style={styles.keyboard}>
+
             <View style={styles.window}>
               <TextInput
                 placeholder="E-mail"
@@ -106,14 +117,19 @@ export default class Login extends Component {
               />
             </View>
             <View style={styles.window}>
-              <TextInput
+             <View style={{ flexDirection: 'row'}}> 
+             <TextInput
+                style={{flex:3}}
                 placeholder="Senha"
                 returnKeyType="go"
-                secureTextEntry
+                secureTextEntry={this.state.visible}
                 ref={input => (this.passwordInput = input)}
                 value={this.state.password}
                 onChangeText={password => this.setState({ password })}
               />
+              <Icon name={this.state.icon} onPress={() => this.changePasswordVisibility()}/>
+             </View> 
+             
             </View>
             <TouchableOpacity
               style={styles.buttonContainer}
@@ -123,8 +139,6 @@ export default class Login extends Component {
             </TouchableOpacity>
           </KeyboardAvoidingView>
         </View>
-
-      </View>
     );
   }
 }
@@ -135,14 +149,15 @@ const styles = StyleSheet.create({
     backgroundColor: "white"
   },
   logoContainer: {
+    flexDirection: "row",
     alignItems: "center",
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center"
   },
   logo: {
-    width: 200,
-    height: 200
+    width: 100,
+    height: 100
   },
   subtext: {
     color: "black",
@@ -153,7 +168,8 @@ const styles = StyleSheet.create({
     fontSize: 50
   },
   keyboard: {
-    margin: 20,
+    marginLeft: 20,
+    marginRight: 20,
     padding: 20,
     alignSelf: "stretch"
   },

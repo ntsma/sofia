@@ -1,8 +1,8 @@
 /*Home.js*/
 
 import React, { Component } from "react";
-import { ScrollView, StyleSheet, View, RefreshControl } from "react-native";
-import { Badge, Button, Body, Icon, Left, Right, Text} from "native-base";
+import {Alert, ScrollView, StyleSheet, View, RefreshControl } from "react-native";
+import {Badge, Button, Body, Icon, Left, Right, Text} from "native-base";
 
 import AsyncStorage from '@react-native-community/async-storage';
 import NetInfo from "@react-native-community/netinfo";
@@ -10,12 +10,15 @@ import NetInfo from "@react-native-community/netinfo";
 import NumberOfIssuesBadge from "./NumberOfIssuesBadge";
 import ErrorNoInternetMessage from "./ErrorNoInternetMessage";
 
+import {get} from "../controllers/Issues.js";
+
 export default class Home extends Component {
 
   constructor(props){
     super(props);
 
     this.state = {
+      "shouldEmpty": false,
       "isConnected": false,
       "refreshing": false,
       "answeredIssues": [],
@@ -30,13 +33,84 @@ export default class Home extends Component {
    this.setState({"refreshing": true});
 
    this.componentDidMount();
+   this.onSendDraftIssues();
+
+   if(this.state.shouldEmpty == true) {
+     this.onEmptyDraftIssues();
+   }
 
    this.setState({"refreshing": false});
  }
 
+ /*Esvaziando listas de rascunhos enviados offline*/
+ async onEmptyDraftIssues() {
+   await AsyncStorage.setItem("draftQuestions", JSON.stringify([]));
+
+   this.setState({
+     "shouldEmpty": false
+   });
+
+ }
+
   /*Carregando questões enviadas, respondidas, canceladas e rascunhos*/
+
   componentDidMount() {
-    console.log(this.state.waitingEvaluate);
+    this.b();
+  }
+
+  async onSendDraftIssues() {
+    var token = await AsyncStorage.getItem("token");
+    var draftQuestions = await AsyncStorage.getItem("draftQuestions");
+
+    draftQuestions = JSON.parse(draftQuestions);
+
+    console.log(draftQuestions);
+    console.log(draftQuestions.length)
+
+    NetInfo.fetch().then(state => {
+      if(state.isConnected && draftQuestions.length > 0) {
+
+        for(index in draftQuestions) {
+          console.log("Entrou");
+
+          let formdata = new FormData();
+
+          formdata.append("type_id", 52);
+          formdata.append("mode", 'send');
+          formdata.append("description", draftQuestions[index].description);
+          formdata.append("file_ids", draftQuestions[index].file_ids);
+
+          console.log(formdata);
+
+          return fetch('http://sofia.huufma.br/api/solicitation/handle', {
+              method: 'POST',
+              headers: {
+                Authorization: "Bearer " + token
+              },
+              body: formdata,
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+              this.setState({
+                "shouldEmpty": true
+              });
+
+              console.log("Enviado com sucesso!");
+              Alert.alert("Solicitação enviada com succeso!");
+
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+
+        }
+      }
+    });
+  }
+
+
+  b() {
+    console.log(this.state);
 
     NetInfo.fetch().then(state => {
       console.log(state.isConnected);
@@ -51,6 +125,18 @@ export default class Home extends Component {
       this.getSubmittedIssues();
     });
 
+  }
+
+  componentWillUnmount() {
+    this.state = {
+      "isConnected": false,
+      "refreshing": false,
+      "answeredIssues": [],
+      "submittedIssues": [],
+      "draftIssues": [],
+      "canceledIssues": [],
+      "waitingEvaluate": false
+    }
   }
 
   /*Obtendo as questões rascunhos para a Sofia pelo Token*/
@@ -77,6 +163,9 @@ export default class Home extends Component {
   async getAnsweredIssues() {
     const token = await AsyncStorage.getItem("token");
 
+    console.log("CELULAR");
+    console.log(get(token.toString()));
+
     return fetch('http://sofia.huufma.br/api/solicitant/answered', {
       method: 'GET',
       headers: {
@@ -85,21 +174,28 @@ export default class Home extends Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      this.setState({"answeredIssues": responseJson.data});
-
       var answeredIssues = responseJson.data;
 
       this.setState({
         "waitingEvaluate": false
       });
 
+      var special = [];
+
       for(index in answeredIssues) {
         if(answeredIssues[index].status_id == 21) {
           this.setState({
             "waitingEvaluate": true
           });
+
+          special.push(answeredIssues[index]);
+          answeredIssues.splice(index, 1);
+
         }
       }
+
+      this.setState({"answeredIssues": special.concat(answeredIssues)});
+
     })
     .catch((error) => {
       console.error(error);
@@ -147,17 +243,45 @@ export default class Home extends Component {
 
   }
 
+  onNavigateNewIssue() {
+    /*if(this.state.waitingEvaluate) {
+      Alert.alert("Primeiro leia todas as questões respondidas!");
+    } else {
+      this.props.navigation.navigate("NewQuestion");
+
+    }*/
+    this.props.navigation.navigate("NewQuestion");
+
+  }
+
+  atu() {
+    try {
+      if(this.props.navigation.state.params.shouldUpdate) {
+        if(this.props.navigation.state.params.shouldUpdate == true) {
+          this.b();
+
+          this.props.navigation.state.params.shouldUpdate = false;
+        }
+      }
+    } catch(e) {
+
+    }
+  }
+
   render() {
+
+    this.atu();
+
     const answeredIssues = this.state.answeredIssues;
     const submittedIssues = this.state.submittedIssues;
     const canceledIssues = this.state.canceledIssues;
     const draftIssues = this.state.draftIssues;
-
+    const estado = this.state;
     return (
       <View>
         <ErrorNoInternetMessage isConnected={this.state.isConnected} />
 
-        <Button disabled={this.state.waitingEvaluate} block success style={styles.button} onPress={() => {this.props.navigation.navigate("NewQuestion");}}>
+        <Button block success style={styles.button} onPress={() => this.onNavigateNewIssue()}>
           <Icon active type="MaterialIcons" name="question-answer" />
           <Text>Nova Pergunta</Text>
         </Button>
@@ -170,7 +294,7 @@ export default class Home extends Component {
               />
             }
           >
-          <Button disabled={!this.state.isConnected} block light style={styles.button} onPress={() => {this.props.navigation.navigate("AnsweredIssues", {answeredIssues});}}>
+          <Button disabled={!this.state.isConnected} block light style={styles.button} onPress={() => {this.props.navigation.navigate("AnsweredIssues", {answeredIssues, estado});}}>
             <Right>
               <Icon active type="MaterialIcons" name="call-received" />
             </Right>
@@ -178,7 +302,7 @@ export default class Home extends Component {
               <Text>Respondidas</Text>
             </Body>
             <Right>
-              <NumberOfIssuesBadge number={this.state.answeredIssues.length} isConnected={this.state.isConnected} />
+              <NumberOfIssuesBadge number={this.state.answeredIssues.length} isConnected={this.state.isConnected} waitingEvaluate={this.state.waitingEvaluate}/>
             </Right>
           </Button>
 
@@ -200,7 +324,7 @@ export default class Home extends Component {
               <Icon active type="MaterialIcons" name="cancel" />
             </Right>
             <Body>
-              <Text>Canceladas</Text>
+              <Text>Devolvidas</Text>
             </Body>
             <Right>
               <NumberOfIssuesBadge number={this.state.canceledIssues.length} isConnected={this.state.isConnected} />
