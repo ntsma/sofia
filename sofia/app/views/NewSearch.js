@@ -42,7 +42,7 @@ import QuestionSentPopUp from "../components/QuestionSentPopUp";
 import DraftPopUp from "../components/DraftPopUp";
 
 
-export default class NewQuestion extends Component {
+export default class NewSearch extends Component {
   /*Removendo header padrão*/
   static navigationOptions = {
     header: null
@@ -315,7 +315,7 @@ onPressButtonDraft(){
   render() {
     return (
       <Container>
-        <BackHeader navigation={this.props.navigation} name="Nova Pesquisa"/>
+        <BackHeader navigation={this.props.navigation} name="Nova Pergunta"/>
 
         <Content>
 
@@ -325,6 +325,11 @@ onPressButtonDraft(){
             </View>
             <Textarea value={this.state.question} style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
 
+              <Button block warning style={styles.attachButton} onPress={this.onUploadFile.bind(this) }>
+                <Text>Anexar</Text>
+                <Icon type="MaterialIcons" name="file-upload"/>
+              </Button>
+
               <Button block success style={styles.button} onPress={this.onSearch.bind(this)}>
                 <Text>Pesquisar</Text>
                 <Icon type="MaterialIcons" name="search"/>
@@ -332,6 +337,9 @@ onPressButtonDraft(){
               <Modal transparent={true} visible={this.state.isModalVisible} onRequestClose={() => this.changeModalQuestionVisibility(false)} animationType='fade'>
                 <QuestionSentPopUp changeModalQuestionVisibility={this.changeModalQuestionVisibility}/>
               </Modal>
+              <Button block light style={styles.button} onPress={this.onPressButtonDraft.bind(this)}>
+                <Text>Salvar como rascunho</Text>
+              </Button>
               <Modal transparent={true} visible={this.state.isDraftModalVisible} onRequestClose={() => this.changeModalDraftVisibility(false)} animationType='fade'>
                 <DraftPopUp  changeModalDraftVisibility={this.changeModalDraftVisibility}/>
               </Modal>
