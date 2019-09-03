@@ -1,4 +1,4 @@
-package com.app;
+package com.huufmasofia.app;
 
 import android.app.Application;
 

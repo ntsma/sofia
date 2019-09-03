@@ -27,10 +27,6 @@ export default class HomeScreen extends Component {
             <Home navigation={this.props.navigation} />
           </Tab>
 
-          <Tab heading={ <TabHeading style={{ backgroundColor: "#3c8dbc" }} ><Text>Notícias</Text></TabHeading>}>
-            <News navigation={this.props.navigation}/>
-          </Tab>
-
           <Tab heading={ <TabHeading style={{ backgroundColor: "#3c8dbc" }}><Text>Dúvidas</Text></TabHeading>}>
             <FAQ navigation={this.props.navigation}/>
           </Tab>

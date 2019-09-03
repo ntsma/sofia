@@ -29,7 +29,7 @@ export default class DraftIssues extends Component {
   }
 
   async a() {
-    var draftQuestions = await AsyncStorage.getItem("draftQuestions");
+    var draftQuestions = null;
 
     console.log("DRAFT QUESTIONS");
     console.log(draftQuestions);
