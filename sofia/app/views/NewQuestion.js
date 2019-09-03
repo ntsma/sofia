@@ -247,7 +247,7 @@ export default class NewQuestion extends Component {
 
         shouldUpdate = true;
 
-        this.props.navigation.navigate("RelatedQuestionsView", {questions})
+        this.props.navigation.navigate("RelatedQuestionsView", {questions, question})
       })
       .catch((error) => {
         console.error(error);

@@ -59,6 +59,12 @@ export default class NewSearch extends Component {
     };
   }
 
+  componentDidMount() {
+    this.setState({
+      question: this.props.navigation.state.params.question
+    })
+  }
+
   changeModalDraftVisibility = (bool) => (
     this.setState({ isDraftModalVisible : bool })
   )
@@ -330,9 +336,9 @@ onPressButtonDraft(){
                 <Icon type="MaterialIcons" name="file-upload"/>
               </Button>
 
-              <Button block success style={styles.button} onPress={this.onSearch.bind(this)}>
-                <Text>Pesquisar</Text>
-                <Icon type="MaterialIcons" name="search"/>
+              <Button block success style={styles.button} onPress={this.onPressButtonSend.bind(this)}>
+                <Text>Enviar</Text>
+                <Icon type="MaterialIcons" name="send"/>
               </Button>
               <Modal transparent={true} visible={this.state.isModalVisible} onRequestClose={() => this.changeModalQuestionVisibility(false)} animationType='fade'>
                 <QuestionSentPopUp changeModalQuestionVisibility={this.changeModalQuestionVisibility}/>

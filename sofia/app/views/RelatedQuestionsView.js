@@ -32,7 +32,8 @@ export default class RelatedQuestionsView extends Component {
   };
   render() {
    const questions = this.props.navigation.state.params.questions;
-
+   const question = this.props.navigation.state.params.question;
+   
    return (
      <ThemeProvider>
        <BackHeader navigation={this.props.navigation} name="Perguntas relacionadas"/>
@@ -51,7 +52,7 @@ export default class RelatedQuestionsView extends Component {
                                 </Card>}
       />
 
-      <Button block danger onPress={() => this.props.navigation.navigate("NewSearch")}>
+      <Button block danger onPress={() => this.props.navigation.navigate("NewSearch", {question})}>
         <Text>Não solucionou sua dúvida?</Text>
       </Button>
 
