@@ -10,6 +10,7 @@ import {
 
 import {
   ThemeProvider,
+  Card
 } from "react-native-elements";
 
 import {
@@ -41,17 +42,16 @@ export default class RelatedQuestionsView extends Component {
        <FlatList
         data={questions}
         keyExtractor={(item, index) => item.id.toString()}
-        renderItem={({item}) => 
-          <ListItem thumbnail
-            onPress={() => this.props.navigation.navigate("Overlay", {item})}>
-            <Body>
-              <Text style={{minHeight: 30}} numberOfLines={3}>{item.description}</Text>
-            </Body>
-            <Right>
-              <Icon style={styles.next} type="MaterialIcons" name="chevron-right" />
-            </Right>
-          </ListItem>
-        }/>
+        renderItem={({item}) => <Card
+                                >
+                                  <Text
+                                    style={{marginBottom: 10}}
+                                    onPress={() => this.props.navigation.navigate("RelatedIssueView", {item})}
+                                  >
+                                    {item.description}
+                                  </Text>
+                                </Card>}
+      />
 
       <Button block danger onPress={() => this.props.navigation.navigate("NewSearch", {question})}>
         <Text>Não solucionou sua dúvida?</Text>
