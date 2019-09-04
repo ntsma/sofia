@@ -20,6 +20,8 @@ import EditCanceledIssue from "./app/views/EditCanceledIssue";
 import ShowDetails from "./app/views/ShowDetails";
 import RelatedQuestionsView from "./app/views/RelatedQuestionsView";
 import NewSearch from "./app/views/NewSearch";
+import RelatedIssueView from "./app/views/RelatedIssueView";
+
 
 class Home extends Component {
 
@@ -200,6 +202,13 @@ const App = createStackNavigator({
     screen: ShowObservation,
     navigationOptions: {
       title: "ShowObservation"
+    }
+  },
+
+  RelatedIssueView: {
+    screen: RelatedIssueView,
+    navigationOptions: {
+      title: "RelatedIssueView"
     }
   },
 

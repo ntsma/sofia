@@ -45,7 +45,7 @@ export default class RelatedQuestionsView extends Component {
                                 >
                                   <Text
                                     style={{marginBottom: 10}}
-                                    onPress={() => this.props.navigation.navigate("Overlay", {item})}
+                                    onPress={() => this.props.navigation.navigate("RelatedIssueView", {item})}
                                   >
                                     {item.description}
                                   </Text>

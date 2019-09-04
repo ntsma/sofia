@@ -1,52 +1,31 @@
+/*RelatedIssueView.js*/
+
 import React, { Component } from "react";
 import {
-  Alert,
-  AppRegistry,
   ActivityIndicator,
-  Dimensions,
-  KeyboardAvoidingView,
   TouchableOpacity,
-  Image,
-  TextInput,
   StyleSheet,
   View
+
 } from "react-native";
 
 import {
-  Badge,
-  Body,
-  Button,
   Container,
   Content,
-  Form,
   Header,
-  Icon,
   Item,
-  Input,
-  Label,
-  Left,
-  Right,
-  Tab,
-  TabHeading,
-  Tabs,
+  Input, 
   Text,
-  Textarea,
   Title,
-  Thumbnail
+  
 } from "native-base";
-
-import {
-    Rating,
-    AirbnbRating,
-    Card
-} from 'react-native-elements';
 
 import BackHeader from "../components/BackHeader";
 import Evaluation from "../components/Evaluation";
 
 import AsyncStorage from '@react-native-community/async-storage';
 
-export default class Overlay extends Component {
+export default class RelatedIssueView extends Component {
   static navigationOptions = {
     header: null
   };
@@ -69,72 +48,13 @@ export default class Overlay extends Component {
   }
 
   componentDidMount() {
-    this.getSubmittedIssues();
+    this.getRelatedIssue();
   }
-
-  setSatifaction(text) {
-    const array = [31, 30, 29, 28, 27];
-    const sastifaction = array[text - 1];
-
-    this.setState({
-      "sastifaction": sastifaction
-    });
-  }
-
-  setAttendance(text) {
-    const array = [34, 33, 32];
-    const attendance = array[text - 1];
-
-    this.setState({
-      "attendance": attendance
-    });
-  }
-
-  async judge() {
-    const sastifaction = this.state.sastifaction;
-    const attendance = this.state.attendance;
-
-    const token = await AsyncStorage.getItem("token");
-
-    console.debug("OBTENDO O TOKEN DE ACESSO...");
-    console.debug("TOKEN: " + token);
-
-    let formdata = new FormData();
-
-    formdata.append("satisfaction", sastifaction);
-    formdata.append("attendance", attendance);
-    formdata.append("avoided_forwarding", false);
-    formdata.append("induced_forwarding", false);
-    formdata.append("observation", "");
-
-    console.debug(formdata);
-
-    return fetch('http://sofia.huufma.br/api/solicitation/evaluate/' + this.props.navigation.state.params.item.id, {
-      method: 'POST',
-      headers: {
-        Authorization: "Bearer " + token
-      },
-      body: formdata
-    })
-    .then((response) => response.json())
-    .then((responseJson) => {
-
-      console.debug(responseJson);
-
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-
-  }
-
+  
   /*Obtendo as questões enviadas para a Sofia pelo Token*/
-  async getSubmittedIssues() {
+  async getRelatedIssue() {
     const token = await AsyncStorage.getItem("token");
-
-    console.debug("OBTENDO O TOKEN DE ACESSO...");
-    console.debug("TOKEN: " + token);
-
+    
     return fetch('http://sofia.huufma.br/api/answer/read/' + this.props.navigation.state.params.item.id, {
       method: 'GET',
       headers: {
@@ -143,8 +63,7 @@ export default class Overlay extends Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.debug("OBTENDO RESPOSTA...");
-      console.debug("RESPOSTA");
+      console.debug("RETURNING...");
       console.debug(responseJson);
 
       this.setState({
@@ -166,7 +85,7 @@ export default class Overlay extends Component {
   render() {
     return (
       <Container>
-        <BackHeader navigation={this.props.navigation} name="Respondidas" />
+        <BackHeader navigation={this.props.navigation} name="Pergunta relacionada" />
         <Content>
           {
             this.state.showME ?
@@ -199,7 +118,7 @@ export default class Overlay extends Component {
                 </View>
 
                 <View style={styles.section}>
-                  <Evaluation navigation={this.props.navigation} data={this.state.data} judgeType="1" />
+                  <Evaluation navigation={this.props.navigation} data={this.state.data} judgeType="0" />
                 </View>
               </View>
           }
@@ -240,37 +159,3 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     }
 });
-
-
-/*
-<Form>
-            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'stretch'}}>
-              <Label style={{ fontSize: 20 }}>{this.props.navigation.state.params.item.description}</Label>
-            </View>
-
-            <Card title="Resposta">
-              <Text>{this.state.answer}</Text>
-            </Card>
-
-            <Card title="Complemento">
-              <Text>{this.state.complement}</Text>
-            </Card>
-
-            <Card title="Atributos">
-              <Text>{this.state.attributes}</Text>
-            </Card>
-
-            <Card title="Educação Permanente">
-              <Text>{this.state.permanent_education}</Text>
-            </Card>
-
-            <Card title="Referências">
-              <Text>{this.state.references}</Text>
-            </Card>
-
-            <Evaluation />
-
-          </Form>
-          */
-
-AppRegistry.registerComponent("Overlay", () => Overlay);

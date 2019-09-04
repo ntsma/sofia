@@ -38,12 +38,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 export default class EvaluateButton extends Component {
 
-  async judge() {
-    const sastifaction = this.props.sastifaction;
-    const attendance = this.props.attendance;
-
-    const token = await AsyncStorage.getItem("token");
-
+  judgeNormal(token, sastifaction, attendance) {
     let formdata = new FormData();
 
     formdata.append("satisfaction", sastifaction);
@@ -64,7 +59,7 @@ export default class EvaluateButton extends Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.log("EEEEEE");
+      console.log("Avaliação de questão respondida");
       console.debug(responseJson);
 
       shouldUpdate = true;
@@ -74,6 +69,55 @@ export default class EvaluateButton extends Component {
     .catch((error) => {
       console.error(error);
     });
+  }
+  
+  judgeRelatedIssue(token, sastifaction, attendance) {
+    let formdata = new FormData();
+
+    formdata.append("satisfaction", sastifaction);
+    formdata.append("attendance", attendance);
+    formdata.append("avoided_forwarding", false);
+    formdata.append("induced_forwarding", false);
+    formdata.append("observation", "");
+    formdata.append("answer_id", this.props.data.solicitation_id);
+
+    console.log(this.props.data);
+    console.debug(formdata);
+
+    return fetch('http://sofia.huufma.br/api/solicitation/bysearch/evaluate', {
+      method: 'POST',
+      headers: {
+        Authorization: "Bearer " + token
+      },
+      body: formdata
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.log("Avaliação de questão relacionada");
+      console.debug(responseJson);
+
+      shouldUpdate = true;
+      this.props.navigation.navigate("HomeScreen", {shouldUpdate});
+
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+
+  async judge() {
+    const sastifaction = this.props.sastifaction;
+    const attendance = this.props.attendance;
+
+    const token = await AsyncStorage.getItem("token");
+
+    if(this.props.judgeType == "1") {
+      this.judgeNormal(token, sastifaction, attendance);
+
+    } else {
+      this.judgeRelatedIssue(token, sastifaction, attendance);
+
+    }
 
   }
 
