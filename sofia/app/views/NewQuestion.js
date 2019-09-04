@@ -9,7 +9,8 @@ import {
   TextInput,
   StyleSheet,
   View,
-  Modal
+  Modal,
+  ActivityIndicator
 } from "react-native";
 
 import {
@@ -56,6 +57,7 @@ export default class NewQuestion extends Component {
       "question": "",
       "isDraftModalVisible": false,
       "isModalVisible": false,
+      "isLoading": false,
     };
   }
 
@@ -65,6 +67,10 @@ export default class NewQuestion extends Component {
 
   changeModalQuestionVisibility = (bool) => (
     this.setState({ isModalVisible : bool })
+  )
+
+  showLoader = (bool) => (
+    this.setState({ isLoading: bool })
   )
 
   createFormData(photo, body) {
@@ -223,7 +229,12 @@ export default class NewQuestion extends Component {
     });
   }
 
+  
+
   async onSearch() {
+
+    this.showLoader(true);
+
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
 
@@ -256,6 +267,7 @@ export default class NewQuestion extends Component {
 
 
   async onCreateDraftQuestion() {
+
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
 
@@ -316,9 +328,11 @@ onPressButtonDraft(){
     return (
       <Container>
         <BackHeader navigation={this.props.navigation} name="Nova Pesquisa"/>
-
-        <Content>
-
+        {
+          this.state.isLoading ?
+          <ActivityIndicator style={styles.load} size="large" color="#3c8dbc"/>
+          :
+          <Content>
           <Form style={styles.container}>
             <View style={styles.title}>
               <Label style={styles.textTitle}>Descreva sua pergunta</Label>
@@ -329,6 +343,7 @@ onPressButtonDraft(){
                 <Text>Pesquisar</Text>
                 <Icon type="MaterialIcons" name="search"/>
               </Button>
+
               <Modal transparent={true} visible={this.state.isModalVisible} onRequestClose={() => this.changeModalQuestionVisibility(false)} animationType='fade'>
                 <QuestionSentPopUp changeModalQuestionVisibility={this.changeModalQuestionVisibility}/>
               </Modal>
@@ -338,9 +353,8 @@ onPressButtonDraft(){
               <View style={{height: 3}}>
               </View>
           </Form>
-
          </Content>
-
+        }
       </Container>
     );
   }
@@ -389,5 +403,10 @@ const styles = StyleSheet.create({
   textArea: {
     width: '90%',
     backgroundColor: '#f6f6f6'
-  }
+  },
+  load: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
