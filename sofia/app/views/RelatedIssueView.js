@@ -118,7 +118,7 @@ export default class RelatedIssueView extends Component {
                 </View>
 
                 <View style={styles.section}>
-                  <Evaluation navigation={this.props.navigation} data={this.state.data} judgeType="0" />
+                  <Evaluation navigation={this.props.navigation} data={this.state.data} judgeType="0" buttonIsVisible={true}/>
                 </View>
               </View>
           }

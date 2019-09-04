@@ -199,7 +199,7 @@ export default class Overlay extends Component {
                 </View>
 
                 <View style={styles.section}>
-                  <Evaluation navigation={this.props.navigation} data={this.state.data} judgeType="1" />
+                  <Evaluation navigation={this.props.navigation} data={this.state.data} judgeType="1" buttonIsVisible={false}/>
                 </View>
               </View>
           }
