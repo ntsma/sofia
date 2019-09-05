@@ -258,6 +258,8 @@ export default class NewQuestion extends Component {
 
         shouldUpdate = true;
 
+        this.showLoader(false);
+
         this.props.navigation.navigate("RelatedQuestionsView", {questions, question})
       })
       .catch((error) => {
@@ -413,8 +415,8 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     fontSize: 16,
-    marginLeft: '5%',
-
+    width: '93%',
+    textAlign: 'center',
   },
   textArea: {
     width: '90%',

@@ -42,15 +42,19 @@ export default class RelatedQuestionsView extends Component {
        <FlatList
         data={questions}
         keyExtractor={(item, index) => item.id.toString()}
-        renderItem={({item}) => <Card
-                                >
-                                  <Text
-                                    style={{marginBottom: 10}}
-                                    onPress={() => this.props.navigation.navigate("RelatedIssueView", {item})}
-                                  >
-                                    {item.description}
-                                  </Text>
-                                </Card>}
+        renderItem={({item}) => 
+        
+          <ListItem thumbnail style={styles.list}
+            onPress={() => this.props.navigation.navigate("RelatedIssueView", {item})}>
+            <Body>
+              <Text numberOfLines={3} style={styles.bodyText}>{item.description}</Text>
+            </Body>
+            <Right>
+              <Icon style={styles.next} type="MaterialIcons" name="chevron-right" />
+            </Right>
+          </ListItem>
+        
+        }
       />
 
       <Button block danger onPress={() => this.props.navigation.navigate("NewSearch", {question})}>
@@ -64,9 +68,18 @@ export default class RelatedQuestionsView extends Component {
 }
 
 const styles = StyleSheet.create ({
+  bodyText: {
+    marginTop: -5,
+    minHeight: 30,
+  },
+  inbox: {
+    width: 30,
+    height: 30,
+    fontSize: 30,
+  },
   next: {
     height: 30,
     fontSize: 30,
-    color: '#3c8dbc'
+    color: '#3c8dbc80'
   }
 });

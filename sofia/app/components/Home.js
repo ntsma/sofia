@@ -284,7 +284,7 @@ export default class Home extends Component {
 
         <Button block success style={styles.button} onPress={() => this.onNavigateNewIssue()}>
           <Icon active type="MaterialIcons" name="question-answer" />
-          <Text>Nova Pergunta</Text>
+          <Text>Qual a sua dúvida?</Text>
         </Button>
 
         <ScrollView
