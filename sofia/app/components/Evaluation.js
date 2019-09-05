@@ -121,9 +121,7 @@ onPressRate(){
   }
 
   render() {
-    console.log("OOOOOOOOOO");
-    console.log(this.props.data);
-
+  
     return (
       <Card title="Avaliação">
         <Label>Grau de Satisfação</Label>

@@ -74,13 +74,14 @@ export default class EvaluateButton extends Component {
   judgeRelatedIssue(token, sastifaction, attendance) {
     let formdata = new FormData();
 
-    formdata.append("satisfaction", sastifaction);
-    formdata.append("attendance", attendance);
+    formdata.append("sats", sastifaction);
+    formdata.append("att", attendance);
     formdata.append("avoided_forwarding", false);
     formdata.append("induced_forwarding", false);
     formdata.append("observation", "");
-    formdata.append("answer_id", this.props.data.solicitation_id);
+    formdata.append("answer_id", this.props.data.answer_id);
 
+    console.log("RUBEM");
     console.log(this.props.data);
     console.debug(formdata);
 
@@ -91,7 +92,7 @@ export default class EvaluateButton extends Component {
       },
       body: formdata
     })
-    .then((response) => response.json())
+    .then((response) => response.text())
     .then((responseJson) => {
       console.log("Avaliação de questão relacionada");
       console.debug(responseJson);

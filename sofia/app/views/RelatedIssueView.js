@@ -34,6 +34,7 @@ export default class RelatedIssueView extends Component {
     super(props);
 
     this.state = {
+      "answer": "",
       "data": null,
       "status_description": "",
       "answer": "",
@@ -67,6 +68,7 @@ export default class RelatedIssueView extends Component {
       console.debug(responseJson);
 
       this.setState({
+        "answer_id": responseJson.data.answer_id,
         "data": responseJson.data,
         "status_description": responseJson.data.status_description,
         "answer": responseJson.data.answer,
