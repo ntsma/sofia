@@ -335,7 +335,7 @@ onPressButtonDraft(){
           <Content>
           <Form style={styles.container}>
             <View style={styles.title}>
-              <Label style={styles.textTitle}>Descreva sua pergunta</Label>
+              <Label style={styles.textTitle}>Antes de prosseguir com a sua solicitação, verifique se na SOFIA já existe uma resposta para o questionamento que você procura</Label>
             </View>
             <Textarea value={this.state.question} style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
 
@@ -398,7 +398,9 @@ const styles = StyleSheet.create({
     margin: 10
   },
   textTitle: {
-    fontSize: 20
+    fontSize: 16,
+    marginLeft: '5%',
+
   },
   textArea: {
     width: '90%',
