@@ -175,7 +175,6 @@ export default class Overlay extends Component {
               </Container>
               :
               <View style={styles.container}>
-                <Text style={styles.text}>{this.state.status_description}</Text>
                 <Text style={styles.header}>{this.props.navigation.state.params.item.description}</Text>
                 <View style={styles.section}>
                   <Text style={styles.title}>Resposta</Text>
@@ -221,7 +220,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fafcfd'
   },
   section: {
-    backgroundColor: '#edf5f9',
     padding: 5,
     marginBottom: 10
   },
