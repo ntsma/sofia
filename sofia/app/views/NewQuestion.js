@@ -27,7 +27,7 @@ import {
   Label,
   Text,
   Textarea,
-  Title,
+  Title, Left,
 } from "native-base";
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -387,6 +387,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  enviar: {
+    width: '53%',
+    marginLeft: '2%',
+    alignItems: 'center'
+  },
+  anexo: {
+    width: '35%',
+    marginLeft: 0,
+  },
   container: {
     alignItems: 'center'
   },
