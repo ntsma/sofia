@@ -78,6 +78,7 @@ export default class Home extends Component {
           formdata.append("type_id", 52);
           formdata.append("mode", 'send');
           formdata.append("description", draftQuestions[index].description);
+          formdata.append("mobile", 1);
           formdata.append("file_ids", draftQuestions[index].file_ids);
 
           console.log(formdata);
@@ -283,7 +284,7 @@ export default class Home extends Component {
 
         <Button block success style={styles.button} onPress={() => this.onNavigateNewIssue()}>
           <Icon active type="MaterialIcons" name="question-answer" />
-          <Text>Nova Pergunta</Text>
+          <Text>Qual a sua dúvida?</Text>
         </Button>
 
         <ScrollView

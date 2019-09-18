@@ -54,6 +54,7 @@ export default class Evaluation extends Component {
       "sastifaction": 0,
       "attendance": 0,
       isModalRateVisible: false,
+      buttonIsVisible: false
     };
   }
 
@@ -76,6 +77,18 @@ onPressRate(){
       "attendance": [34, 33, 32].indexOf(evaluation_attendance_status_id)
 
     })
+
+    if(this.props.buttonIsVisible) { 
+      this.setState({
+        "buttonIsVisible": true,
+        "sastifaction": 0,
+        "attendance": 0,
+      })  
+    } else {
+      this.setState({
+        "buttonIsVisible": (this.props.data.status_id == 21) ? true : false  
+      })
+    }
 
   }
 
@@ -108,9 +121,7 @@ onPressRate(){
   }
 
   render() {
-    console.log("OOOOOOOOOO");
-    console.log(this.props.data);
-
+  
     return (
       <Card title="Avaliação">
         <Label>Grau de Satisfação</Label>
@@ -134,7 +145,7 @@ onPressRate(){
           <RatedPopUp changeModalRateVisibility={this.changeModalRateVisibility}/>
         </Modal>
 
-        <EvaluateButton navigation={this.props.navigation} data={this.props.data} sastifaction={this.state.sastifaction} attendance={this.state.attendance} buttonIsVisible={(this.props.data.status_id == 21) ? true : false} />
+        <EvaluateButton navigation={this.props.navigation} data={this.props.data} sastifaction={this.state.sastifaction} attendance={this.state.attendance} buttonIsVisible={this.state.buttonIsVisible} judgeType={this.props.judgeType} />
       </Card>
     );
   }

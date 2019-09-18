@@ -18,8 +18,12 @@ import EditQuestion from "./app/views/EditQuestion";
 import ShowObservation from "./app/views/ShowObservation";
 import EditCanceledIssue from "./app/views/EditCanceledIssue";
 import ShowDetails from "./app/views/ShowDetails";
+import RelatedQuestionsView from "./app/views/RelatedQuestionsView";
+import NewSearch from "./app/views/NewSearch";
+import RelatedIssueView from "./app/views/RelatedIssueView";
 
-class Home extends Component<{}> {
+
+class Home extends Component {
 
   state = {
     logging: "false"
@@ -116,6 +120,21 @@ const App = createStackNavigator({
         title: "HomeScreen"
       },
   },
+
+  RelatedQuestionsView: {
+    screen: RelatedQuestionsView,
+    navigationOptions: {
+        title: "RelatedQuestionsView"
+      },
+  },
+
+  NewSearch: {
+    screen: NewSearch,
+    navigationOptions: {
+        title: "NewSearch"
+      },
+  },
+
   Login: {
     screen: Login,
     navigationOptions: {
@@ -183,6 +202,13 @@ const App = createStackNavigator({
     screen: ShowObservation,
     navigationOptions: {
       title: "ShowObservation"
+    }
+  },
+
+  RelatedIssueView: {
+    screen: RelatedIssueView,
+    navigationOptions: {
+      title: "RelatedIssueView"
     }
   },
 

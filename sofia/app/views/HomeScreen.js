@@ -8,7 +8,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import MainHeader from "../components/MainHeader";
 import FAQ from "../components/FAQ";
 import Home from "../components/Home";
-import News from "../components/News";
 
 export default class HomeScreen extends Component {
   /*Removendo header padrão da tela*/
@@ -23,15 +22,11 @@ export default class HomeScreen extends Component {
         <MainHeader navigation={this.props.navigation}/>
 
         <Tabs style={Platform.OS === 'android' ? { overflow: 'hidden' } : null}>
-        <Tab heading="Perguntas" tabStyle={{backgroundColor: '#3c8dbc'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#3c8dbc'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
+          <Tab heading="Perguntas" tabStyle={{backgroundColor: '#3c8dbc'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#3c8dbc'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
             <Home navigation={this.props.navigation} />
           </Tab>
 
-          <Tab heading="Notícias" tabStyle={{backgroundColor: '#3c8dbc'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#3c8dbc'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
-            <News navigation={this.props.navigation}/>
-          </Tab>
-
-          <Tab heading="Dúvidas" tabStyle={{backgroundColor: '#3c8dbc'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#3c8dbc'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
+          <Tab heading={ <TabHeading style={{ backgroundColor: "#3c8dbc" }}><Text>Dúvidas</Text></TabHeading>}>
             <FAQ navigation={this.props.navigation}/>
           </Tab>
 

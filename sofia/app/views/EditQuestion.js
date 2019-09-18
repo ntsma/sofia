@@ -60,6 +60,7 @@ export default class EditQuestion extends Component {
 
     formdata.append("type_id", 52);
     formdata.append("mode", 'send');
+    formdata.append("mobile", 1);
     formdata.append("description", question);
 
     console.debug(formdata);
@@ -97,6 +98,7 @@ export default class EditQuestion extends Component {
 
     formdata.append("type_id", 52);
     formdata.append("mode", 'draft');
+    formdata.append("mobile", 1);
     formdata.append("description", question)
 
     console.debug(formdata);

@@ -9,8 +9,7 @@ import {
   TextInput,
   StyleSheet,
   View,
-  Modal,
-  ActivityIndicator
+  Modal
 } from "react-native";
 
 import {
@@ -27,7 +26,7 @@ import {
   Label,
   Text,
   Textarea,
-  Title, Left,
+  Title,
 } from "native-base";
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -43,7 +42,7 @@ import QuestionSentPopUp from "../components/QuestionSentPopUp";
 import DraftPopUp from "../components/DraftPopUp";
 
 
-export default class NewQuestion extends Component {
+export default class NewSearch extends Component {
   /*Removendo header padrão*/
   static navigationOptions = {
     header: null
@@ -57,8 +56,13 @@ export default class NewQuestion extends Component {
       "question": "",
       "isDraftModalVisible": false,
       "isModalVisible": false,
-      "isLoading": false,
     };
+  }
+
+  componentDidMount() {
+    this.setState({
+      question: this.props.navigation.state.params.question
+    })
   }
 
   changeModalDraftVisibility = (bool) => (
@@ -67,10 +71,6 @@ export default class NewQuestion extends Component {
 
   changeModalQuestionVisibility = (bool) => (
     this.setState({ isModalVisible : bool })
-  )
-
-  showLoader = (bool) => (
-    this.setState({ isLoading: bool })
   )
 
   createFormData(photo, body) {
@@ -229,12 +229,7 @@ export default class NewQuestion extends Component {
     });
   }
 
-  
-
   async onSearch() {
-
-    this.showLoader(true);
-
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
 
@@ -258,9 +253,7 @@ export default class NewQuestion extends Component {
 
         shouldUpdate = true;
 
-        this.showLoader(false);
-
-        this.props.navigation.navigate("RelatedQuestionsView", {questions, question})
+        this.props.navigation.navigate("RelatedQuestionsView", {questions})
       })
       .catch((error) => {
         console.error(error);
@@ -269,7 +262,6 @@ export default class NewQuestion extends Component {
 
 
   async onCreateDraftQuestion() {
-
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
 
@@ -329,34 +321,40 @@ onPressButtonDraft(){
   render() {
     return (
       <Container>
-        <BackHeader navigation={this.props.navigation} name="Nova Pesquisa"/>
-        {
-          this.state.isLoading ?
-          <ActivityIndicator style={styles.load} size="large" color="#3c8dbc"/>
-          :
-          <Content>
+        <BackHeader navigation={this.props.navigation} name="Nova Pergunta"/>
+
+        <Content>
+
           <Form style={styles.container}>
             <View style={styles.title}>
-              <Label style={styles.textTitle}>Antes de prosseguir com a sua solicitação, verifique se na SOFIA já existe uma resposta para o questionamento que você procura</Label>
+              <Label style={styles.textTitle}>Descreva sua pergunta</Label>
             </View>
             <Textarea value={this.state.question} style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
 
-              <Button block success style={styles.button} onPress={this.onSearch.bind(this)}>
-                <Text>Pesquisar</Text>
-                <Icon type="MaterialIcons" name="search"/>
+              <Button block warning style={styles.attachButton} onPress={this.onUploadFile.bind(this) }>
+                <Text>Anexar</Text>
+                <Icon type="MaterialIcons" name="file-upload"/>
               </Button>
 
+              <Button block success style={styles.button} onPress={this.onPressButtonSend.bind(this)}>
+                <Text>Enviar</Text>
+                <Icon type="MaterialIcons" name="send"/>
+              </Button>
               <Modal transparent={true} visible={this.state.isModalVisible} onRequestClose={() => this.changeModalQuestionVisibility(false)} animationType='fade'>
                 <QuestionSentPopUp changeModalQuestionVisibility={this.changeModalQuestionVisibility}/>
               </Modal>
+              <Button block light style={styles.button} onPress={this.onPressButtonDraft.bind(this)}>
+                <Text>Salvar como rascunho</Text>
+              </Button>
               <Modal transparent={true} visible={this.state.isDraftModalVisible} onRequestClose={() => this.changeModalDraftVisibility(false)} animationType='fade'>
                 <DraftPopUp  changeModalDraftVisibility={this.changeModalDraftVisibility}/>
               </Modal>
               <View style={{height: 3}}>
               </View>
           </Form>
+
          </Content>
-        }
+
       </Container>
     );
   }
@@ -389,20 +387,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  enviar: {
-    width: '53%',
-    marginLeft: '2%',
-    alignItems: 'center'
-  },
-  anexo: {
-    width: '35%',
-    marginLeft: 0,
-  },
   container: {
     alignItems: 'center'
   },
@@ -414,17 +398,10 @@ const styles = StyleSheet.create({
     margin: 10
   },
   textTitle: {
-    fontSize: 16,
-    width: '93%',
-    textAlign: 'center',
+    fontSize: 20
   },
   textArea: {
     width: '90%',
     backgroundColor: '#f6f6f6'
-  },
-  load: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  }
 });
