@@ -1,7 +1,7 @@
 /*HomeScreen.js*/
 import React, { Component } from "react";
-import { Image, Platform, ScrollView, View } from "react-native";
-import { Container, Tab, TabHeading, Tabs, Text} from "native-base";
+import { Platform } from "react-native";
+import { Container, Tab, Tabs} from "native-base";
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -22,7 +22,7 @@ export default class HomeScreen extends Component {
         <MainHeader navigation={this.props.navigation}/>
 
         <Tabs style={Platform.OS === 'android' ? { overflow: 'hidden' } : null}>
-          <Tab heading={ <TabHeading style={{ backgroundColor: "#3c8dbc" }}><Text>Perguntas</Text></TabHeading>}>
+          <Tab heading="Perguntas" tabStyle={{backgroundColor: '#3c8dbc'}} textStyle={{color: '#fff'}} activeTabStyle={{backgroundColor: '#3c8dbc'}} activeTextStyle={{color: '#fff', fontWeight: 'normal'}}>
             <Home navigation={this.props.navigation} />
           </Tab>
 
