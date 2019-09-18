@@ -9,11 +9,11 @@ export default class BackHeader extends Component {
         <Left>
           <Button transparent
           onPress={() => this.props.navigation.goBack() }>
-            <Icon type="MaterialIcons" name="arrow-back" />
+            <Icon style={{ color: '#FFF' }} type="MaterialIcons" name="arrow-back" />
           </Button>
         </Left>
         <Body>
-          <Title>{this.props.name}</Title>
+          <Title style={{color: '#FFF'}}>{this.props.name}</Title>
         </Body>
         <Right>
         </Right>

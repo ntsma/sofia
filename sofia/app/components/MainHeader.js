@@ -35,17 +35,17 @@ export default class MainHeader extends Component {
     return (
       <Header hasTabs androidStatusBarColor="#3c8dbc" style={{ backgroundColor: "#3c8dbc"}}>
         <Left>
-          <Image style={{ width: 30, height: 30}} source={require("../resources/logo.png")} />
+          <Image style={{ width: 30, height: 30, marginLeft: 10}} source={require("../resources/logo.png")} />
         </Left>
         <Body>
-          <Title>Sofia</Title>
+          <Title style={{ color: '#FFF' }}>Sofia</Title>
         </Body>
         <Right>
           <Button
             transparent
             onPress={this.logout.bind(this)}
           >
-            <Icon type="MaterialIcons" name="exit-to-app" />
+            <Icon style={{ color: '#FFF', fontSize: 24, }} type="MaterialIcons" name="exit-to-app" />
           </Button>
         </Right>
       </Header>

@@ -98,11 +98,12 @@ export default class Login extends Component {
   render() {
     return (
         <View behavior="padding" style={styles.container}>
+        <KeyboardAvoidingView style={styles.keyboard}>
           <View style={styles.logoContainer}>
             <Image style={styles.logo} source={require("../resources/logo.png")} />
             <Text style={styles.subtext}>Sofia</Text>
           </View>
-          <KeyboardAvoidingView style={styles.keyboard}>
+          
 
             <View style={styles.window}>
               <TextInput
@@ -146,7 +147,8 @@ export default class Login extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white"
+    backgroundColor: "white",
+    justifyContent: 'space-around'
   },
   logoContainer: {
     flexDirection: "row",
