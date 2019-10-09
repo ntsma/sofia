@@ -4,7 +4,9 @@ import React, { Component } from "react";
 
 import {
   Image,
-  BackHandler
+  BackHandler,
+  StatusBar,
+  Platform,
 } from "react-native";
 
 import {
@@ -20,20 +22,27 @@ import {
 
 import AsyncStorage from '@react-native-community/async-storage';
 
+import RNExitApp from 'react-native-exit-app';
+
 export default class MainHeader extends Component {
   /*Saindo do app*/
   async logout() {
     await AsyncStorage.setItem("token", "");
     await AsyncStorage.setItem("logging", "false");
 
-    BackHandler.exitApp();
+    if(Platform.OS == 'ios'){
+      RNExitApp.exitApp();
+    }else{
+      BackHandler.exitApp();
+    } 
+    
     return true;
-
   }
 
   render() {
     return (
       <Header hasTabs androidStatusBarColor="#3c8dbc" style={{ backgroundColor: "#3c8dbc"}}>
+      <StatusBar backgroundColor="#3c8dbc" barStyle="light-content" />
         <Left>
           <Image style={{ width: 30, height: 30, marginLeft: 10}} source={require("../resources/logo.png")} />
         </Left>
