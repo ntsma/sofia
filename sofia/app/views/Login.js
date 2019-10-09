@@ -1,21 +1,11 @@
 import React, { Component } from "react";
-import {
-  Alert,
-  AppRegistry,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  Image,
-  TextInput,
-  StyleSheet,
-  Text,
-  View
-} from "react-native";
-
+import { Alert, AppRegistry, Image, KeyboardAvoidingView, Platform, StatusBar, StyleSheet, TouchableOpacity, TextInput, Text, View } from "react-native";
 import { Icon } from "native-base"
 
 import AsyncStorage from '@react-native-community/async-storage';
-
 import { StackNavigator } from "react-navigation";
+
+import logo from '../resources/logo.png';
 
 export default class Login extends Component {
   constructor() {
@@ -97,49 +87,47 @@ export default class Login extends Component {
 
   render() {
     return (
-        <View behavior="padding" style={styles.container}>
-        <KeyboardAvoidingView style={styles.keyboard}>
-          <View style={styles.logoContainer}>
-            <Image style={styles.logo} source={require("../resources/logo.png")} />
-            <Text style={styles.subtext}>Sofia</Text>
-          </View>
-          
-
-            <View style={styles.window}>
-              <TextInput
-                placeholder="E-mail"
-                returnKeyType="next"
-                onSubmitEditing={() => this.passwordInput.focus()}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                autoCorrect={false}
-                value={this.state.email}
-                onChangeText={email => this.setState({ email })}
-              />
-            </View>
-            <View style={styles.window}>
-             <View style={{ flexDirection: 'row'}}> 
-             <TextInput
-                style={{flex:3}}
-                placeholder="Senha"
-                returnKeyType="go"
-                secureTextEntry={this.state.visible}
-                ref={input => (this.passwordInput = input)}
-                value={this.state.password}
-                onChangeText={password => this.setState({ password })}
-              />
-              <Icon name={this.state.icon} onPress={() => this.changePasswordVisibility()}/>
-             </View> 
-             
-            </View>
-            <TouchableOpacity
-              style={styles.buttonContainer}
-              onPress={this.onLoginPress.bind(this)}
-            >
-              <Text style={styles.buttonText}>Entrar</Text>
-            </TouchableOpacity>
-          </KeyboardAvoidingView>
+      <KeyboardAvoidingView
+        behavior="padding"
+        enabled={Platform.OS == 'ios'}
+        style={styles.container}>
+        <StatusBar backgroundColor="#3c8dbc" barStyle="dark-content" />
+        <View style={styles.header}>
+          <Image style={styles.logo} source={logo}/>
+          <Text style={styles.text}>Sofia</Text>
         </View>
+        <TextInput
+          autoCapitalize="none"
+          autoCorrect={false}
+          keyboardType="email-address"
+          returnKeyType="next"
+          placeholder="Digite seu E-mail ou CPF"
+          placeholderTextColor="#999"
+          style={styles.input}
+          value={this.state.email}
+          onChangeText={email => this.setState({ email })}
+          onSubmitEditing={() => this.passwordInput.focus()}
+        />
+        <View style={styles.hidePassword}>
+          <TextInput
+            autoCapitalize="none"
+            autoCorrect={false}
+            keyboardType="email-address"
+            returnKeyType="go"
+            placeholder="Digite sua senha"
+            placeholderTextColor="#999"
+            style={styles.inputPassword}
+            secureTextEntry={this.state.visible}
+            value={this.state.password}
+            ref={input => (this.passwordInput = input)}
+            onChangeText={password => this.setState({ password })}
+          />
+          <Icon style={styles.iconPassword} name={this.state.icon} onPress={() => this.changePasswordVisibility()}/>
+        </View>
+        <TouchableOpacity onPress={this.onLoginPress.bind(this)} style={styles.button}>
+          <Text style={styles.buttonText}>Enviar</Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -147,50 +135,79 @@ export default class Login extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
-    justifyContent: 'space-around'
+    position: 'relative',
+    justifyContent: 'center',
+    alignItems:'center',
+    backgroundColor: '#FFF',
+    padding: 30,
   },
-  logoContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    flexGrow: 1,
-    justifyContent: "center",
-    alignItems: "center"
+
+  header: {
+    flexDirection: 'row',
+    marginBottom: 100,
   },
+
   logo: {
     width: 100,
-    height: 100
+    height: 100,
   },
-  subtext: {
+
+  text: {
     color: "black",
-    marginTop: 10,
+    marginTop: 20,
     width: 200,
     textAlign: "center",
     opacity: 0.8,
     fontSize: 50
   },
-  keyboard: {
-    marginLeft: 20,
-    marginRight: 20,
-    padding: 20,
-    alignSelf: "stretch"
-  },
-  buttonContainer: {
-    backgroundColor: "#3c8dbc",
-    paddingVertical: 15
-  },
-  buttonText: {
-    textAlign: "center",
-    color: "#FFF",
-    fontWeight: "700"
-  },
-  button: {
-    backgroundColor: "#3c8dbc",
-    paddingVertical: 15
-  },
-  window: {
-    marginBottom: 15
-  }
-});
 
-AppRegistry.registerComponent("Login", () => Login);
+  input: {
+    height: 46,
+    width: '100%',
+    alignSelf: 'stretch',
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#DDD',
+    borderRadius: 4,
+    marginTop: 20,
+    paddingHorizontal: 15,
+  },
+
+  hidePassword: {
+    flexDirection: 'row',
+    height: 46,
+    width: '100%',
+    alignSelf: 'stretch',
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#DDD',
+    borderRadius: 4,
+    marginTop: 20,
+    paddingHorizontal: 15,
+  },
+
+  iconPassword: {
+    paddingTop: 7,
+  },
+
+  inputPassword: {
+    flex: 1
+  },
+
+  button: {
+    height: 46,
+    backgroundColor: '#3c8dbc',
+    borderRadius: 4,
+    marginTop: 20,
+    alignSelf: 'stretch',
+    justifyContent:'center',
+    alignItems: 'center',
+  },
+
+  buttonText: {
+    color: '#FFF',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+
+})

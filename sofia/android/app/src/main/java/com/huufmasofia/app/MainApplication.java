@@ -3,6 +3,7 @@ package com.huufmasofia.app;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.github.wumke.RNExitApp.RNExitAppPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.reactnativecommunity.netinfo.NetInfoPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -28,6 +29,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNExitAppPackage(),
             new ImagePickerPackage(),
             new NetInfoPackage(),
             new VectorIconsPackage(),
