@@ -29,10 +29,13 @@ export default class Login extends Component {
   };
 
   changePasswordVisibility (){
-    this.setState(prevState =>  ({ 
-      icon: prevState.icon === 'eye' ? 'eye-off' : 'eye', 
-      visible: !prevState.visible,  
-    })); 
+
+    console.log(this.state.visible)
+
+    this.setState({ 
+      icon: this.state.icon === 'eye' ? 'eye-off' : 'eye', 
+      visible: !this.state.visible,  
+    }); 
   }
   
   async login(responseJson) {
@@ -112,7 +115,6 @@ export default class Login extends Component {
           <TextInput
             autoCapitalize="none"
             autoCorrect={false}
-            keyboardType="email-address"
             returnKeyType="go"
             placeholder="Digite sua senha"
             placeholderTextColor="#999"
@@ -122,6 +124,7 @@ export default class Login extends Component {
             ref={input => (this.passwordInput = input)}
             onChangeText={password => this.setState({ password })}
           />
+          
           <Icon style={styles.iconPassword} name={this.state.icon} onPress={() => this.changePasswordVisibility()}/>
         </View>
         <TouchableOpacity onPress={this.onLoginPress.bind(this)} style={styles.button}>
