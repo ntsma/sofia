@@ -31,7 +31,7 @@ export default class MainHeader extends Component {
     await AsyncStorage.setItem("logging", "false");
 
     if(Platform.OS == 'ios'){
-      RNExitApp.exitApp();
+      this.props.navigation.navigate("Login")
     }else{
       BackHandler.exitApp();
     } 
