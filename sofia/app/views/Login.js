@@ -128,7 +128,10 @@ export default class Login extends Component {
           <Icon style={styles.iconPassword} name={this.state.icon} onPress={() => this.changePasswordVisibility()}/>
         </View>
         <TouchableOpacity onPress={this.onLoginPress.bind(this)} style={styles.button}>
-          <Text style={styles.buttonText}>Enviar</Text>
+          <Text style={styles.buttonText}>Entrar</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {this.props.navigation.navigate("SignUp");}} style={styles.button}>
+          <Text style={styles.buttonText}>Cadastrar</Text>
         </TouchableOpacity>
       </KeyboardAvoidingView>
     );
