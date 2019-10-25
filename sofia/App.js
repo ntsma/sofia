@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 
 import Login from "./app/views/Login";
+import SignUp from "./app/views/SignUp";
 import HomeScreen from "./app/views/HomeScreen";
 import SubmittedIssues from "./app/views/SubmittedIssues";
 import DraftIssues from "./app/views/DraftIssues";
@@ -139,6 +140,13 @@ const App = createStackNavigator({
     screen: Login,
     navigationOptions: {
       title: "Login"
+    }
+  },
+
+  SignUp: {
+    screen: SignUp,
+    navigationOptions: {
+      title: "Cadastro"
     }
   },
 
