@@ -26,7 +26,7 @@ export default class Question extends Component {
   render() {
    return (
      <ThemeProvider>
-       <BackHeader navigation={this.props.navigation} name="FAQ" />
+       <BackHeader navigation={this.props.navigation} name="Dúvida" />
 
        <ScrollView>
         <Card title={this.props.navigation.state.params.item.title}>
