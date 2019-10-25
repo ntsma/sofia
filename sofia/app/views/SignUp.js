@@ -174,6 +174,7 @@ export default class SignUp extends Component {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
+    marginBottom: 50
   },
 
   text: {
