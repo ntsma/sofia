@@ -9,7 +9,7 @@ export default class BackHeader extends Component {
       <Header style={header.background}>
         <StatusBar backgroundColor="#3c8dbc" barStyle="light-content" />
         <View style={header.container}>
-          <Button style={header.button} onPress={() => this.props.navigation.goBack() }>
+          <Button transparent style={header.button} onPress={() => this.props.navigation.goBack() }>
             <Icon style={header.icon} type="MaterialIcons" name="arrow-back" />
           </Button>
           <Text style={header.text}>{this.props.name}</Text>
