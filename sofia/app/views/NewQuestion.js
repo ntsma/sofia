@@ -232,39 +232,44 @@ export default class NewQuestion extends Component {
   
 
   async onSearch() {
-
-    this.showLoader(true);
-
-    var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
 
-    let formdata = new FormData();
+    if(!this.props.navigation.state.params.isConnected) {
+      this.props.navigation.navigate("NewSearch", {question})
+      
+    } else {
+      this.showLoader(true);
 
-    formdata.append("description", question)
+      var token = await AsyncStorage.getItem("token");
 
-    return fetch('http://sofia.huufma.br/api/solicitation/search', {
-        method: 'POST',
-        headers: {
-          Authorization: "Bearer " + token
-        },
-        body: formdata,
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.debug("RETURNING...");
-        console.debug(responseJson);
+      let formdata = new FormData();
 
-        var questions = responseJson.data;
+      formdata.append("description", question)
 
-        shouldUpdate = true;
+      return fetch('http://sofia.huufma.br/api/solicitation/search', {
+          method: 'POST',
+          headers: {
+            Authorization: "Bearer " + token
+          },
+          body: formdata,
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          console.debug("RETURNING...");
+          console.debug(responseJson);
 
-        this.showLoader(false);
+          var questions = responseJson.data;
 
-        this.props.navigation.navigate("RelatedQuestionsView", {questions, question})
-      })
-      .catch((error) => {
-        console.error(error);
-      });       
+          shouldUpdate = true;
+
+          this.showLoader(false);
+
+          this.props.navigation.navigate("RelatedQuestionsView", {questions, question})
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }       
   }
 
 
