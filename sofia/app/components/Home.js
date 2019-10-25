@@ -65,10 +65,9 @@ export default class Home extends Component {
     draftQuestions = JSON.parse(draftQuestions);
 
     console.log(draftQuestions);
-    console.log(draftQuestions.length)
 
     NetInfo.fetch().then(state => {
-      if(state.isConnected && draftQuestions.length > 0) {
+      if(state.isConnected && draftQuestions != null) {
 
         for(index in draftQuestions) {
           console.log("Entrou");
@@ -251,7 +250,12 @@ export default class Home extends Component {
       this.props.navigation.navigate("NewQuestion");
 
     }*/
-    this.props.navigation.navigate("NewQuestion");
+
+    const isConnected = this.state.isConnected;
+
+    console.log(isConnected)
+
+    this.props.navigation.navigate("NewQuestion", {isConnected});
 
   }
 
