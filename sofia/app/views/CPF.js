@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import { Picker, StatusBar, ScrollView, StyleSheet, TouchableOpacity, TextInput, Text, View } from "react-native";
 
 import BackHeader from "../components/BackHeader";
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class CPF extends Component {
   constructor() {
     super();
     this.state = {
-        teste: ""
+        cpf: ""
     };
   }
 
@@ -18,6 +19,39 @@ export default class CPF extends Component {
     },
     header: null
   };
+
+  async getSolicitante() {
+    var token = await AsyncStorage.getItem("token");
+
+    const cpf = this.state.cpf;
+
+    return fetch("http://35.202.173.125/mothers", {
+      method: 'GET',
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+        solicitante = {
+          "nucleo": "Núcleo de Telessaúde do Maranhão",
+          "cidade": "São Luís",
+          "unidade": "Unidade 1",
+          "equipe": "Equipe 1",
+          "nome": "Eduardo S Vieira",
+          "cpf": "610490006313",
+          "telefone": "98992043959",
+          "nascimento": "04/09/1997",
+          "sexo": "Masculino",
+          "email": "eduardo@example.com",
+          "profissao": "TI",
+          "cargo": "Programador"
+        };
+
+        this.props.navigation.navigate("SignUp", {solicitante})
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+  }
 
   render() {
     return (
@@ -35,12 +69,12 @@ export default class CPF extends Component {
                     placeholderTextColor="#999"
                     style={styles.input}
                     value={this.props.teste}
-                    onChangeText={email => this.setState({ nome })}
+                    onChangeText={cpf => this.setState({ cpf })}
                     onSubmitEditing={() => {}}
                     />
                 </View>
                 
-                <TouchableOpacity onPress={() => {}} style={styles.button}>
+                <TouchableOpacity onPress={ this.getSolicitante.bind(this) } style={styles.button}>
                     <Text style={styles.buttonText}>Consultar</Text>
                 </TouchableOpacity>
             </ScrollView>
