@@ -22,7 +22,7 @@ import ShowDetails from "./app/views/ShowDetails";
 import RelatedQuestionsView from "./app/views/RelatedQuestionsView";
 import NewSearch from "./app/views/NewSearch";
 import RelatedIssueView from "./app/views/RelatedIssueView";
-
+import CPF from "./app/views/CPF";
 
 class Home extends Component {
 
@@ -232,6 +232,13 @@ const App = createStackNavigator({
     screen: EditCanceledIssue,
     navigationOptions: {
       title: "EditCanceledIssue"
+    }
+  },
+
+  CPF: {
+    screen: CPF,
+    navigationOptions: {
+      title: "CPF"
     }
   },
 }, {
