@@ -17,6 +17,7 @@
     "react-native-exit-app": "^1.1.0",
     "react-native-gesture-handler": "^1.2.1",
     "react-native-image-picker": "^0.28.1",
+    "react-native-masked-text": "^1.13.0",
     "react-native-vector-icons": "^6.4.2",
     "react-navigation": "^3.9.1"
   },

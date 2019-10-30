@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Picker, StatusBar, ScrollView, StyleSheet, TouchableOpacity, TextInput, Text, View } from "react-native";
+import { TextInputMask } from 'react-native-masked-text' 
 
 import BackHeader from "../components/BackHeader";
 
@@ -26,6 +27,7 @@ export default class SignUp extends Component {
             <StatusBar backgroundColor="#3c8dbc" barStyle="dark-content" />
 
             <ScrollView style={styles.container}>
+
                 <View>
                     <Text style={styles.text}>Núcleo</Text>
                     <Picker style={styles.picker} onValueChange={() => {}}>
@@ -34,6 +36,7 @@ export default class SignUp extends Component {
                         <Picker.Item label="Exemplo2" value="exemplo" />
                     </Picker>
                 </View>
+
                 <View>
                     <Text style={styles.text}>Cidade</Text>
                     <Picker style={styles.picker} onValueChange={() => {}}>
@@ -75,41 +78,56 @@ export default class SignUp extends Component {
                 </View>
                 <View>
                     <Text style={styles.text}>CPF</Text>
-                    <TextInput
-                    keyboardType="number-pad"
-                    returnKeyType="next"
-                    placeholder="000.000.000-00"
-                    placeholderTextColor="#999"
+                    <TextInputMask
                     style={styles.input}
-                    value={this.props.teste}
-                    onChangeText={email => this.setState({ nome })}
-                    onSubmitEditing={() => {}}
+                    type={'cpf'}
+                    options={{}}
+                    placeholder="123.456.789-00"
+                    value={this.state.cpf}
+                    onChangeText={text => {
+                        this.setState({
+                        cpf: text
+                        })
+                    }}
+                    ref={(ref) => this.cpfField = ref}
                     />
                 </View>
                 <View>
                     <Text style={styles.text}>Telefone</Text>
-                    <TextInput
-                    keyboardType="number-pad"
-                    returnKeyType="next"
-                    placeholder="(99) 9 9999 9999"
-                    placeholderTextColor="#999"
+                    <TextInputMask
                     style={styles.input}
-                    value={this.props.teste}
-                    onChangeText={email => this.setState({ nome })}
-                    onSubmitEditing={() => {}}
+                    placeholder="(99) 9 9999 - 9999"
+                    type={'cel-phone'}
+                    options={{
+                        maskType: 'BRL',
+                        withDDD: true,
+                        dddMask: '(99) '
+                      }}
+                    value={this.state.phone}
+                    onChangeText={text => {
+                        this.setState({
+                        phone: text
+                        })
+                    }}
+                    ref={(ref) => this.phoneField = ref}
                     />
                 </View>
                 <View>
                     <Text style={styles.text}>Data de Nascimento</Text>
-                    <TextInput
-                    keyboardType="number-pad"
-                    returnKeyType="next"
-                    placeholder="DD/MM/AAAA"
-                    placeholderTextColor="#999"
+                    <TextInputMask
                     style={styles.input}
-                    value={this.props.teste}
-                    onChangeText={email => this.setState({ nome })}
-                    onSubmitEditing={() => {}}
+                    placeholder="11/11/1999"
+                    type={'datetime'}
+                    options={{
+                        format: 'MM/DD/AAAA'
+                    }}
+                    value={this.state.dt}
+                    onChangeText={text => {
+                        this.setState({
+                        dt: text
+                        })
+                    }}
+                    ref={(ref) => this.dtField = ref}
                     />
                 </View>
                 <View>
