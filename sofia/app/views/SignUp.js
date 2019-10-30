@@ -7,9 +7,25 @@ import BackHeader from "../components/BackHeader";
 export default class SignUp extends Component {
   constructor() {
     super();
+
     this.state = {
-        teste: ""
+        cpf: "",
+        phone: "",
+        dt: ""
     };
+    
+  }
+
+  componentDidMount() {
+      const solicitante = this.props.navigation.state.params.solicitante;
+
+      this.setState({
+          cpf: solicitante.cpf,
+          phone: solicitante.telefone,
+          dt: solicitante.nascimento
+      })
+
+      console.log(this.state);
   }
 
   static navigationOptions = {
