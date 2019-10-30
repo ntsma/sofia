@@ -4,6 +4,8 @@ import { Picker, StatusBar, ScrollView, StyleSheet, TouchableOpacity, TextInput,
 import BackHeader from "../components/BackHeader";
 import AsyncStorage from '@react-native-community/async-storage';
 
+import { TextInputMask } from 'react-native-masked-text';
+
 export default class CPF extends Component {
   constructor() {
     super();
@@ -60,18 +62,21 @@ export default class CPF extends Component {
             <StatusBar backgroundColor="#3c8dbc" barStyle="dark-content" />
 
             <ScrollView style={styles.container}>
-                <View>
-                    <Text style={styles.text}>CPF</Text>
-                    <TextInput
-                    keyboardType="number-pad"
-                    returnKeyType="next"
-                    placeholder="000.000.000-00"
-                    placeholderTextColor="#999"
-                    style={styles.input}
-                    value={this.props.teste}
-                    onChangeText={cpf => this.setState({ cpf })}
-                    onSubmitEditing={() => {}}
-                    />
+              <View>
+                  <Text style={styles.text}>CPF</Text>
+                  <TextInputMask
+                  style={styles.input}
+                  type={'cpf'}
+                  options={{}}
+                  placeholder="123.456.789-00"
+                  value={this.state.cpf}
+                  onChangeText={text => {
+                      this.setState({
+                      cpf: text
+                      })
+                  }}
+                  ref={(ref) => this.cpfField = ref}
+                  />
                 </View>
                 
                 <TouchableOpacity onPress={ this.getSolicitante.bind(this) } style={styles.button}>
