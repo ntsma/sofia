@@ -11,7 +11,16 @@ export default class SignUp extends Component {
     this.state = {
         cpf: "",
         phone: "",
-        dt: ""
+        dt: "",
+        nome: "",
+        nucleo: "",
+        cidade: "",
+        unidade: "",
+        equipe: "",
+        sexo: "",
+        email: "",
+        profissao: "",
+        cargo: ""
     };
     
   }
@@ -25,16 +34,34 @@ export default class SignUp extends Component {
           dt: solicitante.nascimento
       })
 
-      console.log(this.state);
   }
 
   static navigationOptions = {
-    headerStyle: {
-      backgroundColor: "#D95D39",
-      elevation: null
-    },
     header: null
   };
+
+  signUp() {
+    console.log(this.state);
+
+    let formdata = new FormData();
+
+    formdata.append("type_id", 52);
+    
+    return fetch('http://sofia.huufma.br/api/solicitation/' + 10, {
+        method: 'POST',
+        body: formdata,
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        
+        this.props.navigation.navigate("Login");
+      })
+      .catch((error) => {
+        console.error(error);
+        
+      });
+
+  }
 
   render() {
     return (
@@ -46,7 +73,7 @@ export default class SignUp extends Component {
 
                 <View>
                     <Text style={styles.text}>Núcleo</Text>
-                    <Picker style={styles.picker} onValueChange={() => {}}>
+                    <Picker selectedValue={this.state.nucleo} style={styles.picker} onValueChange={nucleo => this.setState({ nucleo })}>
                         <Picker.Item label="Selecione..." value="exemplo" />
                         <Picker.Item label="Exemplo1" value="exemplo" />
                         <Picker.Item label="Exemplo2" value="exemplo" />
@@ -55,15 +82,15 @@ export default class SignUp extends Component {
 
                 <View>
                     <Text style={styles.text}>Cidade</Text>
-                    <Picker style={styles.picker} onValueChange={() => {}}>
+                    <Picker selectedValue={this.state.cidade} style={styles.picker} onValueChange={cidade => this.setState({ cidade })}>
                         <Picker.Item label="Selecione..." value="exemplo" />
-                        <Picker.Item label="Exemplo1" value="exemplo" />
-                        <Picker.Item label="Exemplo2" value="exemplo" />
+                        <Picker.Item label="Exemplo1" value="exemplo1" />
+                        <Picker.Item label="Exemplo2" value="exemplo2" />
                     </Picker>
                 </View>
                 <View>
                     <Text style={styles.text}>Unidade</Text>
-                    <Picker style={styles.picker} onValueChange={() => {}}>
+                    <Picker selectedValue={this.state.unidade} style={styles.picker} onValueChange={unidade => this.setState({ unidade })}>
                         <Picker.Item label="Selecione..." value="exemplo" />
                         <Picker.Item label="Exemplo1" value="exemplo" />
                         <Picker.Item label="Exemplo2" value="exemplo" />
@@ -71,7 +98,7 @@ export default class SignUp extends Component {
                 </View>
                 <View>
                     <Text style={styles.text}>Equipe</Text>
-                    <Picker style={styles.picker} onValueChange={() => {}}>
+                    <Picker selectedValue={this.state.equipe} style={styles.picker} onValueChange={equipe => this.setState({ equipe })}>
                         <Picker.Item label="Selecione..." value="exemplo" />
                         <Picker.Item label="Exemplo1" value="exemplo" />
                         <Picker.Item label="Exemplo2" value="exemplo" />
@@ -88,7 +115,7 @@ export default class SignUp extends Component {
                     placeholderTextColor="#999"
                     style={styles.input}
                     value={this.props.teste}
-                    onChangeText={email => this.setState({ nome })}
+                    onChangeText={nome => this.setState({ nome })}
                     onSubmitEditing={() => {}}
                     />
                 </View>
@@ -148,7 +175,7 @@ export default class SignUp extends Component {
                 </View>
                 <View>
                     <Text style={styles.text}>Sexo</Text>
-                    <Picker style={styles.picker} onValueChange={() => {}}>
+                    <Picker selectedValue={this.state.sexo} style={styles.picker} onValueChange={sexo => this.setState({ sexo })}>
                         <Picker.Item label="Selecione..." value="exemplo" />
                         <Picker.Item label="Masculino" value="masculino" />
                         <Picker.Item label="Feminino" value="feminino" />
@@ -165,7 +192,7 @@ export default class SignUp extends Component {
                     placeholderTextColor="#999"
                     style={styles.input}
                     value={this.props.teste}
-                    onChangeText={email => this.setState({ nome })}
+                    onChangeText={email => this.setState({ email })}
                     onSubmitEditing={() => {}}
                     />
                 </View>
@@ -178,7 +205,7 @@ export default class SignUp extends Component {
                     placeholderTextColor="#999"
                     style={styles.input}
                     value={this.props.teste}
-                    onChangeText={email => this.setState({ nome })}
+                    onChangeText={profissao => this.setState({ profissao })}
                     onSubmitEditing={() => {}}
                     />
                 </View>
@@ -191,12 +218,12 @@ export default class SignUp extends Component {
                     placeholderTextColor="#999"
                     style={styles.input}
                     value={this.props.teste}
-                    onChangeText={email => this.setState({ nome })}
+                    onChangeText={cargo => this.setState({ cargo })}
                     onSubmitEditing={() => {}}
                     />
                 </View>
             
-                <TouchableOpacity onPress={() => {}} style={styles.button}>
+                <TouchableOpacity onPress={this.signUp.bind(this) } style={styles.button}>
                     <Text style={styles.buttonText}>Cadastrar</Text>
                 </TouchableOpacity>
             </ScrollView>
