@@ -110,7 +110,14 @@ export default class RelatedIssueView extends Component {
                 <ActivityIndicator size="large" color="#3c8dbc"/>
               </Container>
               :
+                
               <View style={styles.container}>
+
+              <Button block warning>
+                <Icon name='alert' />
+                <Text>Avalie essa resposta no fim da página!</Text>
+              </Button>
+                
                 <Text style={styles.header}>{this.props.navigation.state.params.item.description}</Text>
                 <View style={styles.section}>
                   <Text style={styles.title}>Resposta</Text>
