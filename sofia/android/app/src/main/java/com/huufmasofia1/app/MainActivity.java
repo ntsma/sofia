@@ -1,4 +1,4 @@
-package com.huufmasofia.app;
+package com.huufmasofia1.app;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
