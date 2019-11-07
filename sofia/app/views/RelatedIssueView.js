@@ -5,7 +5,8 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   StyleSheet,
-  View
+  View,
+  BackHandler
 
 } from "react-native";
 
@@ -15,10 +16,13 @@ import {
   Header,
   Item,
   Input, 
-  Text,
   Title,
   
 } from "native-base";
+
+import { Text, StatusBar } from "react-native";
+import { Button, Icon } from "native-base";
+
 
 import BackHeader from "../components/BackHeader";
 import Evaluation from "../components/Evaluation";
@@ -50,6 +54,10 @@ export default class RelatedIssueView extends Component {
 
   componentDidMount() {
     this.getRelatedIssue();
+  }
+
+  componentWillMount = () => {
+    BackHandler.addEventListener('hardwareBackPress', () => true);
   }
   
   /*Obtendo as questões enviadas para a Sofia pelo Token*/
@@ -87,7 +95,14 @@ export default class RelatedIssueView extends Component {
   render() {
     return (
       <Container>
-        <BackHeader navigation={this.props.navigation} name="Pergunta relacionada" />
+        <Header style={header.background}>
+          <StatusBar backgroundColor="#3c8dbc" barStyle="light-content" />
+          <View style={header.container}>
+            
+            <Text style={header.text}>Pergunta Relacionada</Text>
+          </View>
+        </Header>
+
         <Content>
           {
             this.state.showME ?
@@ -95,7 +110,14 @@ export default class RelatedIssueView extends Component {
                 <ActivityIndicator size="large" color="#3c8dbc"/>
               </Container>
               :
+                
               <View style={styles.container}>
+
+              <Button block warning>
+                <Icon name='alert' />
+                <Text>Avalie essa resposta no fim da página!</Text>
+              </Button>
+                
                 <Text style={styles.header}>{this.props.navigation.state.params.item.description}</Text>
                 <View style={styles.section}>
                   <Text style={styles.title}>Resposta</Text>
@@ -159,3 +181,41 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     }
 });
+
+const header = StyleSheet.create({
+  background: {
+    backgroundColor: '#3c8dbc',
+  },
+
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  button: {
+    backgroundColor: '#3c8dbc',
+    width: 50,
+  },
+
+  icon: {
+    width: 37,
+    color: '#FFF',
+    fontSize: 25,
+    marginRight: 17,
+    marginLeft: 20,
+    textAlign: 'center',
+  },
+
+  text: {
+    flex: 1,
+    flexDirection: 'row',
+    textAlign: 'center',
+    fontSize: 20,
+    color: '#FFF',
+    fontWeight: '600',
+  },
+
+});
+
