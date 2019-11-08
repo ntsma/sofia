@@ -112,11 +112,6 @@ export default class RelatedIssueView extends Component {
               :
                 
               <View style={styles.container}>
-
-              <Button block warning>
-                <Icon name='alert' />
-                <Text>Avalie essa resposta no fim da página!</Text>
-              </Button>
                 
                 <Text style={styles.header}>{this.props.navigation.state.params.item.description}</Text>
                 <View style={styles.section}>
@@ -143,6 +138,11 @@ export default class RelatedIssueView extends Component {
                 <View style={styles.section}>
                   <Evaluation navigation={this.props.navigation} data={this.state.data} judgeType="0" buttonIsVisible={true}/>
                 </View>
+
+                <Button onPress={() => this.props.navigation.goBack()} block light style={{marginLeft: 20, marginRight: 20}}>
+                  <Text>Voltar para respostas encontradas</Text>
+                </Button>
+
               </View>
           }
         </Content>
