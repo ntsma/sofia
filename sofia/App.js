@@ -24,6 +24,8 @@ import NewSearch from "./app/views/NewSearch";
 import RelatedIssueView from "./app/views/RelatedIssueView";
 import CPF from "./app/views/CPF";
 
+import Pusher from 'pusher-js/react-native';
+
 class Home extends Component {
 
   state = {
@@ -37,6 +39,18 @@ class Home extends Component {
 
   componentDidMount() {
     this.retrieveData()
+
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('fabff6c3bc4ddc186792', {
+      cluster: 'us2',
+      forceTLS: true
+    });
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+      alert(JSON.stringify(data));
+    });
 
   }
 
