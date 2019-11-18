@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Picker, StatusBar, ScrollView, StyleSheet, TouchableOpacity, TextInput, Text, View } from "react-native";
 
 import BackHeader from "../components/BackHeader";
+import ModalComponent from "../components/ModalComponent";
 import AsyncStorage from '@react-native-community/async-storage';
 
 import { TextInputMask } from 'react-native-masked-text';
@@ -10,7 +11,10 @@ export default class CPF extends Component {
   constructor() {
     super();
     this.state = {
-        cpf: ""
+        cpf: "",
+        email: "",
+        isVisible: false,
+        emailValidation: false,
     };
   }
 
@@ -26,6 +30,7 @@ export default class CPF extends Component {
     var token = await AsyncStorage.getItem("token");
 
     const cpf = this.state.cpf;
+    const email = this.state.email;
 
     return fetch("http://35.202.173.125/mothers", {
       method: 'GET',
@@ -33,18 +38,11 @@ export default class CPF extends Component {
     .then((response) => response.json())
     .then((responseJson) => {
         solicitante = {
-          "nucleo": "Núcleo de Telessaúde do Maranhão",
           "cidade": "São Luís",
           "unidade": "Unidade 1",
           "equipe": "Equipe 1",
           "nome": "Eduardo S Vieira",
-          "cpf": "610490006313",
-          "telefone": "98992043959",
-          "nascimento": "04/09/1997",
-          "sexo": "Masculino",
-          "email": "eduardo@example.com",
-          "profissao": "TI",
-          "cargo": "Programador"
+          "cpf": cpf,
         };
 
         this.props.navigation.navigate("SignUp", {solicitante})
@@ -55,33 +53,105 @@ export default class CPF extends Component {
 
   }
 
+  handleOpen = value => {
+    this.setState({ isVisible: true, value: value });
+  };
+
+  handleClose = () => {
+    this.setState({ isVisible: false });
+    this.props.navigation.goBack();
+  };
+
+  validateEmail = (email) => {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(email);
+  };
+
+  checkEmail = () => {
+    if (!this.validateEmail(this.state.email)) {
+      this.emailValidation = true;
+    } else {
+      this.emailValidation = false;
+    }
+  }
+
   render() {
+
+    const { isVisible } = this.state;
+
     return (
         <View>
             <BackHeader navigation={this.props.navigation} name="Cadastro"/>
             <StatusBar backgroundColor="#3c8dbc" barStyle="dark-content" />
 
             <ScrollView style={styles.container}>
+
               <View>
-                  <Text style={styles.text}>CPF</Text>
-                  <TextInputMask
+                <Text style={{textAlign: 'center'}}>
+                  Cadastro somente para Profissionais de Saúde.{"\n"}
+                  Informe seu CPF e Email para continuar. 
+                </Text>
+              </View>
+
+              <View>
+                <Text style={styles.text}>CPF</Text>
+                <TextInputMask
                   style={styles.input}
                   type={'cpf'}
                   options={{}}
                   placeholder="123.456.789-00"
                   value={this.state.cpf}
                   onChangeText={text => {
-                      this.setState({
-                      cpf: text
-                      })
+                    this.setState({
+                    cpf: text
+                    })
                   }}
                   ref={(ref) => this.cpfField = ref}
-                  />
+                />
+              </View>
+                <View>
+                  <Text style={styles.text}>E-mail</Text>
+                    <TextInput
+                    autoCapitalize="none"
+                    autoCorrect={false}
+                    keyboardType="email-address"
+                    returnKeyType="next"
+                    placeholder="mail@mail.com"
+                    placeholderTextColor="#999"
+                    style={[styles.input, this.emailValidation && styles.inputError]}
+                    value={this.state.email}
+                    onChangeText={text => {
+                      this.setState({ 
+                        email: text 
+                      });
+                      this.checkEmail();
+                    }}
+                    ref={(ref) => this.emailField = ref}
+                    />
+                    {this.emailValidation && <Text style={styles.error}>E-mail deve estar no formato "nome@mail.com"</Text>}
                 </View>
                 
-                <TouchableOpacity onPress={ this.getSolicitante.bind(this) } style={styles.button}>
-                    <Text style={styles.buttonText}>Consultar</Text>
+                {/* <TouchableOpacity onPress={ this.getSolicitante.bind(this) } style={styles.button}></TouchableOpacity> */}
+                <TouchableOpacity onPress={ this.handleOpen } style={styles.button}>
+                    <Text style={styles.buttonText}>Confirmar</Text>
                 </TouchableOpacity>
+
+                {
+                  isVisible && 
+                  <ModalComponent 
+                    isVisible={this.isVisible} 
+                    onClose={this.handleClose}
+                    content={
+                      <View style={styles.ModalContainer}>
+                        <Text style={styles.ModalText}>Iremos confirmar os dados fornecidos nas
+                        Bases Públicas de Profissionais de Saúde e em alguns minutos lhe 
+                        enviaremos um email para ({this.state.email}) com a confirmação de
+                        acesso a Sofia.</Text>
+                      </View>
+                    }
+                  />
+                }
+
             </ScrollView>
         </View>
     );
@@ -111,6 +181,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
 
+  inputError: {
+    borderColor: 'rgba(255, 0, 0, 0.3)',
+  },
+
   picker: {
       color: "#999",
   },
@@ -131,6 +205,27 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
+
+  ModalContainer: { 
+    paddingLeft: 20, 
+    paddingRight: 20, 
+    justifyContent: 'center', 
+    alignItems: 'center' 
+  },
+
+  ModalText: {
+    fontSize: 16, 
+    fontWeight: '600',
+    color: '#555', 
+    textAlign: 'center', 
+    
+  },
+
+  error: {
+    marginLeft: 10,
+    marginTop: 10,
+    color: 'rgba(255, 0, 0, 0.6)',
+  }
 
 })
 
