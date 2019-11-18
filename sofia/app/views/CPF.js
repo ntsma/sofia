@@ -118,7 +118,7 @@ export default class CPF extends Component {
                     returnKeyType="next"
                     placeholder="mail@mail.com"
                     placeholderTextColor="#999"
-                    style={styles.input}
+                    style={[styles.input, this.emailValidation && styles.inputError]}
                     value={this.state.email}
                     onChangeText={text => {
                       this.setState({ 
@@ -179,6 +179,10 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginTop: 10,
     paddingHorizontal: 15,
+  },
+
+  inputError: {
+    borderColor: 'rgba(255, 0, 0, 0.3)',
   },
 
   picker: {
