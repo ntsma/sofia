@@ -13,11 +13,7 @@ export default class ModalComponent extends Component {
           <View style={styles.Container}>
             <View style={styles.Modal}>
               {this.props.content}
-              <TouchableOpacity
-                style={styles.Button}
-                onPress={this.props.onClose}>
-                <Text style={{ color: '#FFF' }}>Confirmar!</Text>
-              </TouchableOpacity>
+              
             </View>
           </View>
         </Modal>

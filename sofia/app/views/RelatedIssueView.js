@@ -27,6 +27,8 @@ import { Button, Icon } from "native-base";
 import BackHeader from "../components/BackHeader";
 import Evaluation from "../components/Evaluation";
 
+import ModalComponent from "../components/ModalComponent";
+
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default class RelatedIssueView extends Component {
@@ -38,6 +40,7 @@ export default class RelatedIssueView extends Component {
     super(props);
 
     this.state = {
+      isVisible: false,
       "answer": "",
       "data": null,
       "status_description": "",
@@ -51,6 +54,15 @@ export default class RelatedIssueView extends Component {
       "showME": true
     };
   }
+
+  handleOpen = value => {
+    this.setState({ isVisible: true, value: value });
+  };
+
+  handleClose = () => {
+    this.setState({ isVisible: false });
+    this.props.navigation.goBack();
+  };
 
   componentDidMount() {
     this.getRelatedIssue();
@@ -93,11 +105,31 @@ export default class RelatedIssueView extends Component {
   }
 
   render() {
+    const { isVisible } = this.state;
+
     return (
       <Container>
         <Header style={header.background}>
           <StatusBar backgroundColor="#3c8dbc" barStyle="light-content" />
           <View style={header.container}>
+            <Button transparent style={header.button} onPress={ this.handleOpen }>
+              <Icon style={header.icon} type="MaterialIcons" name="arrow-back" />
+            </Button>
+            {
+                  isVisible && 
+                  <ModalComponent 
+                    isVisible={this.isVisible} 
+                    onClose={this.handleClose}
+                    content={
+                      <View style={styles.ModalContainer}>
+                        <Evaluation onClose={this.handleClose} navigation={this.props.navigation} data={this.state.data} judgeType="0" buttonIsVisible={true}/>
+                        <Button onPress={() => this.props.navigation.goBack()} block light style={{marginLeft: 20, marginRight: 20}}>
+                          <Text>Voltar para respostas encontradas</Text>
+                        </Button>
+                      </View>
+                    }
+                  />
+                }
             
             <Text style={header.text}>Pergunta Relacionada</Text>
           </View>
@@ -152,6 +184,14 @@ export default class RelatedIssueView extends Component {
 }
 
 const styles = StyleSheet.create({
+
+  ModalContainer: { 
+    paddingLeft: 20, 
+    paddingRight: 20, 
+    justifyContent: 'center', 
+    alignItems: 'center' 
+  },
+
   load: {
     flex: 1,
     justifyContent: 'center',

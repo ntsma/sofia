@@ -117,7 +117,7 @@ export default class EvaluateButton extends Component {
 
     } else {
       this.judgeRelatedIssue(token, sastifaction, attendance);
-
+      this.props.onClose();
     }
 
   }
