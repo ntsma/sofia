@@ -20,7 +20,8 @@ import {
   Body,
   Left, 
   Right, 
-  ListItem
+  ListItem,
+  View
 } from "native-base";
 
 import BackHeader from "../components/BackHeader";
@@ -39,23 +40,31 @@ export default class RelatedQuestionsView extends Component {
      <ThemeProvider>
        <BackHeader navigation={this.props.navigation} name="Perguntas relacionadas"/>
 
-       <FlatList
-        data={questions}
-        keyExtractor={(item, index) => item.id.toString()}
-        renderItem={({item}) => 
-        
-          <ListItem thumbnail style={styles.list}
-            onPress={() => this.props.navigation.navigate("RelatedIssueView", {item})}>
-            <Body>
-              <Text numberOfLines={3} style={styles.bodyText}>{item.description}</Text>
-            </Body>
-            <Right>
-              <Icon style={styles.next} type="MaterialIcons" name="chevron-right" />
-            </Right>
-          </ListItem>
-        
+       { this.props.questions &&
+         <FlatList
+            data={questions}
+            keyExtractor={(item, index) => item.id.toString()}
+            renderItem={({item}) => 
+            
+              <ListItem thumbnail style={styles.list}
+                onPress={() => this.props.navigation.navigate("RelatedIssueView", {item})}>
+                <Body>
+                  <Text numberOfLines={3} style={styles.bodyText}>{item.description}</Text>
+                </Body>
+                <Right>
+                  <Icon style={styles.next} type="MaterialIcons" name="chevron-right" />
+                </Right>
+              </ListItem>
+            
+            }
+          />
+       }
+
+        { !this.props.questions &&
+         <View>
+           <Text>Não teleconsultorias!</Text>
+         </View>
         }
-      />
 
       <Button block danger onPress={() => this.props.navigation.navigate("NewSearch", {question})}>
         <Text>Não solucionou sua dúvida?</Text>
