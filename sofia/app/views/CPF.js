@@ -15,6 +15,7 @@ export default class CPF extends Component {
         email: "",
         isVisible: false,
         emailValidation: false,
+        message: ""
     };
   }
 
@@ -38,47 +39,31 @@ export default class CPF extends Component {
     
     return fetch('http://sofia.huufma.br/api/check', {
         method: 'POST',
-        body: formdata,
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
+        body: formdata
       })
       .then((response) => response.json())
       .then((responseJson) => {
+        var message = "";
+
+        if(responseJson.message == "success") {
+          message =  "Iremos confirmar os dados fornecidos nas Bases Públicas de Profissionais de Saúde e em alguns minutos lhe enviaremos um email com a confirmação de acesso a Sofia.";
+
+        } else {
+          message = "Email e CPF inválidos ou já cadastrados!";
+          
+        }
+
+        this.setState({
+          message: message
+        })
+
+        this.handleOpen();
         
         this.props.navigation.navigate("Login");
       })
       .catch((error) => {
         console.error(error);
         
-      });
-
-  }
-
-  async getSolicitante() {
-    var token = await AsyncStorage.getItem("token");
-
-    const cpf = this.state.cpf;
-    const email = this.state.email;
-
-    return fetch("http://35.202.173.125/mothers", {
-      method: 'GET',
-    })
-    .then((response) => response.json())
-    .then((responseJson) => {
-        solicitante = {
-          "cidade": "São Luís",
-          "unidade": "Unidade 1",
-          "equipe": "Equipe 1",
-          "nome": "Eduardo S Vieira",
-          "cpf": cpf,
-        };
-
-        this.props.navigation.navigate("SignUp", {solicitante})
-      })
-      .catch((error) => {
-        console.error(error);
       });
 
   }
@@ -174,10 +159,10 @@ export default class CPF extends Component {
                     onClose={this.handleClose}
                     content={
                       <View style={styles.ModalContainer}>
-                        <Text style={styles.ModalText}>Iremos confirmar os dados fornecidos nas
-                        Bases Públicas de Profissionais de Saúde e em alguns minutos lhe 
-                        enviaremos um email para ({this.state.email}) com a confirmação de
-                        acesso a Sofia.</Text>
+                        <Text style={styles.ModalText}>{this.state.message}</Text>
+                        <TouchableOpacity onPress={ this.handleClose } style={styles.button}>
+                          <Text style={styles.buttonText}>OK</Text>
+                        </TouchableOpacity>
                       </View>
                     }
                   />
