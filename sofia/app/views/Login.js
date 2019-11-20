@@ -132,9 +132,9 @@ export default class Login extends Component {
         </TouchableOpacity>
 
         
-        {/* <TouchableOpacity onPress={() => {this.props.navigation.navigate("CPF");}} style={styles.button}>
+        <TouchableOpacity onPress={() => {this.props.navigation.navigate("CPF");}} style={styles.button}>
           <Text style={styles.buttonText}>Cadastrar</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity> 
         
       </KeyboardAvoidingView>
     );
