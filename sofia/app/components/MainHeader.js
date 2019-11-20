@@ -55,6 +55,7 @@ export default class MainHeader extends Component {
             onPress={this.logout.bind(this)}
           >
             <Icon style={{ color: '#FFF', fontSize: 24, }} type="MaterialIcons" name="exit-to-app" />
+            <Text>Sair</Text>
           </Button>
         </Right>
       </Header>

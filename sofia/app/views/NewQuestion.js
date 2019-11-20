@@ -330,11 +330,15 @@ onPressButtonDraft(){
   //console.log('çodal', this.isModalVisible)
 }
 
+onLength() {
+  return 10;
+}
+
 
   render() {
     return (
       <Container>
-        <BackHeader navigation={this.props.navigation} name="Nova Pesquisa"/>
+        <BackHeader navigation={this.props.navigation} name="Como posso te ajudar?"/>
         {
           this.state.isLoading ?
           <ActivityIndicator style={styles.load} size="large" color="#3c8dbc"/>
@@ -342,9 +346,9 @@ onPressButtonDraft(){
           <Content>
           <Form style={styles.container}>
             <View style={styles.title}>
-              <Label style={styles.textTitle}>Antes de prosseguir com a sua solicitação, verifique se na SOFIA já existe uma resposta para o questionamento que você procura</Label>
+              <Label style={styles.textTitle}>Digite aqui sua dúvida para que sejam encontradas respostas adequadas</Label>
             </View>
-            <Textarea value={this.state.question} style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
+            <Textarea value={this.state.question} style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Descreva sua dúvida" placeholderTextColor="#ccc" bordered />
 
               <Button block success style={styles.button} onPress={this.onSearch.bind(this)}>
                 <Text>Pesquisar</Text>
