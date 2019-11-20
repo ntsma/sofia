@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { Alert, AppRegistry, Image, KeyboardAvoidingView, Platform, StatusBar, StyleSheet, TouchableOpacity, TextInput, Text, View } from "react-native";
+import { Alert, AppRegistry, Image, KeyboardAvoidingView, Platform, StatusBar, StyleSheet, TouchableOpacity, TextInput, View } from "react-native";
 import { Icon } from "native-base"
+
+import {Button, Text} from "native-base";
 
 import AsyncStorage from '@react-native-community/async-storage';
 import { StackNavigator } from "react-navigation";
@@ -131,11 +133,10 @@ export default class Login extends Component {
           <Text style={styles.buttonText}>Entrar</Text>
         </TouchableOpacity>
 
-        
-        <TouchableOpacity onPress={() => {this.props.navigation.navigate("CPF");}} style={styles.button}>
-          <Text style={styles.buttonText}>Cadastrar</Text>
-        </TouchableOpacity> 
-        
+        <Button transparent onPress={() => {this.props.navigation.navigate("CPF");}}>
+          <Text>Cadastrar-se</Text>
+        </Button>
+
       </KeyboardAvoidingView>
     );
   }
