@@ -1,9 +1,16 @@
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, StatusBar, Alert} from 'react-native';
+import React, { Component } from "react";
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  Alert
+} from "react-native";
 
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from "@react-native-community/async-storage";
 
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { createStackNavigator, createAppContainer } from "react-navigation";
 
 import Login from "./app/views/Login";
 import SignUp from "./app/views/SignUp";
@@ -25,14 +32,12 @@ import RelatedIssueView from "./app/views/RelatedIssueView";
 import CPF from "./app/views/CPF";
 
 class Home extends Component {
-
   state = {
     logging: "false"
   };
 
   constructor() {
     super();
-
   }
 
   componentDidMount() {
@@ -48,19 +53,18 @@ class Home extends Component {
   };
 
   async retrieveData() {
-    const value = await AsyncStorage.getItem('logging');
-    const email = await AsyncStorage.getItem('email');
+    const value = await AsyncStorage.getItem("logging");
+    const email = await AsyncStorage.getItem("email");
 
     console.debug(value);
 
     this.setState({
       logging: value
-    })
-  };
+    });
+  }
 
   render() {
-
-    if(this.state.logging == "true") {
+    if (this.state.logging == "true") {
       return (
         <View style={styles.container}>
           <StatusBar barStyle="light-content" backgroundColor="#3c8dbc" />
@@ -79,23 +83,23 @@ class Home extends Component {
 }
 
 const SideTransition = (index, position, width) => {
-  const sceneRange = [index -1, index];
+  const sceneRange = [index - 1, index];
   //const outputOpacity = [0, 1];
   const outputWidth = [width, 0];
   const transition = position.interpolate({
     inputRange: sceneRange,
-    outputRange: outputWidth,
+    outputRange: outputWidth
   });
 
   return {
     //opacity: transition
     transform: [{ translateX: transition }]
-  }
-}
+  };
+};
 
 const NavigationConfig = () => {
   return {
-    screenInterpolator: (sceneProps) => {
+    screenInterpolator: sceneProps => {
       const position = sceneProps.position;
       const scene = sceneProps.scene;
       const index = scene.index;
@@ -104,145 +108,147 @@ const NavigationConfig = () => {
 
       return SideTransition(index, position, width);
     }
-  }
-}
+  };
+};
 
-const App = createStackNavigator({
-  Home: {
-    screen: Home,
-    navigationOptions: {
-      title: "Home"
-    }
-  },
-  HomeScreen: {
-    screen: HomeScreen,
-    navigationOptions: {
+const App = createStackNavigator(
+  {
+    Home: {
+      screen: Home,
+      navigationOptions: {
+        title: "Home"
+      }
+    },
+    HomeScreen: {
+      screen: HomeScreen,
+      navigationOptions: {
         title: "HomeScreen"
-      },
-  },
+      }
+    },
 
-  RelatedQuestionsView: {
-    screen: RelatedQuestionsView,
-    navigationOptions: {
+    RelatedQuestionsView: {
+      screen: RelatedQuestionsView,
+      navigationOptions: {
         title: "RelatedQuestionsView"
-      },
-  },
+      }
+    },
 
-  NewSearch: {
-    screen: NewSearch,
-    navigationOptions: {
+    NewSearch: {
+      screen: NewSearch,
+      navigationOptions: {
         title: "NewSearch"
-      },
-  },
+      }
+    },
 
-  Login: {
-    screen: Login,
-    navigationOptions: {
-      title: "Login"
+    Login: {
+      screen: Login,
+      navigationOptions: {
+        title: "Login"
+      }
+    },
+
+    SignUp: {
+      screen: SignUp,
+      navigationOptions: {
+        title: "Cadastro"
+      }
+    },
+
+    NewQuestion: {
+      screen: NewQuestion,
+      navigationOptions: {
+        title: "NewQuestion"
+      }
+    },
+
+    EditQuestion: {
+      screen: EditQuestion,
+      navigationOptions: {
+        title: "EditQuestion"
+      }
+    },
+
+    Question: {
+      screen: Question,
+      navigationOptions: {
+        title: "Question"
+      }
+    },
+
+    DraftIssues: {
+      screen: DraftIssues,
+      navigationOptions: {
+        title: "DraftIssues"
+      }
+    },
+
+    CanceledIssues: {
+      screen: CanceledIssues,
+      navigationOptions: {
+        title: "CanceledIssues"
+      }
+    },
+
+    AnsweredIssues: {
+      screen: AnsweredIssues,
+      navigationOptions: {
+        title: "AnsweredIssues"
+      }
+    },
+
+    SubmittedIssues: {
+      screen: SubmittedIssues,
+      navigationOptions: {
+        title: "SubmittedIssues"
+      }
+    },
+
+    Overlay: {
+      screen: Overlay,
+      navigationOptions: {
+        title: "Overlay"
+      }
+    },
+
+    ShowObservation: {
+      screen: ShowObservation,
+      navigationOptions: {
+        title: "ShowObservation"
+      }
+    },
+
+    RelatedIssueView: {
+      screen: RelatedIssueView,
+      navigationOptions: {
+        title: "RelatedIssueView"
+      }
+    },
+
+    ShowDetails: {
+      screen: ShowDetails,
+      navigationOptions: {
+        title: "ShowDetails"
+      }
+    },
+
+    EditCanceledIssue: {
+      screen: EditCanceledIssue,
+      navigationOptions: {
+        title: "EditCanceledIssue"
+      }
+    },
+
+    CPF: {
+      screen: CPF,
+      navigationOptions: {
+        title: "CPF"
+      }
     }
   },
-
-  SignUp: {
-    screen: SignUp,
-    navigationOptions: {
-      title: "Cadastro"
-    }
-  },
-
-  NewQuestion: {
-    screen: NewQuestion,
-    navigationOptions: {
-      title: "NewQuestion"
-    }
-  },
-
-  EditQuestion: {
-    screen: EditQuestion,
-    navigationOptions: {
-      title: "EditQuestion"
-    }
-  },
-
-  Question: {
-    screen: Question,
-    navigationOptions: {
-      title: "Question"
-    }
-  },
-
-  DraftIssues: {
-    screen: DraftIssues,
-    navigationOptions: {
-      title: "DraftIssues"
-    }
-  },
-
-  CanceledIssues: {
-    screen: CanceledIssues,
-    navigationOptions: {
-      title: "CanceledIssues"
-    }
-  },
-
-  AnsweredIssues: {
-    screen: AnsweredIssues,
-    navigationOptions: {
-      title: "AnsweredIssues"
-    }
-  },
-
-  SubmittedIssues: {
-    screen: SubmittedIssues,
-    navigationOptions: {
-      title: "SubmittedIssues"
-    }
-  },
-
-  Overlay: {
-    screen: Overlay,
-    navigationOptions: {
-      title: "Overlay"
-    }
-  },
-
-  ShowObservation: {
-    screen: ShowObservation,
-    navigationOptions: {
-      title: "ShowObservation"
-    }
-  },
-
-  RelatedIssueView: {
-    screen: RelatedIssueView,
-    navigationOptions: {
-      title: "RelatedIssueView"
-    }
-  },
-
-  ShowDetails: {
-    screen: ShowDetails,
-    navigationOptions: {
-      title: "ShowDetails"
-    }
-  },
-
-
-  EditCanceledIssue: {
-    screen: EditCanceledIssue,
-    navigationOptions: {
-      title: "EditCanceledIssue"
-    }
-  },
-
-  CPF: {
-    screen: CPF,
-    navigationOptions: {
-      title: "CPF"
-    }
-  },
-}, {
-  transitionConfig: NavigationConfig
-});
+  {
+    transitionConfig: NavigationConfig
+  }
+);
 
 export default createAppContainer(App);
 
