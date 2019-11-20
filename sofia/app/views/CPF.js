@@ -26,6 +26,36 @@ export default class CPF extends Component {
     header: null
   };
 
+  signUp() {
+    console.log(this.state);
+
+    let formdata = new FormData();
+
+    formdata.append("email", this.state.email);
+    formdata.append("cpf", "61049006313");
+
+    console.log(formdata)
+    
+    return fetch('http://sofia.huufma.br/api/check', {
+        method: 'POST',
+        body: formdata,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        
+        this.props.navigation.navigate("Login");
+      })
+      .catch((error) => {
+        console.error(error);
+        
+      });
+
+  }
+
   async getSolicitante() {
     var token = await AsyncStorage.getItem("token");
 
@@ -99,7 +129,7 @@ export default class CPF extends Component {
                   style={styles.input}
                   type={'cpf'}
                   options={{}}
-                  placeholder="123.456.789-00"
+                  placeholder="000.000.000-00"
                   value={this.state.cpf}
                   onChangeText={text => {
                     this.setState({
@@ -132,13 +162,14 @@ export default class CPF extends Component {
                 </View>
                 
                 {/* <TouchableOpacity onPress={ this.getSolicitante.bind(this) } style={styles.button}></TouchableOpacity> */}
-                <TouchableOpacity onPress={ this.handleOpen } style={styles.button}>
+                <TouchableOpacity onPress={ () => this.signUp() } style={styles.button}>
                     <Text style={styles.buttonText}>Confirmar</Text>
                 </TouchableOpacity>
 
                 {
                   isVisible && 
-                  <ModalComponent 
+                  <View>
+                    <ModalComponent 
                     isVisible={this.isVisible} 
                     onClose={this.handleClose}
                     content={
@@ -150,6 +181,10 @@ export default class CPF extends Component {
                       </View>
                     }
                   />
+                  <TouchableOpacity onPress={ () => this.signUp() } style={styles.button}>
+                    <Text style={styles.buttonText}>Confirmar</Text>
+                  </TouchableOpacity>
+                  </View>
                 }
 
             </ScrollView>
