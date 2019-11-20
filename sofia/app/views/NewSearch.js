@@ -321,7 +321,7 @@ onPressButtonDraft(){
   render() {
     return (
       <Container>
-        <BackHeader navigation={this.props.navigation} name="Nova Pergunta"/>
+        <BackHeader navigation={this.props.navigation} name="Como posso te ajudar?"/>
 
         <Content>
 

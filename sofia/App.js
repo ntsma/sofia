@@ -23,6 +23,7 @@ import RelatedQuestionsView from "./app/views/RelatedQuestionsView";
 import NewSearch from "./app/views/NewSearch";
 import RelatedIssueView from "./app/views/RelatedIssueView";
 import CPF from "./app/views/CPF";
+import TeleconsultoriaRealizada from "./app/views/TeleconsultoriaRealizada";
 
 class Home extends Component {
 
@@ -112,6 +113,12 @@ const App = createStackNavigator({
     screen: Home,
     navigationOptions: {
       title: "Home"
+    }
+  },
+  TeleconsultoriaRealizada: {
+    screen: TeleconsultoriaRealizada,
+    navigationOptions: {
+      title: "TeleconsultoriaRealizada"
     }
   },
   HomeScreen: {

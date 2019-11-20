@@ -40,8 +40,7 @@ export default class RelatedQuestionsView extends Component {
      <ThemeProvider>
        <BackHeader navigation={this.props.navigation} name="Perguntas relacionadas"/>
 
-       { this.props.questions &&
-         <FlatList
+       <FlatList
             data={questions}
             keyExtractor={(item, index) => item.id.toString()}
             renderItem={({item}) => 
@@ -58,13 +57,6 @@ export default class RelatedQuestionsView extends Component {
             
             }
           />
-       }
-
-        { !this.props.questions &&
-         <View>
-           <Text>Não teleconsultorias!</Text>
-         </View>
-        }
 
       <Button block danger onPress={() => this.props.navigation.navigate("NewSearch", {question})}>
         <Text>Não solucionou sua dúvida?</Text>
