@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { Alert, AppRegistry, Image, KeyboardAvoidingView, Platform, StatusBar, StyleSheet, TouchableOpacity, TextInput, View } from "react-native";
+import { Image, KeyboardAvoidingView, Platform, StatusBar, StyleSheet, TouchableOpacity, TextInput, View } from "react-native";
 import { Icon } from "native-base"
 
 import {Button, Text} from "native-base";
 
 import AsyncStorage from '@react-native-community/async-storage';
-import { StackNavigator } from "react-navigation";
+import ModalComponent from "../components/ModalComponent";
 
 import logo from '../resources/logo.png';
 
@@ -15,6 +15,7 @@ export default class Login extends Component {
     this.state = {
       email: "",
       password: "",
+      isVisible: false,
       visible: true, 
       icon: "eye-off", 
       logging: "false",
@@ -52,9 +53,6 @@ export default class Login extends Component {
         token: t
       })
 
-      console.debug("TOKEN")
-      console.debug(this.state.token);
-
       this.props.navigation.navigate("HomeScreen");
 
     } catch (error) {
@@ -65,9 +63,6 @@ export default class Login extends Component {
   async onLoginPress() {
     const email = this.state.email;
     const password = this.state.password;
-
-    console.log(email);
-    console.log(password);
 
           fetch("http://sofia.huufma.br/api/login", {
             method: 'POST',
@@ -82,7 +77,14 @@ export default class Login extends Component {
           })
           .then((response) => response.json())
           .then((responseJson) => {
-            this.login(responseJson);
+            console.log(responseJson);
+
+            if(responseJson.message == "Não autorizado") {
+              this.handleOpen();
+            } else {
+              this.login(responseJson);
+            }
+            
           })
           .catch((error) => {
              console.log("Houve um problema!")
@@ -90,7 +92,18 @@ export default class Login extends Component {
           });
   }
 
+  handleOpen = value => {
+    this.setState({ isVisible: true, value: value });
+  };
+
+  handleClose = () => {
+    this.setState({ isVisible: false });
+    this.props.navigation.goBack();
+  };
+
   render() {
+    const { isVisible } = this.state;
+
     return (
       <KeyboardAvoidingView
         behavior="padding"
@@ -136,6 +149,27 @@ export default class Login extends Component {
         <Button transparent onPress={() => {this.props.navigation.navigate("CPF");}}>
           <Text>Cadastrar-se</Text>
         </Button>
+
+        {
+          isVisible && 
+          <View>
+            <ModalComponent 
+            isVisible={this.isVisible} 
+            onClose={this.handleClose}
+            content={
+              <View style={styles.ModalContainer}>
+                <Text style={styles.ModalText}>E-mail ou senha estão incorretos!</Text>
+                <TouchableOpacity onPress={ this.handleClose } style={styles.button}>
+                  <Text style={styles.buttonText}>OK</Text>
+                </TouchableOpacity>
+              </View>
+            }
+          />
+          <TouchableOpacity onPress={ () => this.signUp() } style={styles.button}>
+            <Text style={styles.buttonText}>Confirmar</Text>
+          </TouchableOpacity>
+          </View>
+        }
 
       </KeyboardAvoidingView>
     );
