@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Image, KeyboardAvoidingView, Platform, StatusBar, StyleSheet, TouchableOpacity, TextInput, View } from "react-native";
-import { Icon } from "native-base"
+import { Icon } from "native-base";
 
 import {Button, Text} from "native-base";
 
@@ -10,48 +10,62 @@ import ModalComponent from "../components/ModalComponent";
 import logo from '../resources/logo.png';
 
 export default class Login extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       email: "",
       password: "",
-      isVisible: false,
-      visible: true, 
+      modalIsVisible: false,
+      inputIsVisible: true, 
       icon: "eye-off", 
-      logging: "false",
+      isLoggedIn: "false",
       token: ""
     };
   }
 
+  /*Remove header padrão*/
   static navigationOptions = {
-    headerStyle: {
-      backgroundColor: "#D95D39",
-      elevation: null
-    },
     header: null
   };
 
-  changePasswordVisibility (){
+  /*Aciona a rotina de análise de login*/
+  async onLoginButtonPress() {
+    const email = this.state.email;
+    const password = this.state.password;
 
-    console.log(this.state.visible)
-
-    this.setState({ 
-      icon: this.state.icon === 'eye' ? 'eye-off' : 'eye', 
-      visible: !this.state.visible,  
-    }); 
-  }
-  
-  async login(responseJson) {
-    try {
-      await AsyncStorage.setItem("token", responseJson.token);
-      await AsyncStorage.setItem("logging", "true");
-
-      const t = await AsyncStorage.getItem("logging");
-
-      this.setState({
-        logging: "true",
-        token: t
+    fetch("http://sofia.huufma.br/api/login", {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
       })
+    })
+    .then((response) => response.json())
+    .then((res) => {
+      /*Quando e-mail ou senha estiverem errados, 
+        mostra-se uma mensagem de erro, 
+        senão é guardado o token de acesso.*/
+      if(res.message == "Não autorizado") {
+        this.handleOpen();
+      } else {
+        this.saveCredentials(res);
+      }
+      
+    })
+    .catch((error) => {
+        console.debug(error);
+    });
+  }
+
+  /*Guarda o token de acesso no armazenamento local.*/
+  async saveCredentials(res) {
+    try {
+      await AsyncStorage.setItem("token", res.token);
+      await AsyncStorage.setItem("logging", "true");
 
       this.props.navigation.navigate("HomeScreen");
 
@@ -60,49 +74,29 @@ export default class Login extends Component {
     }
   };
 
-  async onLoginPress() {
-    const email = this.state.email;
-    const password = this.state.password;
+  /*Abre o modal*/
+  handleOpen = value => {
+    this.setState({ modalIsVisible: true, value: value });
+  };
 
-          fetch("http://sofia.huufma.br/api/login", {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              email: email,
-              password: password
-            })
-          })
-          .then((response) => response.json())
-          .then((responseJson) => {
-            console.log(responseJson);
+  /*Fecha o modal*/
+  handleClose = () => {
+    this.setState({ modalIsVisible: false });
+    //this.props.navigation.goBack();
+  };
 
-            if(responseJson.message == "Não autorizado") {
-              this.handleOpen();
-            } else {
-              this.login(responseJson);
-            }
-            
-          })
-          .catch((error) => {
-             console.log("Houve um problema!")
-             console.debug(error);
-          });
+  changePasswordVisibility (){
+
+    console.log(this.state.inputIsVisible)
+
+    this.setState({ 
+      icon: this.state.icon === 'eye' ? 'eye-off' : 'eye', 
+      inputIsVisible: !this.state.inputIsVisible,  
+    }); 
   }
 
-  handleOpen = value => {
-    this.setState({ isVisible: true, value: value });
-  };
-
-  handleClose = () => {
-    this.setState({ isVisible: false });
-    this.props.navigation.goBack();
-  };
-
   render() {
-    const { isVisible } = this.state;
+    const { modalIsVisible } = this.state;
 
     return (
       <KeyboardAvoidingView
@@ -134,7 +128,7 @@ export default class Login extends Component {
             placeholder="Digite sua senha"
             placeholderTextColor="#999"
             style={styles.inputPassword}
-            secureTextEntry={this.state.visible}
+            secureTextEntry={this.state.inputIsVisible}
             value={this.state.password}
             ref={input => (this.passwordInput = input)}
             onChangeText={password => this.setState({ password })}
@@ -142,7 +136,7 @@ export default class Login extends Component {
           
           <Icon style={styles.iconPassword} name={this.state.icon} onPress={() => this.changePasswordVisibility()}/>
         </View>
-        <TouchableOpacity onPress={this.onLoginPress.bind(this)} style={styles.button}>
+        <TouchableOpacity onPress={this.onLoginButtonPress.bind(this)} style={styles.button}>
           <Text style={styles.buttonText}>Entrar</Text>
         </TouchableOpacity>
 
@@ -151,24 +145,19 @@ export default class Login extends Component {
         </Button>
 
         {
-          isVisible && 
-          <View>
+          modalIsVisible && 
             <ModalComponent 
-            isVisible={this.isVisible} 
-            onClose={this.handleClose}
-            content={
-              <View style={styles.ModalContainer}>
-                <Text style={styles.ModalText}>E-mail ou senha estão incorretos!</Text>
-                <TouchableOpacity onPress={ this.handleClose } style={styles.button}>
-                  <Text style={styles.buttonText}>OK</Text>
-                </TouchableOpacity>
-              </View>
-            }
-          />
-          <TouchableOpacity onPress={ () => this.signUp() } style={styles.button}>
-            <Text style={styles.buttonText}>Confirmar</Text>
-          </TouchableOpacity>
-          </View>
+              modalIsVisible={this.modalIsVisible} 
+              onClose={this.handleClose}
+              content={
+                <View style={styles.ModalContainer}>
+                  <Text style={styles.ModalText}>E-mail ou senha estão incorretos!</Text>
+                  <TouchableOpacity onPress={ this.handleClose } style={styles.button}>
+                    <Text style={styles.buttonText}>OK</Text>
+                  </TouchableOpacity>
+                </View>
+              }
+            />
         }
 
       </KeyboardAvoidingView>
