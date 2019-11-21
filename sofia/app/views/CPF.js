@@ -3,7 +3,6 @@ import { Picker, StatusBar, ScrollView, StyleSheet, TouchableOpacity, TextInput,
 
 import BackHeader from "../components/BackHeader";
 import ModalComponent from "../components/ModalComponent";
-import AsyncStorage from '@react-native-community/async-storage';
 
 import { TextInputMask } from 'react-native-masked-text';
 
