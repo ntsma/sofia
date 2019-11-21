@@ -29,6 +29,15 @@ export default class Home extends Component {
     }
   }
 
+  unsubscribe = NetInfo.addEventListener(state => {
+    console.log("Connection type", state.type);
+    console.log("Is connected?", state.isConnected);
+
+    this.setState({
+      isConnected: state.isConnected
+    })
+  });
+
   _onRefresh = () => {
    this.setState({"refreshing": true});
 
