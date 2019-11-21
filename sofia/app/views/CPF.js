@@ -15,6 +15,7 @@ export default class CPF extends Component {
         email: "",
         isVisible: false,
         emailValidation: false,
+        message: ""
     };
   }
 
@@ -26,29 +27,43 @@ export default class CPF extends Component {
     header: null
   };
 
-  async getSolicitante() {
-    var token = await AsyncStorage.getItem("token");
+  signUp() {
+    console.log(this.state);
 
-    const cpf = this.state.cpf;
-    const email = this.state.email;
+    let formdata = new FormData();
 
-    return fetch("http://35.202.173.125/mothers", {
-      method: 'GET',
-    })
-    .then((response) => response.json())
-    .then((responseJson) => {
-        solicitante = {
-          "cidade": "São Luís",
-          "unidade": "Unidade 1",
-          "equipe": "Equipe 1",
-          "nome": "Eduardo S Vieira",
-          "cpf": cpf,
-        };
+    formdata.append("email", this.state.email);
+    formdata.append("cpf", "61049006313");
 
-        this.props.navigation.navigate("SignUp", {solicitante})
+    console.log(formdata)
+    
+    return fetch('http://sofia.huufma.br/api/check', {
+        method: 'POST',
+        body: formdata
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        var message = "";
+
+        if(responseJson.message == "success") {
+          message =  "Iremos confirmar os dados fornecidos nas Bases Públicas de Profissionais de Saúde e em alguns minutos lhe enviaremos um email com a confirmação de acesso a Sofia.";
+
+        } else {
+          message = "Email e CPF inválidos ou já cadastrados!";
+          
+        }
+
+        this.setState({
+          message: message
+        })
+
+        this.handleOpen();
+        
+        this.props.navigation.navigate("Login");
       })
       .catch((error) => {
         console.error(error);
+        
       });
 
   }
@@ -99,7 +114,7 @@ export default class CPF extends Component {
                   style={styles.input}
                   type={'cpf'}
                   options={{}}
-                  placeholder="123.456.789-00"
+                  placeholder="000.000.000-00"
                   value={this.state.cpf}
                   onChangeText={text => {
                     this.setState({
@@ -132,24 +147,29 @@ export default class CPF extends Component {
                 </View>
                 
                 {/* <TouchableOpacity onPress={ this.getSolicitante.bind(this) } style={styles.button}></TouchableOpacity> */}
-                <TouchableOpacity onPress={ this.handleOpen } style={styles.button}>
+                <TouchableOpacity onPress={ () => this.signUp() } style={styles.button}>
                     <Text style={styles.buttonText}>Confirmar</Text>
                 </TouchableOpacity>
 
                 {
                   isVisible && 
-                  <ModalComponent 
+                  <View>
+                    <ModalComponent 
                     isVisible={this.isVisible} 
                     onClose={this.handleClose}
                     content={
                       <View style={styles.ModalContainer}>
-                        <Text style={styles.ModalText}>Iremos confirmar os dados fornecidos nas
-                        Bases Públicas de Profissionais de Saúde e em alguns minutos lhe 
-                        enviaremos um email para ({this.state.email}) com a confirmação de
-                        acesso a Sofia.</Text>
+                        <Text style={styles.ModalText}>{this.state.message}</Text>
+                        <TouchableOpacity onPress={ this.handleClose } style={styles.button}>
+                          <Text style={styles.buttonText}>OK</Text>
+                        </TouchableOpacity>
                       </View>
                     }
                   />
+                  <TouchableOpacity onPress={ () => this.signUp() } style={styles.button}>
+                    <Text style={styles.buttonText}>Confirmar</Text>
+                  </TouchableOpacity>
+                  </View>
                 }
 
             </ScrollView>
