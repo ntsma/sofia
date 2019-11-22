@@ -19,7 +19,7 @@ import SubmittedIssues from "./app/views/SubmittedIssues";
 import DraftIssues from "./app/views/DraftIssues";
 import CanceledIssues from "./app/views/CanceledIssues";
 import AnsweredIssues from "./app/views/AnsweredIssues";
-import NewQuestion from "./app/views/NewQuestion";
+// import NewQuestion from "./app/views/NewQuestion";
 import Overlay from "./app/views/Overlay";
 import Question from "./app/views/Question";
 import EditQuestion from "./app/views/EditQuestion";
@@ -27,9 +27,10 @@ import ShowObservation from "./app/views/ShowObservation";
 import EditCanceledIssue from "./app/views/EditCanceledIssue";
 import ShowDetails from "./app/views/ShowDetails";
 import RelatedQuestionsView from "./app/views/RelatedQuestionsView";
-import NewSearch from "./app/views/NewSearch";
+import Search from "./app/views/Search";
 import RelatedIssueView from "./app/views/RelatedIssueView";
 import CPF from "./app/views/CPF";
+import FAQ from "./app/old/FAQ";
 import TeleconsultoriaRealizada from "./app/views/TeleconsultoriaRealizada";
 
 class Home extends Component {
@@ -140,10 +141,10 @@ const App = createStackNavigator(
       }
     },
 
-    NewSearch: {
-      screen: NewSearch,
+    Search: {
+      screen: Search,
       navigationOptions: {
-        title: "NewSearch"
+        title: "Search"
       }
     },
 
@@ -161,12 +162,12 @@ const App = createStackNavigator(
       }
     },
 
-    NewQuestion: {
-      screen: NewQuestion,
-      navigationOptions: {
-        title: "NewQuestion"
-      }
-    },
+    // NewQuestion: {
+    //   screen: NewQuestion,
+    //   navigationOptions: {
+    //     title: "NewQuestion"
+    //   }
+    // },
 
     EditQuestion: {
       screen: EditQuestion,
@@ -249,6 +250,12 @@ const App = createStackNavigator(
       screen: CPF,
       navigationOptions: {
         title: "CPF"
+      }
+    },
+    FAQ: {
+      screen: FAQ,
+      navigationOptions: {
+        title: "FAQ"
       }
     }
   },
