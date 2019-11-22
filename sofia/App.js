@@ -255,7 +255,7 @@ const App = createStackNavigator(
     FAQ: {
       screen: FAQ,
       navigationOptions: {
-        title: "FAQ"
+        title: "Dúvidas Gerais"
       }
     }
   },
