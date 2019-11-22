@@ -19,7 +19,7 @@ import SubmittedIssues from "./app/views/SubmittedIssues";
 import DraftIssues from "./app/views/DraftIssues";
 import CanceledIssues from "./app/views/CanceledIssues";
 import AnsweredIssues from "./app/views/AnsweredIssues";
-import NewQuestion from "./app/views/NewQuestion";
+import NewQuestion from "./app/old/NewQuestion";
 import Overlay from "./app/views/Overlay";
 import Question from "./app/views/Question";
 import EditQuestion from "./app/views/EditQuestion";
@@ -28,6 +28,7 @@ import EditCanceledIssue from "./app/views/EditCanceledIssue";
 import ShowDetails from "./app/views/ShowDetails";
 import RelatedQuestionsView from "./app/views/RelatedQuestionsView";
 import NewSearch from "./app/views/NewSearch";
+import Search from "./app/views/Search";
 import RelatedIssueView from "./app/views/RelatedIssueView";
 import CPF from "./app/views/CPF";
 import TeleconsultoriaRealizada from "./app/views/TeleconsultoriaRealizada";
@@ -55,9 +56,9 @@ class Home extends Component {
 
   async retrieveData() {
     const value = await AsyncStorage.getItem("logging");
-    const email = await AsyncStorage.getItem("email");
 
-    console.debug(value);
+    console.log("Está logado?");
+    console.log(value);
 
     this.setState({
       logging: value
@@ -114,22 +115,24 @@ const NavigationConfig = () => {
 
 const App = createStackNavigator(
   {
-    Home: {
-      screen: Home,
-      navigationOptions: {
-        title: "Home"
-      }
-    },
-    TeleconsultoriaRealizada: {
-      screen: TeleconsultoriaRealizada,
-      navigationOptions: {
-        title: "TeleconsultoriaRealizada"
-      }
-    },
+    // Home: {
+    //   screen: Home,
+    //   navigationOptions: {
+    //     title: "Home"
+    //   }
+    // },
+
     HomeScreen: {
       screen: HomeScreen,
       navigationOptions: {
         title: "HomeScreen"
+      }
+    },
+
+    TeleconsultoriaRealizada: {
+      screen: TeleconsultoriaRealizada,
+      navigationOptions: {
+        title: "TeleconsultoriaRealizada"
       }
     },
 
@@ -147,6 +150,13 @@ const App = createStackNavigator(
       }
     },
 
+    Search: {
+      screen: Search,
+      navigationOptions: {
+        title: "Search"
+      }
+    },
+
     Login: {
       screen: Login,
       navigationOptions: {
@@ -161,12 +171,12 @@ const App = createStackNavigator(
       }
     },
 
-    NewQuestion: {
-      screen: NewQuestion,
-      navigationOptions: {
-        title: "NewQuestion"
-      }
-    },
+    // NewQuestion: {
+    //   screen: NewQuestion,
+    //   navigationOptions: {
+    //     title: "NewQuestion"
+    //   }
+    // },
 
     EditQuestion: {
       screen: EditQuestion,
