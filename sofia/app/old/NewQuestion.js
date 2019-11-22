@@ -2,7 +2,7 @@
 
 import React, { Component } from "react";
 
-import {Platform, Alert} from "react-native";
+import { Platform, Alert } from "react-native";
 
 import {
   Image,
@@ -27,21 +27,21 @@ import {
   Label,
   Text,
   Textarea,
-  Title, Left,
+  Title,
+  Left
 } from "native-base";
 
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from "@react-native-community/async-storage";
 
 import NetInfo from "@react-native-community/netinfo";
 
-import ImagePicker from 'react-native-image-picker';
+import ImagePicker from "react-native-image-picker";
 
 import BackHeader from "../components/BackHeader";
 
 import QuestionSentPopUp from "../components/QuestionSentPopUp";
 
 import DraftPopUp from "../components/DraftPopUp";
-
 
 export default class NewQuestion extends Component {
   /*Removendo header padrão*/
@@ -52,68 +52,66 @@ export default class NewQuestion extends Component {
   constructor() {
     super();
     this.state = {
-      "file_ids": "",
-      "source": "",
-      "question": "",
-      "isDraftModalVisible": false,
-      "isModalVisible": false,
-      "isLoading": false,
+      file_ids: "",
+      source: "",
+      question: "",
+      isDraftModalVisible: false,
+      isModalVisible: false,
+      isLoading: false
     };
   }
 
-  changeModalDraftVisibility = (bool) => (
-    this.setState({ isDraftModalVisible : bool })
-  )
+  changeModalDraftVisibility = bool =>
+    this.setState({ isDraftModalVisible: bool });
 
-  changeModalQuestionVisibility = (bool) => (
-    this.setState({ isModalVisible : bool })
-  )
+  changeModalQuestionVisibility = bool =>
+    this.setState({ isModalVisible: bool });
 
-  showLoader = (bool) => (
-    this.setState({ isLoading: bool })
-  )
+  showLoader = bool => this.setState({ isLoading: bool });
 
   createFormData(photo, body) {
     const data = new FormData();
 
-    data.append("photos[]", [{
-      name: photo.fileName,
-      type: photo.type,
-      uri:
-        Platform.OS === "android" ? photo.uri : photo.uri.replace("file://", "")
-    }]);
+    data.append("photos[]", [
+      {
+        name: photo.fileName,
+        type: photo.type,
+        uri:
+          Platform.OS === "android"
+            ? photo.uri
+            : photo.uri.replace("file://", "")
+      }
+    ]);
 
     Object.keys(body).forEach(key => {
       data.append(key, body[key]);
     });
 
     return data;
-  };
+  }
 
   async onUploadFile() {
     var token = await AsyncStorage.getItem("token");
 
     const options = {
-      title: 'Escolha uma imagem',
+      title: "Escolha uma imagem",
       storageOptions: {
         skipBackup: true,
-        path: 'images',
-      },
+        path: "images"
+      }
     };
 
-    ImagePicker.launchImageLibrary(options, (response) => {
-
+    ImagePicker.launchImageLibrary(options, response => {
       if (response.didCancel) {
-        console.log('Usuário cancelou a image picker');
+        console.log("Usuário cancelou a image picker");
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+        console.log("ImagePicker Error: ", response.error);
       } else {
-
         this.setState({
-          "source": response
+          source: response
         });
 
-        console.log("Carregando imagem...")
+        console.log("Carregando imagem...");
         console.log(this.state.source.fileName);
 
         console.log("TOKEN");
@@ -124,28 +122,33 @@ export default class NewQuestion extends Component {
 
         const data = new FormData();
 
-        data.append('photos[]', {uri: response.uri, name: response.fileName, type: 'image/jpg'})
+        data.append("photos[]", {
+          uri: response.uri,
+          name: response.fileName,
+          type: "image/jpg"
+        });
 
-          fetch("http://sofia.huufma.br/api/solicitation/file/upload", {
-            method: "POST",
-            Accept: 'application/json',
-            "Content-Type": 'multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d',
-            headers: {
-              Authorization: "Bearer " + token
-            },
-            body: data
-          })
+        fetch("http://sofia.huufma.br/api/solicitation/file/upload", {
+          method: "POST",
+          Accept: "application/json",
+          "Content-Type":
+            "multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d",
+          headers: {
+            Authorization: "Bearer " + token
+          },
+          body: data
+        })
           .then(response => response.json())
           .then(response => {
             console.log("upload success", response);
             alert("Foto carregada com sucesso!");
 
             ids = "";
-            for(index in response.files) {
+            for (index in response.files) {
               ids += response.files[index].fileID + ", ";
             }
 
-            this.setState({"file_ids": ids });
+            this.setState({ file_ids: ids });
           })
           .catch(error => {
             console.log("upload error", error);
@@ -155,11 +158,10 @@ export default class NewQuestion extends Component {
     });
   }
 
-
   async saveDraftIntoAsyncStorage(question) {
     var questions = await AsyncStorage.getItem("draftQuestions");
 
-    if(!questions) {
+    if (!questions) {
       await AsyncStorage.setItem("draftQuestions", JSON.stringify([]));
       var questions = await AsyncStorage.getItem("draftQuestions");
     }
@@ -180,8 +182,7 @@ export default class NewQuestion extends Component {
     });
 
     shouldUpdate = true;
-    this.props.navigation.navigate("HomeScreen", {shouldUpdate});
-
+    this.props.navigation.navigate("HomeScreen", { shouldUpdate });
   }
 
   async onCreateQuestion() {
@@ -189,54 +190,52 @@ export default class NewQuestion extends Component {
     var question = this.state.question;
 
     NetInfo.fetch().then(state => {
-
-      if(state.isConnected) {
+      if (state.isConnected) {
         let formdata = new FormData();
 
         formdata.append("type_id", 52);
-        formdata.append("mode", 'send');
+        formdata.append("mode", "send");
         formdata.append("description", question);
         formdata.append("mobile", 1);
         formdata.append("file_ids", this.state.file_ids);
 
         console.log(formdata);
 
-        return fetch('http://sofia.huufma.br/api/solicitation/handle', {
-            method: 'POST',
-            headers: {
-              Authorization: "Bearer " + token
-            },
-            body: formdata,
-          })
-          .then((response) => response.json())
-          .then((responseJson) => {
-
+        return fetch("http://sofia.huufma.br/api/solicitation/handle", {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + token
+          },
+          body: formdata
+        })
+          .then(response => response.json())
+          .then(responseJson => {
             this.setState({
               question: ""
             });
 
             shouldUpdate = true;
-            this.props.navigation.navigate("HomeScreen", {shouldUpdate});
+            this.props.navigation.navigate("HomeScreen", { shouldUpdate });
           })
-          .catch((error) => {
+          .catch(error => {
             console.error(error);
-            Alert.alert("Houve um problema!")
+            Alert.alert("Houve um problema!");
           });
-
       } else {
-        this.saveDraftIntoAsyncStorage({"id": this.state.question.length + 1, "description": question, "file_ids": this.state.file_ids});
+        this.saveDraftIntoAsyncStorage({
+          id: this.state.question.length + 1,
+          description: question,
+          file_ids: this.state.file_ids
+        });
       }
     });
   }
 
-  
-
   async onSearch() {
     var question = this.state.question;
 
-    if(!this.props.navigation.state.params.isConnected) {
-      this.props.navigation.navigate("NewSearch", {question})
-      
+    if (!this.props.navigation.state.params.isConnected) {
+      this.props.navigation.navigate("Question", { question });
     } else {
       this.showLoader(true);
 
@@ -244,17 +243,17 @@ export default class NewQuestion extends Component {
 
       let formdata = new FormData();
 
-      formdata.append("description", question)
+      formdata.append("description", question);
 
-      return fetch('http://sofia.huufma.br/api/solicitation/search', {
-          method: 'POST',
-          headers: {
-            Authorization: "Bearer " + token
-          },
-          body: formdata,
-        })
-        .then((response) => response.json())
-        .then((responseJson) => {
+      return fetch("http://sofia.huufma.br/api/solicitation/search", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + token
+        },
+        body: formdata
+      })
+        .then(response => response.json())
+        .then(responseJson => {
           console.debug("RETURNING...");
           console.debug(responseJson);
 
@@ -264,17 +263,18 @@ export default class NewQuestion extends Component {
 
           this.showLoader(false);
 
-          this.props.navigation.navigate("RelatedQuestionsView", {questions, question})
+          this.props.navigation.navigate("RelatedQuestionsView", {
+            questions,
+            question
+          });
         })
-        .catch((error) => {
+        .catch(error => {
           console.error(error);
         });
-    }       
+    }
   }
 
-
   async onCreateDraftQuestion() {
-
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
 
@@ -284,21 +284,21 @@ export default class NewQuestion extends Component {
     let formdata = new FormData();
 
     formdata.append("type_id", 52);
-    formdata.append("mode", 'draft');
+    formdata.append("mode", "draft");
     formdata.append("mobile", 1);
-    formdata.append("description", question)
+    formdata.append("description", question);
 
     console.debug(formdata);
 
-    return fetch('http://sofia.huufma.br/api/solicitation/handle', {
-        method: 'POST',
-        headers: {
-          Authorization: "Bearer " + token
-        },
-        body: formdata,
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
+    return fetch("http://sofia.huufma.br/api/solicitation/handle", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token
+      },
+      body: formdata
+    })
+      .then(response => response.json())
+      .then(responseJson => {
         console.debug("RESPOSTA");
         console.debug(responseJson);
 
@@ -307,65 +307,95 @@ export default class NewQuestion extends Component {
         });
 
         shouldUpdate = true;
-        this.props.navigation.navigate("HomeScreen", {shouldUpdate});
+        this.props.navigation.navigate("HomeScreen", { shouldUpdate });
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
 
         Alert.alert("Houve um problema!");
-
       });
-
   }
 
-  onPressButtonSend(){
+  onPressButtonSend() {
     this.changeModalQuestionVisibility(true);
     this.onCreateQuestion();
     //console.log('çodal', this.isModalVisible)
   }
 
-onPressButtonDraft(){
-  this.changeModalDraftVisibility(true);
-  this.onCreateDraftQuestion();
-  //console.log('çodal', this.isModalVisible)
-}
+  onPressButtonDraft() {
+    this.changeModalDraftVisibility(true);
+    this.onCreateDraftQuestion();
+    //console.log('çodal', this.isModalVisible)
+  }
 
-onLength() {
-  return 10;
-}
-
+  onLength() {
+    return 10;
+  }
 
   render() {
     return (
       <Container>
-        <BackHeader navigation={this.props.navigation} name="Como posso te ajudar?"/>
-        {
-          this.state.isLoading ?
-          <ActivityIndicator style={styles.load} size="large" color="#3c8dbc"/>
-          :
+        <BackHeader
+          navigation={this.props.navigation}
+          name="Como posso te ajudar?"
+        />
+        {this.state.isLoading ? (
+          <ActivityIndicator style={styles.load} size="large" color="#3c8dbc" />
+        ) : (
           <Content>
-          <Form style={styles.container}>
-            <View style={styles.title}>
-              <Label style={styles.textTitle}>Digite aqui sua dúvida para que sejam encontradas respostas adequadas</Label>
-            </View>
-            <Textarea value={this.state.question} style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Descreva sua dúvida" placeholderTextColor="#ccc" bordered />
+            <Form style={styles.container}>
+              <View style={styles.title}>
+                <Label style={styles.textTitle}>
+                  Digite aqui sua dúvida para que sejam encontradas respostas
+                  adequadas
+                </Label>
+              </View>
+              <Textarea
+                value={this.state.question}
+                style={styles.textArea}
+                rowSpan={10}
+                onChangeText={question => this.setState({ question })}
+                placeholder="Descreva sua dúvida"
+                placeholderTextColor="#ccc"
+                bordered
+              />
 
-              <Button block success style={styles.button} onPress={this.onSearch.bind(this)}>
+              <Button
+                block
+                success
+                style={styles.button}
+                onPress={this.onSearch.bind(this)}
+              >
                 <Text>Pesquisar</Text>
-                <Icon type="MaterialIcons" name="search"/>
+                <Icon type="MaterialIcons" name="search" />
               </Button>
 
-              <Modal transparent={true} visible={this.state.isModalVisible} onRequestClose={() => this.changeModalQuestionVisibility(false)} animationType='fade'>
-                <QuestionSentPopUp changeModalQuestionVisibility={this.changeModalQuestionVisibility}/>
+              <Modal
+                transparent={true}
+                visible={this.state.isModalVisible}
+                onRequestClose={() => this.changeModalQuestionVisibility(false)}
+                animationType="fade"
+              >
+                <QuestionSentPopUp
+                  changeModalQuestionVisibility={
+                    this.changeModalQuestionVisibility
+                  }
+                />
               </Modal>
-              <Modal transparent={true} visible={this.state.isDraftModalVisible} onRequestClose={() => this.changeModalDraftVisibility(false)} animationType='fade'>
-                <DraftPopUp  changeModalDraftVisibility={this.changeModalDraftVisibility}/>
+              <Modal
+                transparent={true}
+                visible={this.state.isDraftModalVisible}
+                onRequestClose={() => this.changeModalDraftVisibility(false)}
+                animationType="fade"
+              >
+                <DraftPopUp
+                  changeModalDraftVisibility={this.changeModalDraftVisibility}
+                />
               </Modal>
-              <View style={{height: 3}}>
-              </View>
-          </Form>
-         </Content>
-        }
+              <View style={{ height: 3 }}></View>
+            </Form>
+          </Content>
+        )}
       </Container>
     );
   }
@@ -373,67 +403,67 @@ onLength() {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#3c8dbc",
+    backgroundColor: "#3c8dbc"
   },
   image: {
     width: 40,
     height: 40
   },
   button: {
-    width: '90%',
+    width: "90%",
     height: 60,
     marginTop: 10,
-    marginLeft: '5%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginLeft: "5%",
+    justifyContent: "center",
+    alignItems: "center"
   },
 
   attachButton: {
-    width: '90%',
+    width: "90%",
     color: "yellow",
     height: 60,
     marginTop: 10,
-    marginLeft: '5%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginLeft: "5%",
+    justifyContent: "center",
+    alignItems: "center"
   },
 
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
   },
   enviar: {
-    width: '53%',
-    marginLeft: '2%',
-    alignItems: 'center'
+    width: "53%",
+    marginLeft: "2%",
+    alignItems: "center"
   },
   anexo: {
-    width: '35%',
-    marginLeft: 0,
+    width: "35%",
+    marginLeft: 0
   },
   container: {
-    alignItems: 'center'
+    alignItems: "center"
   },
   title: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'stretch',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "stretch",
     margin: 10
   },
   textTitle: {
     fontSize: 16,
-    width: '93%',
-    textAlign: 'center',
+    width: "93%",
+    textAlign: "center"
   },
   textArea: {
-    width: '90%',
-    backgroundColor: '#f6f6f6'
+    width: "90%",
+    backgroundColor: "#f6f6f6"
   },
   load: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    justifyContent: "center",
+    alignItems: "center"
+  }
 });

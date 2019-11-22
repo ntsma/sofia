@@ -1,25 +1,18 @@
-
 /*RelatedQuestionsView.js*/
 
-import React, {Component} from "react";
+import React, { Component } from "react";
 
-import {
-  FlatList,
-  StyleSheet
-} from 'react-native';
+import { FlatList, StyleSheet } from "react-native";
 
-import {
-  ThemeProvider,
-  Card
-} from "react-native-elements";
+import { ThemeProvider, Card } from "react-native-elements";
 
 import {
   Icon,
   Text,
-  Button, 
+  Button,
   Body,
-  Left, 
-  Right, 
+  Left,
+  Right,
   ListItem,
   View
 } from "native-base";
@@ -33,54 +26,70 @@ export default class RelatedQuestionsView extends Component {
   };
 
   render() {
-   const questions = this.props.navigation.state.params.questions;
-   const question = this.props.navigation.state.params.question;
-   
-   return (
-     <ThemeProvider>
-       <BackHeader navigation={this.props.navigation} name="Perguntas relacionadas"/>
+    const questions = this.props.navigation.state.params.questions;
+    const question = this.props.navigation.state.params.question;
 
-       <FlatList
-            data={questions}
-            keyExtractor={(item, index) => item.id.toString()}
-            renderItem={({item}) => 
-            
-              <ListItem thumbnail style={styles.list}
-                onPress={() => this.props.navigation.navigate("RelatedIssueView", {item})}>
-                <Body>
-                  <Text numberOfLines={3} style={styles.bodyText}>{item.description}</Text>
-                </Body>
-                <Right>
-                  <Icon style={styles.next} type="MaterialIcons" name="chevron-right" />
-                </Right>
-              </ListItem>
-            
-            }
-          />
+    return (
+      <ThemeProvider>
+        <BackHeader
+          navigation={this.props.navigation}
+          name="Perguntas relacionadas"
+        />
 
-      <Button block danger onPress={() => this.props.navigation.navigate("NewSearch", {question})}>
-        <Text>Não solucionou sua dúvida?</Text>
-      </Button>
+        <FlatList
+          data={questions}
+          keyExtractor={(item, index) => item.id.toString()}
+          renderItem={({ item }) => (
+            <ListItem
+              thumbnail
+              style={styles.list}
+              onPress={() =>
+                this.props.navigation.navigate("RelatedIssueView", { item })
+              }
+            >
+              <Body>
+                <Text numberOfLines={3} style={styles.bodyText}>
+                  {item.description}
+                </Text>
+              </Body>
+              <Right>
+                <Icon
+                  style={styles.next}
+                  type="MaterialIcons"
+                  name="chevron-right"
+                />
+              </Right>
+            </ListItem>
+          )}
+        />
 
-     </ThemeProvider>
-
+        <Button
+          block
+          danger
+          onPress={() =>
+            this.props.navigation.navigate("Question", { question })
+          }
+        >
+          <Text>Não solucionou sua dúvida?</Text>
+        </Button>
+      </ThemeProvider>
     );
- }
+  }
 }
 
-const styles = StyleSheet.create ({
+const styles = StyleSheet.create({
   bodyText: {
     marginTop: -5,
-    minHeight: 30,
+    minHeight: 30
   },
   inbox: {
     width: 30,
     height: 30,
-    fontSize: 30,
+    fontSize: 30
   },
   next: {
     height: 30,
     fontSize: 30,
-    color: '#3c8dbc80'
+    color: "#3c8dbc80"
   }
 });
