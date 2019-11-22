@@ -70,7 +70,7 @@ export default class RelatedQuestionsView extends Component {
             this.props.navigation.navigate("Question", { question })
           }
         >
-          <Text>Não solucionou sua dúvida?</Text>
+          <Text style={{ color: "#FFF" }}>Não solucionou sua dúvida?</Text>
         </Button>
       </ThemeProvider>
     );

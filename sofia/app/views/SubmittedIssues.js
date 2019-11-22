@@ -17,11 +17,16 @@ export default class SubmittedIssues extends Component {
 
     return (
       <Container>
-        <BackHeader navigation={this.props.navigation} name="Enviados"/>
+        <BackHeader navigation={this.props.navigation} name="Enviadas" />
         <FlatList
           data={submittedIssues}
           keyExtractor={item => item.id.toString()}
-          renderItem={({item}) => <SubmittedIssue navigation={this.props.navigation} question={item}/>}
+          renderItem={({ item }) => (
+            <SubmittedIssue
+              navigation={this.props.navigation}
+              question={item}
+            />
+          )}
         />
       </Container>
     );
