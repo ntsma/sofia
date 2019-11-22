@@ -168,7 +168,7 @@ export default class RelatedIssueView extends Component {
                 </View>
 
                 <View style={styles.section}>
-                  <Evaluation navigation={this.props.navigation} data={this.state.data} judgeType="0" buttonIsVisible={true}/>
+                  <Evaluation onClose={this.handleClose} navigation={this.props.navigation} data={this.state.data} judgeType="0" buttonIsVisible={true}/>
                 </View>
 
                 <Button onPress={() => this.props.navigation.goBack()} block light style={{marginLeft: 20, marginRight: 20}}>

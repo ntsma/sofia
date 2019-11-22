@@ -1,22 +1,34 @@
+/*NewQuestion.js*/
+
 import React, { Component } from "react";
+
+import { Platform, Alert } from "react-native";
+
 import {
   ActivityIndicator,
   Dimensions,
   StyleSheet,
-  Text,
   TouchableNativeFeedback,
+  Text,
   View
 } from "react-native";
+
 import { Icon, Textarea } from "native-base";
 
 import AsyncStorage from "@react-native-community/async-storage";
+
 import NetInfo from "@react-native-community/netinfo";
+
 import ImagePicker from "react-native-image-picker";
+
 import BackHeader from "../components/BackHeader";
+
 import QuestionSentPopUp from "../components/QuestionSentPopUp";
+
 import DraftPopUp from "../components/DraftPopUp";
 
-export default class Question extends Component {
+export default class NewSearch extends Component {
+  /*Removendo header padrão*/
   static navigationOptions = {
     header: null
   };
@@ -32,11 +44,11 @@ export default class Question extends Component {
     };
   }
 
-  // componentDidMount() {
-  //   this.setState({
-  //     question: this.props.navigation.state.params.question
-  //   });
-  // }
+  componentDidMount() {
+    this.setState({
+      question: this.props.navigation.state.params.question
+    });
+  }
 
   changeModalDraftVisibility = bool =>
     this.setState({ isDraftModalVisible: bool });

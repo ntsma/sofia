@@ -32,7 +32,7 @@ export default class Search extends Component {
     var question = this.state.question;
 
     if (!this.props.navigation.state.params.isConnected) {
-      this.props.navigation.navigate("NewSearch", { question });
+      this.props.navigation.navigate("Question", { question });
     } else {
       this.showLoader(true);
 
