@@ -202,7 +202,7 @@ export default class NewSearch extends Component {
             });
 
             shouldUpdate = true;
-            this.props.navigation.navigate("HomeScreen", { shouldUpdate });
+            this.props.navigation.navigate("Success", { shouldUpdate });
           })
           .catch(error => {
             console.error(error);
@@ -365,7 +365,7 @@ export default class NewSearch extends Component {
                   </View>
                 </TouchableNativeFeedback>
               </View>
-              <TouchableNativeFeedback onPress={this.onSearch.bind(this)}>
+              <TouchableNativeFeedback onPress={this.onCreateQuestion.bind(this)}>
                 <View style={styles.Button}>
                   <Icon
                     style={[styles.Icon, { color: "#FFF" }]}

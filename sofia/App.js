@@ -32,6 +32,8 @@ import RelatedIssueView from "./app/views/RelatedIssueView";
 import CPF from "./app/views/CPF";
 import FAQ from "./app/old/FAQ";
 import TeleconsultoriaRealizada from "./app/views/TeleconsultoriaRealizada";
+import Success from './app/views/Success';
+import MostraDuvidaEspecifica from './app/views/MostraDuvidaEspecifica';
 
 class Home extends Component {
   state = {
@@ -120,6 +122,9 @@ const App = createStackNavigator(
       navigationOptions: {
         title: "Home"
       }
+    },
+    MostraDuvidaEspecifica: {
+      screen: MostraDuvidaEspecifica
     },
     TeleconsultoriaRealizada: {
       screen: TeleconsultoriaRealizada,
@@ -253,11 +258,11 @@ const App = createStackNavigator(
       }
     },
     FAQ: {
-      screen: FAQ,
-      navigationOptions: {
-        title: "Dúvidas Gerais"
-      }
-    }
+      screen: FAQ
+    },
+    Success: {
+      screen: Success
+    } 
   },
   {
     transitionConfig: NavigationConfig
