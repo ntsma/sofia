@@ -5,15 +5,31 @@ import React, { Component } from "react";
 import { Platform, Alert } from "react-native";
 
 import {
-  ActivityIndicator,
-  Dimensions,
+  Image,
+  TextInput,
   StyleSheet,
-  TouchableNativeFeedback,
-  Text,
-  View
+  View,
+  Modal,
+  ActivityIndicator
 } from "react-native";
 
-import { Icon, Textarea } from "native-base";
+import {
+  Body,
+  Button,
+  Card,
+  CardItem,
+  Container,
+  Content,
+  Form,
+  Icon,
+  Item,
+  Input,
+  Label,
+  Text,
+  Textarea,
+  Title,
+  Left
+} from "native-base";
 
 import AsyncStorage from "@react-native-community/async-storage";
 
@@ -27,7 +43,7 @@ import QuestionSentPopUp from "../components/QuestionSentPopUp";
 
 import DraftPopUp from "../components/DraftPopUp";
 
-export default class NewSearch extends Component {
+export default class NewQuestion extends Component {
   /*Removendo header padrão*/
   static navigationOptions = {
     header: null
@@ -40,14 +56,9 @@ export default class NewSearch extends Component {
       source: "",
       question: "",
       isDraftModalVisible: false,
-      isModalVisible: false
+      isModalVisible: false,
+      isLoading: false
     };
-  }
-
-  componentDidMount() {
-    this.setState({
-      question: this.props.navigation.state.params.question
-    });
   }
 
   changeModalDraftVisibility = bool =>
@@ -55,6 +66,8 @@ export default class NewSearch extends Component {
 
   changeModalQuestionVisibility = bool =>
     this.setState({ isModalVisible: bool });
+
+  showLoader = bool => this.setState({ isLoading: bool });
 
   createFormData(photo, body) {
     const data = new FormData();
@@ -219,34 +232,46 @@ export default class NewSearch extends Component {
   }
 
   async onSearch() {
-    var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
 
-    let formdata = new FormData();
+    if (!this.props.navigation.state.params.isConnected) {
+      this.props.navigation.navigate("Question", { question });
+    } else {
+      this.showLoader(true);
 
-    formdata.append("description", question);
+      var token = await AsyncStorage.getItem("token");
 
-    return fetch("http://sofia.huufma.br/api/solicitation/search", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token
-      },
-      body: formdata
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        console.debug("RETURNING...");
-        console.debug(responseJson);
+      let formdata = new FormData();
 
-        var questions = responseJson.data;
+      formdata.append("description", question);
 
-        shouldUpdate = true;
-
-        this.props.navigation.navigate("RelatedQuestionsView", { questions });
+      return fetch("http://sofia.huufma.br/api/solicitation/search", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + token
+        },
+        body: formdata
       })
-      .catch(error => {
-        console.error(error);
-      });
+        .then(response => response.json())
+        .then(responseJson => {
+          console.debug("RETURNING...");
+          console.debug(responseJson);
+
+          var questions = responseJson.data;
+
+          shouldUpdate = true;
+
+          this.showLoader(false);
+
+          this.props.navigation.navigate("RelatedQuestionsView", {
+            questions,
+            question
+          });
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
   }
 
   async onCreateDraftQuestion() {
@@ -303,9 +328,13 @@ export default class NewSearch extends Component {
     //console.log('çodal', this.isModalVisible)
   }
 
+  onLength() {
+    return 10;
+  }
+
   render() {
     return (
-      <View>
+      <Container>
         <BackHeader
           navigation={this.props.navigation}
           name="Como posso te ajudar?"
@@ -313,143 +342,128 @@ export default class NewSearch extends Component {
         {this.state.isLoading ? (
           <ActivityIndicator style={styles.load} size="large" color="#3c8dbc" />
         ) : (
-          <View style={styles.Container}>
-            <Text style={styles.Title}>
-              Digite aqui sua pergunta para que sejam encontradas respostas
-              adequadas
-            </Text>
-
-            <Textarea
-              style={styles.Input}
-              value={this.state.question}
-              onChangeText={question => this.setState({ question })}
-              placeholder="Digite aqui..."
-              placeholderTextColor="#999"
-              bordered
-            />
-
-            <View>
-              <View style={styles.ButtonContainer}>
-                <TouchableNativeFeedback onPress={this.onUploadFile.bind(this)}>
-                  <View
-                    style={[
-                      styles.Button,
-                      { width: "48%", backgroundColor: "#eee" }
-                    ]}
-                  >
-                    <Icon
-                      style={[styles.Icon, { left: 10 }]}
-                      type="MaterialIcons"
-                      name="attach-file"
-                    />
-                    <Text style={styles.TextDark}>Inserir{"\n"}anexo</Text>
-                  </View>
-                </TouchableNativeFeedback>
-                <TouchableNativeFeedback
-                  onPress={this.onPressButtonDraft.bind(this)}
-                >
-                  <View
-                    style={[
-                      styles.Button,
-                      { width: "48%", backgroundColor: "#eee" }
-                    ]}
-                  >
-                    <Icon
-                      style={[styles.Icon, { left: 10 }]}
-                      type="MaterialIcons"
-                      name="create"
-                    />
-                    <Text style={styles.TextDark}>
-                      Salvar como{"\n"}rascunho
-                    </Text>
-                  </View>
-                </TouchableNativeFeedback>
+          <Content>
+            <Form style={styles.container}>
+              <View style={styles.title}>
+                <Label style={styles.textTitle}>
+                  Digite aqui sua dúvida para que sejam encontradas respostas
+                  adequadas
+                </Label>
               </View>
-              <TouchableNativeFeedback onPress={this.onSearch.bind(this)}>
-                <View style={styles.Button}>
-                  <Icon
-                    style={[styles.Icon, { color: "#FFF" }]}
-                    type="MaterialIcons"
-                    name="search"
-                  />
-                  <Text style={styles.TextLight}>Enviar pergunta</Text>
-                </View>
-              </TouchableNativeFeedback>
-            </View>
-          </View>
+              <Textarea
+                value={this.state.question}
+                style={styles.textArea}
+                rowSpan={10}
+                onChangeText={question => this.setState({ question })}
+                placeholder="Descreva sua dúvida"
+                placeholderTextColor="#ccc"
+                bordered
+              />
+
+              <Button
+                block
+                success
+                style={styles.button}
+                onPress={this.onSearch.bind(this)}
+              >
+                <Text>Pesquisar</Text>
+                <Icon type="MaterialIcons" name="search" />
+              </Button>
+
+              <Modal
+                transparent={true}
+                visible={this.state.isModalVisible}
+                onRequestClose={() => this.changeModalQuestionVisibility(false)}
+                animationType="fade"
+              >
+                <QuestionSentPopUp
+                  changeModalQuestionVisibility={
+                    this.changeModalQuestionVisibility
+                  }
+                />
+              </Modal>
+              <Modal
+                transparent={true}
+                visible={this.state.isDraftModalVisible}
+                onRequestClose={() => this.changeModalDraftVisibility(false)}
+                animationType="fade"
+              >
+                <DraftPopUp
+                  changeModalDraftVisibility={this.changeModalDraftVisibility}
+                />
+              </Modal>
+              <View style={{ height: 3 }}></View>
+            </Form>
+          </Content>
         )}
-      </View>
+      </Container>
     );
   }
 }
 
-const height = Dimensions.get("window").height;
-
 const styles = StyleSheet.create({
-  Container: {
-    flex: 1,
-    marginLeft: 37,
-    marginRight: 37,
-    marginTop: 20
+  header: {
+    backgroundColor: "#3c8dbc"
   },
-
-  Title: {
-    fontSize: 16
+  image: {
+    width: 40,
+    height: 40
   },
-
-  Input: {
-    width: "100%",
-    height: height * 0.45,
-    borderColor: "#EEE",
-    borderWidth: 2,
-    borderRadius: 4,
-    marginTop: 20,
-    marginBottom: 20
-  },
-
-  Button: {
-    width: "100%",
-    height: 54,
-    backgroundColor: "#3c8dbc",
-    borderRadius: 4,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 2,
-    flexDirection: "row",
+  button: {
+    width: "90%",
+    height: 60,
+    marginTop: 10,
+    marginLeft: "5%",
     justifyContent: "center",
     alignItems: "center"
   },
 
-  ButtonContainer: {
+  attachButton: {
+    width: "90%",
+    color: "yellow",
+    height: 60,
+    marginTop: 10,
+    marginLeft: "5%",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+
+  buttonContainer: {
     flexDirection: "row",
-    height: 54,
-    justifyContent: "space-between",
-    marginBottom: 10
+    justifyContent: "center",
+    alignItems: "center"
   },
-
-  Icon: {
-    position: "absolute",
-    left: 20,
-    color: "#202020",
-    fontSize: 24
+  enviar: {
+    width: "53%",
+    marginLeft: "2%",
+    alignItems: "center"
   },
-
-  TextLight: {
-    fontSize: 14,
-    color: "#FFF",
-    fontWeight: "600",
+  anexo: {
+    width: "35%",
+    marginLeft: 0
+  },
+  container: {
+    alignItems: "center"
+  },
+  title: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "stretch",
+    margin: 10
+  },
+  textTitle: {
+    fontSize: 16,
+    width: "93%",
     textAlign: "center"
   },
-
-  TextDark: {
-    fontSize: 14,
-    color: "#202020",
-    fontWeight: "600",
-    textAlign: "center"
+  textArea: {
+    width: "90%",
+    backgroundColor: "#f6f6f6"
+  },
+  load: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
   }
 });

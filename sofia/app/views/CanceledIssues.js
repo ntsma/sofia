@@ -17,11 +17,13 @@ export default class CanceledIssues extends Component {
 
     return (
       <Container>
-        <BackHeader navigation={this.props.navigation} name="Canceladas"/>
+        <BackHeader navigation={this.props.navigation} name="Devolvidas" />
         <FlatList
           data={canceledIssues}
           keyExtractor={item => item.id.toString()}
-          renderItem={({item}) => <CanceledIssue navigation={this.props.navigation} question={item}/>}
+          renderItem={({ item }) => (
+            <CanceledIssue navigation={this.props.navigation} question={item} />
+          )}
         />
       </Container>
     );

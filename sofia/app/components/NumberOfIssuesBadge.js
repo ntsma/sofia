@@ -15,7 +15,7 @@ export default class NumberOfIssuesBadge extends Component {
         );
       } else {
         return(
-          <Badge info>
+          <Badge style={{backgroundColor: '#3c8dbc'}}>
             <Text>{ this.props.number }</Text>
           </Badge>
         );
