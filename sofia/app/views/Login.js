@@ -9,6 +9,8 @@ import ModalComponent from "../components/ModalComponent";
 
 import logo from '../resources/logo.png';
 
+import login from '../services/Solicitant';
+
 export default class Login extends Component {
   constructor(props) {
     super(props);
@@ -28,41 +30,25 @@ export default class Login extends Component {
     header: null
   };
 
-  /*Aciona a rotina de análise de login*/
+  /*Aciona a rotina de análise de login. 
+    Se tudo certo, redireciona o solicitante para a página inicial,
+    senão, mostra uma mensagem de erro.*/
   async onLoginButtonPress() {
     const email = this.state.email;
     const password = this.state.password;
 
-    fetch("http://sofia.huufma.br/api/login", {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password
-      })
+    login(email, password).then(response => {
+      this.saveCredentials(response);
+
+    }).catch(response => {
+      this.handleOpen();
     })
-    .then((response) => response.json())
-    .then((res) => {
-      /*Quando e-mail ou senha estiverem errados, 
-        mostra-se uma mensagem de erro, 
-        senão é guardado o token de acesso.*/
-      if(res.message == "Não autorizado") {
-        this.handleOpen();
-      } else {
-        this.saveCredentials(res);
-      }
-      
-    })
-    .catch((error) => {
-        console.debug(error);
-    });
+  
   }
 
   /*Guarda o token de acesso no armazenamento local.*/
   async saveCredentials(res) {
+    console.log(res.message)
     try {
       await AsyncStorage.setItem("token", res.token);
       await AsyncStorage.setItem("logging", "true");
@@ -103,7 +89,7 @@ export default class Login extends Component {
         behavior="padding"
         enabled={Platform.OS == 'ios'}
         style={styles.container}>
-        <StatusBar backgroundColor="#3c8dbc" barStyle="dark-content" />
+        <StatusBar backgroundColor="#3c8dbc" barStyle="light-content" />
         <View style={styles.header}>
           <Image style={styles.logo} source={logo}/>
           <Text style={styles.text}>Sofia</Text>
@@ -241,9 +227,5 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontWeight: 'bold',
     fontSize: 16,
-  },
-
-})
-
-
-
+  }
+});
