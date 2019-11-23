@@ -1,12 +1,15 @@
 import React, { Component } from "react";
-import { Image, KeyboardAvoidingView, Platform, StatusBar, StyleSheet, TouchableOpacity, TextInput, View } from "react-native";
-import { Icon, Button, Text} from "native-base";
+import { Image, KeyboardAvoidingView, Platform, StatusBar, TouchableOpacity, View } from "react-native";
+
+import { Button, Text } from "native-base";
 import AsyncStorage from '@react-native-community/async-storage';
 
 import ModalComponent from '../components/ModalComponent';
 import logo from '../resources/logo.png';
 import login from '../services/Solicitant';
 import styles from '../config/Login';
+import EmailInput from '../components/EmailInput';
+import PasswordInput from "../components/PasswordInput";
 
 export default class Login extends Component {
   constructor(props) {
@@ -33,6 +36,8 @@ export default class Login extends Component {
   onLoginButtonPress = async () => {
     const email = this.state.email;
     const password = this.state.password;
+
+    console.log(email);
 
     login(email, password).then(response => {
       const {token, message} = response;
@@ -89,34 +94,11 @@ export default class Login extends Component {
           <Image style={styles.logo} source={logo}/>
           <Text style={styles.text}>Sofia</Text>
         </View>
-        <TextInput
-          autoCapitalize="none"
-          autoCorrect={false}
-          keyboardType="email-address"
-          returnKeyType="next"
-          placeholder="Digite seu E-mail ou CPF"
-          placeholderTextColor="#999"
-          style={styles.input}
-          value={this.state.email}
-          onChangeText={email => this.setState({ email })}
-          onSubmitEditing={() => this.passwordInput.focus()}
-        />
-        <View style={styles.hidePassword}>
-          <TextInput
-            autoCapitalize="none"
-            autoCorrect={false}
-            returnKeyType="go"
-            placeholder="Digite sua senha"
-            placeholderTextColor="#999"
-            style={styles.inputPassword}
-            secureTextEntry={this.state.inputIsVisible}
-            value={this.state.password}
-            ref={input => (this.passwordInput = input)}
-            onChangeText={password => this.setState({ password })}
-          />
-          
-          <Icon style={styles.iconPassword} name={this.state.icon} onPress={() => this.changePasswordVisibility()}/>
-        </View>
+
+        <EmailInput props={this} />
+
+        <PasswordInput props={this} />
+
         <TouchableOpacity onPress={this.onLoginButtonPress.bind(this)} style={styles.button}>
           <Text style={styles.buttonText}>Entrar</Text>
         </TouchableOpacity>
