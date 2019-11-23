@@ -1,14 +1,10 @@
 import React, { Component } from "react";
 import { Image, KeyboardAvoidingView, Platform, StatusBar, StyleSheet, TouchableOpacity, TextInput, View } from "react-native";
-import { Icon } from "native-base";
-
-import {Button, Text} from "native-base";
-
+import { Icon, Button, Text} from "native-base";
 import AsyncStorage from '@react-native-community/async-storage';
-import ModalComponent from "../components/ModalComponent";
 
+import ModalComponent from '../components/ModalComponent';
 import logo from '../resources/logo.png';
-
 import login from '../services/Solicitant';
 
 export default class Login extends Component {
@@ -33,12 +29,14 @@ export default class Login extends Component {
   /*Aciona a rotina de análise de login. 
     Se tudo certo, redireciona o solicitante para a página inicial,
     senão, mostra uma mensagem de erro.*/
-  async onLoginButtonPress() {
+  onLoginButtonPress = async () => {
     const email = this.state.email;
     const password = this.state.password;
 
     login(email, password).then(response => {
-      this.saveCredentials(response);
+      const {token, message} = response;
+
+      this.saveCredentials(token);
 
     }).catch(response => {
       this.handleOpen();
@@ -47,10 +45,9 @@ export default class Login extends Component {
   }
 
   /*Guarda o token de acesso no armazenamento local.*/
-  async saveCredentials(res) {
-    console.log(res.message)
+  saveCredentials = async (token) => {
     try {
-      await AsyncStorage.setItem("token", res.token);
+      await AsyncStorage.setItem("token", token);
       await AsyncStorage.setItem("logging", "true");
 
       this.props.navigation.navigate("HomeScreen");
@@ -61,20 +58,17 @@ export default class Login extends Component {
   };
 
   /*Abre o modal*/
-  handleOpen = value => {
+  handleOpen = (value) => {
     this.setState({ modalIsVisible: true, value: value });
   };
 
   /*Fecha o modal*/
   handleClose = () => {
     this.setState({ modalIsVisible: false });
-    //this.props.navigation.goBack();
   };
 
-  changePasswordVisibility (){
-
-    console.log(this.state.inputIsVisible)
-
+  /*Torna a senha vísivel ou não.*/
+  changePasswordVisibility = () => {
     this.setState({ 
       icon: this.state.icon === 'eye' ? 'eye-off' : 'eye', 
       inputIsVisible: !this.state.inputIsVisible,  
