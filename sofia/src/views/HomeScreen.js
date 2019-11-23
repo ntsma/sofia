@@ -445,9 +445,7 @@ export default class HomeScreen extends Component {
               </TouchableNativeFeedback>
 
               <TouchableNativeFeedback
-                onPress={() => {
-                  this.props.navigation.navigate("FAQ");
-                }}
+                
               >
                 <View style={styles.Button}>
                   <Text
