@@ -5,11 +5,12 @@ import { Button, Text } from "native-base";
 import AsyncStorage from '@react-native-community/async-storage';
 
 import ModalComponent from '../components/ModalComponent';
-import logo from '../resources/logo.png';
 import login from '../services/Solicitant';
 import styles from '../config/Login';
+
 import EmailInput from '../components/EmailInput';
-import PasswordInput from "../components/PasswordInput";
+import PasswordInput from '../components/PasswordInput';
+import LoginHeader from '../components/LoginHeader';
 
 export default class Login extends Component {
   constructor(props) {
@@ -73,14 +74,6 @@ export default class Login extends Component {
     this.setState({ modalIsVisible: false });
   };
 
-  /*Torna a senha vísivel ou não.*/
-  changePasswordVisibility = () => {
-    this.setState({ 
-      icon: this.state.icon === 'eye' ? 'eye-off' : 'eye', 
-      inputIsVisible: !this.state.inputIsVisible,  
-    }); 
-  }
-
   render() {
     const { modalIsVisible } = this.state;
 
@@ -90,14 +83,12 @@ export default class Login extends Component {
         enabled={Platform.OS == 'ios'}
         style={styles.container}>
         <StatusBar backgroundColor="#3c8dbc" barStyle="light-content" />
-        <View style={styles.header}>
-          <Image style={styles.logo} source={logo}/>
-          <Text style={styles.text}>Sofia</Text>
-        </View>
+        
+        <LoginHeader />
 
         <EmailInput props={this} />
 
-        <PasswordInput props={this} />
+        <PasswordInput state={this} />
 
         <TouchableOpacity onPress={this.onLoginButtonPress.bind(this)} style={styles.button}>
           <Text style={styles.buttonText}>Entrar</Text>

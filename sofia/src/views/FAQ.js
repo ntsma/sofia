@@ -1,11 +1,17 @@
 import React, { Component } from "react";
-import { View, FlatList } from "react-native";
+import { View, FlatList, Text } from "react-native";
+import BackHeader from "../components/BackHeader";
 
 export default class FAQ extends Component {
+  /*Removendo header padrão*/
+  static navigationOptions = {
+    header: null
+  };
+
   render() {
     const questions = [
       {
-        key: "O que perguntar?",
+        key: "O que perguntgar?",
         content:
           "Você pode realizar perguntas sobre procedimentos clínicos, ações de saúde e processos de trabalho, ou qualquer questão que seja relativa à sua profissão, com foco sempre na atenção primária."
       },
@@ -74,6 +80,7 @@ export default class FAQ extends Component {
 
     return (
       <View>
+        <BackHeader navigation={this.props.navigation} name="Como posso te ajudar?"/>
         <FlatList
           data={questions}
           renderItem={({ item }) => <Text>{item.key}</Text>}
