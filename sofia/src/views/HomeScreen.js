@@ -144,7 +144,7 @@ export default class HomeScreen extends Component {
       });
 
       this.loadCanceledRequests();
-      this.getDraftIssues();
+      this.loadDraftRequests();
       this.loadAnsweredRequests();
       this.loadSentRequests();
     });
@@ -162,23 +162,18 @@ export default class HomeScreen extends Component {
     };
   }
 
-  /*Obtendo as questões rascunhos para a Sofia pelo Token*/
-  async getDraftIssues() {
+  /*Carregando as solicitações de rascunhos.*/
+  loadDraftRequests = async() => { 
     const token = await AsyncStorage.getItem("token");
 
-    return fetch("http://sofia.huufma.br/api/solicitant/drafts", {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + token
-      }
+    Requests.getDraftRequests(token).then(response => {
+      const draftRequests = response.data;
+      this.setState({ draftIssues: draftRequests });
+
     })
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({ draftIssues: responseJson.data });
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    .catch(error => {
+      console.log(error);
+    })
   }
 
   /*Carregando as questões enviadas para a Sofia.*/

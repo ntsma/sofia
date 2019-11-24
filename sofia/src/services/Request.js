@@ -50,3 +50,20 @@ exports.getCanceledRequests = (token) => {
         })
     });
 };
+
+exports.getDraftRequests = (token) => {
+    return new Promise((resolve, reject) => {
+        API.get('/solicitant/drafts', {
+            headers: {
+                Authorization: "Bearer " + token
+            }
+        })
+        .then(function(response) {
+            resolve(response.data);
+
+        })
+        .catch(function(error) {
+            reject(error);
+        })
+    });
+};
