@@ -1,6 +1,6 @@
 import API from './API';
 
-const getAnsweredRequests = (token) => {
+module.exports = getAnsweredRequests = (token) => {
     return new Promise((resolve, reject) => {
         API.get('/solicitant/answered', {
             headers: {
@@ -15,6 +15,22 @@ const getAnsweredRequests = (token) => {
             reject(error);
         })
     });
-}
+};
 
-export default getAnsweredRequests;
+module.exports = getSentRequests = (token) => {
+    return new Promise((resolve, reject) => {
+        API.get('/solicitant/sents', {
+            headers: {
+                Authorization: "Bearer " + token
+            }
+        })
+        .then(function(response) {
+            console.log(response.data);
+            resolve(response.data);
+
+        })
+        .catch(function(error) {
+            reject(error);
+        })
+    });
+};

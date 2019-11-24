@@ -24,6 +24,7 @@ import { get } from "../controllers/Issues.js";
 
 
 import getAnsweredRequests from '../services/Request';
+import getSentRequests from '../services/Request';
 
 import styles from '../config/HomeScreen';
 
@@ -146,7 +147,7 @@ export default class HomeScreen extends Component {
       this.getCanceledIssues();
       this.getDraftIssues();
       this.loadAnsweredRequests();
-      this.getSubmittedIssues();
+      this.loadSentRequests();
     });
   }
 
@@ -181,8 +182,22 @@ export default class HomeScreen extends Component {
       });
   }
 
+  /*Carregando as questões enviadas para a Sofia.*/
+  loadSentRequests = async () => {
+    const token = await AsyncStorage.getItem("token");
 
-  /*Obtendo as questões respondidas para a Sofia pelo Token*/
+    getSentRequests(token)
+    .then(response => {
+      const sentRequests = response.data;
+      this.setState({ submittedIssues: sentRequests });
+
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }
+
+  /*Carregando as questões respondidas para a Sofia.*/
   loadAnsweredRequests = async () => {
     const token = await AsyncStorage.getItem("token");
 
@@ -194,16 +209,9 @@ export default class HomeScreen extends Component {
         answeredIssues: answeredRequests
       })
 
-      searchRequestsWithoutEvaluation()
-      .then(requestsWithoutEvaluation => {
-        this.setState({ answeredIssues: requestsWithoutEvaluation.concat(answeredIssues) });
-
-      })
-      .catch(requestsWithoutEvaluation => {
-        this.setState({ answeredIssues: requestsWithoutEvaluation.concat(answeredIssues) });
-
-      })
-
+      /*Procura por solicitações que não foram avaliadas.*/
+      this.searchRequestsWithoutEvaluation()
+  
     })
     .catch(error => {
       console.log(error);
@@ -211,34 +219,29 @@ export default class HomeScreen extends Component {
 
   }
 
+  /*Procura por solicitações que não foram avaliadas.*/
   searchRequestsWithoutEvaluation = () => {
-    return new Promise((resolve, reject) => {
-      /*Configura como se houvesse solicitações sem avaliação inicialmente.*/
-      this.setState({
-        existsRequestsWithoutEvaluation: false
-      });
+    /*Configura como se houvesse solicitações sem avaliação inicialmente.*/
+    this.setState({
+      existsRequestsWithoutEvaluation: false
+    });
 
-      var requestsWithoutEvaluation = [];
+    var requestsWithoutEvaluation = [];
 
-      for(index in this.state.answeredIssues) {
-        if (this.answeredIssues[index].status_id == 21) {
-          requestsWithoutEvaluation.push(this.state.answeredIssues[index]);
-          this.state.answeredIssues.splice(index, 1);
-        }
+    for(index in this.state.answeredIssues) {
+      if (this.state.answeredIssues[index].status_id == 21) {
+        requestsWithoutEvaluation.push(this.state.answeredIssues[index]);
+        this.state.answeredIssues.splice(index, 1);
       }
+    }
 
-      /*Caso haja solicitações sem avaliações*/
-      if(requestsWithoutEvaluation != []) {
-        this.setState({
-          existsRequestsWithoutEvaluation: true
-        });
+    if(requestsWithoutEvaluation != []) {
+      this.setState({
+        existsRequestsWithoutEvaluation: true
+      });
+    }
 
-        resolve(requestsWithoutEvaluation);
-      } 
-
-      reject(requestsWithoutEvaluation);
-
-    })
+    this.setState({ answeredIssues: requestsWithoutEvaluation.concat(answeredIssues) });
   }
 
   /*Obtendo as questões canceladas para a Sofia pelo Token*/
@@ -254,25 +257,6 @@ export default class HomeScreen extends Component {
       .then(response => response.json())
       .then(responseJson => {
         this.setState({ canceledIssues: responseJson.data });
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }
-
-  /*Obtendo as questões enviadas para a Sofia pelo Token*/
-  async getSubmittedIssues() {
-    const token = await AsyncStorage.getItem("token");
-
-    return fetch("http://sofia.huufma.br/api/solicitant/sents", {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + token
-      }
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({ submittedIssues: responseJson.data });
       })
       .catch(error => {
         console.error(error);
