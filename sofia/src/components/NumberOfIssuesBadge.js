@@ -7,7 +7,7 @@ import { Badge, Text} from "native-base";
 export default class NumberOfIssuesBadge extends Component {
   render() {
     if(this.props.isConnected) {
-      if(this.props.isWaitingEvaluate == false) {
+      if(this.props.existsRequestsWithoutEvaluation == false) {
         return(
           <Badge danger>
             <Text>{ this.props.number }</Text>

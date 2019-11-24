@@ -22,6 +22,9 @@ import NumberOfIssuesBadge from "../components/NumberOfIssuesBadge";
 import ErrorNoInternetMessage from "../components/ErrorNoInternetMessage";
 import { get } from "../controllers/Issues.js";
 
+
+import getAnsweredRequests from '../services/Request';
+
 export default class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -34,7 +37,7 @@ export default class HomeScreen extends Component {
       submittedIssues: [],
       draftIssues: [],
       canceledIssues: [],
-      waitingEvaluate: false
+      existsRequestsWithoutEvaluation: false
     };
   }
 
@@ -140,7 +143,7 @@ export default class HomeScreen extends Component {
 
       this.getCanceledIssues();
       this.getDraftIssues();
-      this.getAnsweredIssues();
+      this.loadAnsweredRequests();
       this.getSubmittedIssues();
     });
   }
@@ -153,7 +156,7 @@ export default class HomeScreen extends Component {
       submittedIssues: [],
       draftIssues: [],
       canceledIssues: [],
-      waitingEvaluate: false
+      existsRequestsWithoutEvaluation: false
     };
   }
 
@@ -176,45 +179,64 @@ export default class HomeScreen extends Component {
       });
   }
 
+
   /*Obtendo as questões respondidas para a Sofia pelo Token*/
-  async getAnsweredIssues() {
+  loadAnsweredRequests = async () => {
     const token = await AsyncStorage.getItem("token");
 
-    console.log("CELULAR");
-    console.log(get(token.toString()));
+    getAnsweredRequests(token)
+    .then(response => {
+      const answeredRequests = response.data;
+      
+      this.setState({
+        answeredIssues: answeredRequests
+      })
 
-    return fetch("http://sofia.huufma.br/api/solicitant/answered", {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + token
-      }
+      searchRequestsWithoutEvaluation()
+      .then(requestsWithoutEvaluation => {
+        this.setState({ answeredIssues: requestsWithoutEvaluation.concat(answeredIssues) });
+
+      })
+      .catch(requestsWithoutEvaluation => {
+        this.setState({ answeredIssues: requestsWithoutEvaluation.concat(answeredIssues) });
+
+      })
+
     })
-      .then(response => response.json())
-      .then(responseJson => {
-        var answeredIssues = responseJson.data;
+    .catch(error => {
+      console.log(error);
+    })
 
+  }
+
+  searchRequestsWithoutEvaluation = () => {
+    return new Promise((resolve, reject) => {
+      /*Configura como se houvesse solicitações sem avaliação inicialmente.*/
+      this.setState({
+        existsRequestsWithoutEvaluation: false
+      });
+
+      var requestsWithoutEvaluation = [];
+
+      for(index in this.state.answeredIssues) {
+        if (this.answeredIssues[index].status_id == 21) {
+          requestsWithoutEvaluation.push(this.state.answeredIssues[index]);
+          this.state.answeredIssues.splice(index, 1);
+        }
+      }
+
+      /*Caso haja solicitações sem avaliações*/
+      if(requestsWithoutEvaluation != []) {
         this.setState({
-          waitingEvaluate: false
+          existsRequestsWithoutEvaluation: true
         });
 
-        var special = [];
+        resolve(requestsWithoutEvaluation);
+      } 
 
-        for (index in answeredIssues) {
-          if (answeredIssues[index].status_id == 21) {
-            this.setState({
-              waitingEvaluate: true
-            });
+      reject(requestsWithoutEvaluation);
 
-            special.push(answeredIssues[index]);
-            answeredIssues.splice(index, 1);
-          }
-        }
-
-        this.setState({ answeredIssues: special.concat(answeredIssues) });
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    })
   }
 
   /*Obtendo as questões canceladas para a Sofia pelo Token*/
@@ -256,7 +278,7 @@ export default class HomeScreen extends Component {
   }
 
   onNavigateNewIssue() {
-    /*if(this.state.waitingEvaluate) {
+    /*if(this.state.existsRequestsWithoutEvaluation) {
       Alert.alert("Primeiro leia todas as questões respondidas!");
     } else {
       this.props.navigation.navigate("NewQuestion");
@@ -366,7 +388,7 @@ export default class HomeScreen extends Component {
                     <NumberOfIssuesBadge
                       number={this.state.answeredIssues.length}
                       isConnected={this.state.isConnected}
-                      waitingEvaluate={this.state.waitingEvaluate}
+                      existsRequestsWithoutEvaluation={this.state.existsRequestsWithoutEvaluation}
                     />
                   </View>
                 </View>
