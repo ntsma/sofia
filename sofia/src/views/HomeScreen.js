@@ -23,8 +23,7 @@ import ErrorNoInternetMessage from "../components/ErrorNoInternetMessage";
 import { get } from "../controllers/Issues.js";
 
 
-import getAnsweredRequests from '../services/Request';
-import getSentRequests from '../services/Request';
+import Requests from '../services/Request';
 
 import styles from '../config/HomeScreen';
 
@@ -44,21 +43,21 @@ export default class HomeScreen extends Component {
     };
   }
 
-  async logout() {
-    console.log("teste");
+  /*Remove header padrão*/
+  static navigationOptions = {
+    header: null
+  };
+
+  logout = async() => {
     await AsyncStorage.setItem("token", "");
     await AsyncStorage.setItem("logging", "false");
 
-    log = await AsyncStorage.getItem("logging");
-    console.log(log);
-    if (Platform.OS == "ios") {
+    if(Platform.OS == "ios") {
       this.props.navigation.navigate("Login");
     } else {
       BackHandler.exitApp();
     }
-
-    return true;
-  }
+  };
 
   _onRefresh = () => {
     this.setState({ refreshing: true });
@@ -144,7 +143,7 @@ export default class HomeScreen extends Component {
         isConnected: state.isConnected
       });
 
-      this.getCanceledIssues();
+      this.loadCanceledRequests();
       this.getDraftIssues();
       this.loadAnsweredRequests();
       this.loadSentRequests();
@@ -186,8 +185,7 @@ export default class HomeScreen extends Component {
   loadSentRequests = async () => {
     const token = await AsyncStorage.getItem("token");
 
-    getSentRequests(token)
-    .then(response => {
+    Requests.getSentRequests(token).then(response => {
       const sentRequests = response.data;
       this.setState({ submittedIssues: sentRequests });
 
@@ -201,10 +199,10 @@ export default class HomeScreen extends Component {
   loadAnsweredRequests = async () => {
     const token = await AsyncStorage.getItem("token");
 
-    getAnsweredRequests(token)
+    Requests.getAnsweredRequests(token)
     .then(response => {
       const answeredRequests = response.data;
-      
+
       this.setState({
         answeredIssues: answeredRequests
       })
@@ -228,39 +226,48 @@ export default class HomeScreen extends Component {
 
     var requestsWithoutEvaluation = [];
 
-    for(index in this.state.answeredIssues) {
-      if (this.state.answeredIssues[index].status_id == 21) {
-        requestsWithoutEvaluation.push(this.state.answeredIssues[index]);
-        this.state.answeredIssues.splice(index, 1);
+    new Promise((resolve, reject) => {
+      try {
+        for(index in this.state.answeredIssues) {
+          if (this.state.answeredIssues[index].status_id == 21) {
+            requestsWithoutEvaluation.push(this.state.answeredIssues[index]);
+            this.state.answeredIssues.splice(index, 1);
+          }
+        }
+        resolve("OK");
+      } catch(error) {
+        reject(error);
       }
-    }
-
-    if(requestsWithoutEvaluation != []) {
+    })
+    .then(response => {     
       this.setState({
         existsRequestsWithoutEvaluation: true
       });
-    }
-
-    this.setState({ answeredIssues: requestsWithoutEvaluation.concat(answeredIssues) });
+  
+      this.setState({ answeredIssues: requestsWithoutEvaluation.concat(this.state.answeredIssues) });
+    })
+    .catch(error => {
+      this.setState({ answeredIssues: requestsWithoutEvaluation.concat(this.state.answeredIssues) });
+    });
   }
 
   /*Obtendo as questões canceladas para a Sofia pelo Token*/
-  async getCanceledIssues() {
+  async loadCanceledRequests() {
     const token = await AsyncStorage.getItem("token");
 
-    return fetch("http://sofia.huufma.br/api/solicitant/rejects", {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + token
-      }
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({ canceledIssues: responseJson.data });
+    Requests.getCanceledRequests(token)
+    .then(response => {
+      const canceledRequests = response.data;
+      
+      this.setState({
+        canceledIssues: canceledRequests
       })
-      .catch(error => {
-        console.error(error);
-      });
+  
+    })
+    .catch(error => {
+      console.log(error);
+    })
+
   }
 
   onNavigateNewIssue() {
@@ -290,10 +297,6 @@ export default class HomeScreen extends Component {
     } catch (e) {}
   }
 
-  static navigationOptions = {
-    header: null
-  };
-
   render() {
     this.atu();
 
@@ -313,7 +316,7 @@ export default class HomeScreen extends Component {
             source={require("../resources/logo.png")}
           />
           <Text style={[styles.TextLight, { fontSize: 24 }]}>Sofia</Text>
-          <TouchableNativeFeedback onPress={this.logout.bind(this)}>
+          <TouchableNativeFeedback onPress={this.logout}>
             <View style={styles.ExitButton}>
               <View style={{ alignItems: "center" }}>
                 <Icon

@@ -1,6 +1,6 @@
 import API from './API';
 
-module.exports = getAnsweredRequests = (token) => {
+exports.getAnsweredRequests = (token) => {
     return new Promise((resolve, reject) => {
         API.get('/solicitant/answered', {
             headers: {
@@ -17,7 +17,7 @@ module.exports = getAnsweredRequests = (token) => {
     });
 };
 
-module.exports = getSentRequests = (token) => {
+exports.getSentRequests = (token) => {
     return new Promise((resolve, reject) => {
         API.get('/solicitant/sents', {
             headers: {
@@ -25,7 +25,23 @@ module.exports = getSentRequests = (token) => {
             }
         })
         .then(function(response) {
-            console.log(response.data);
+            resolve(response.data);
+
+        })
+        .catch(function(error) {
+            reject(error);
+        })
+    });
+};
+
+exports.getCanceledRequests = (token) => {
+    return new Promise((resolve, reject) => {
+        API.get('/solicitant/rejects', {
+            headers: {
+                Authorization: "Bearer " + token
+            }
+        })
+        .then(function(response) {
             resolve(response.data);
 
         })
