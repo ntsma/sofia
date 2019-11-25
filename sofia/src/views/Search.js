@@ -11,6 +11,7 @@ import { Icon, Textarea } from "native-base";
 
 import AsyncStorage from "@react-native-community/async-storage";
 import BackHeader from "../components/BackHeader";
+import NetInfo from "@react-native-community/netinfo";
 
 export default class Search extends Component {
   static navigationOptions = {
@@ -30,53 +31,56 @@ export default class Search extends Component {
 
   async onSearch() {
     var question = this.state.question;
+    var token = await AsyncStorage.getItem("token");
 
-    if (!this.props.navigation.state.params.isConnected) {
-      this.props.navigation.navigate("Question", { question });
-    } else {
-      this.showLoader(true);
 
-      var token = await AsyncStorage.getItem("token");
-
-      let formdata = new FormData();
-
-      formdata.append("description", question);
-
-      return fetch("http://sofia.huufma.br/api/solicitation/search", {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + token
-        },
-        body: formdata
-      })
-        .then(response => response.json())
-        .then(responseJson => {
-          console.debug("RETURNING...");
-          console.debug(responseJson);
-
-          var questions = responseJson.data;
-
-          shouldUpdate = true;
-
-          this.showLoader(false);
-
-          console.log(questions);
-
-          if (!questions) {
-            this.props.navigation.navigate("SearchNoResults", {
-              question
-            });
-          } else {
-            this.props.navigation.navigate("RelatedQuestionsView", {
-              questions,
-              question
-            });
-          }
+    NetInfo.fetch().then(state => {
+      if (!state.isConnected) {
+        this.props.navigation.navigate("Question", { question });
+      } else {
+        this.showLoader(true);
+    
+        let formdata = new FormData();
+  
+        formdata.append("description", question);
+  
+        return fetch("http://sofia.huufma.br/api/solicitation/search", {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + token
+          },
+          body: formdata
         })
-        .catch(error => {
-          console.error(error);
-        });
-    }
+          .then(response => response.json())
+          .then(responseJson => {
+            console.debug("RETURNING...");
+            console.debug(responseJson);
+  
+            var questions = responseJson.data;
+  
+            shouldUpdate = true;
+  
+            this.showLoader(false);
+  
+            console.log(questions);
+  
+            if (!questions) {
+              this.props.navigation.navigate("SearchNoResults", {
+                question
+              });
+            } else {
+              this.props.navigation.navigate("RelatedQuestionsView", {
+                questions,
+                question
+              });
+            }
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }
+
+    });
   }
 
   render() {

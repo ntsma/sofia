@@ -12,9 +12,9 @@ import { Button, Text } from "native-base";
 import AsyncStorage from "@react-native-community/async-storage";
 
 import login from "../services/Solicitant";
-import styles from "../config/Login";
 
 import Styles from "../Styles/Styles";
+import styles from "../Styles/Login";
 
 import EmailInput from "../components/EmailInput";
 import PasswordInput from "../components/PasswordInput";
