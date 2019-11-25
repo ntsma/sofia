@@ -23,9 +23,7 @@ import ImagePicker from "react-native-image-picker";
 
 import BackHeader from "../components/BackHeader";
 
-import QuestionSentPopUp from "../components/QuestionSentPopUp";
-
-import DraftPopUp from "../components/DraftPopUp";
+import Requests from "../services/Request";
 
 export default class NewSearch extends Component {
   /*Removendo header padrão*/
@@ -178,36 +176,18 @@ export default class NewSearch extends Component {
 
     NetInfo.fetch().then(state => {
       if (state.isConnected) {
-        let formdata = new FormData();
-
-        formdata.append("type_id", 52);
-        formdata.append("mode", "send");
-        formdata.append("description", question);
-        formdata.append("mobile", 1);
-        formdata.append("file_ids", this.state.file_ids);
-
-        console.log(formdata);
-
-        return fetch("http://sofia.huufma.br/api/solicitation/handle", {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer " + token
-          },
-          body: formdata
-        })
-          .then(response => response.json())
-          .then(responseJson => {
-            this.setState({
-              question: ""
-            });
-
-            shouldUpdate = true;
-            this.props.navigation.navigate("Success", { shouldUpdate });
-          })
-          .catch(error => {
-            console.error(error);
-            Alert.alert("Houve um problema!");
+        Requests.sendRequest(token, question, this.state.file_ids)
+        .then(response => {
+          this.setState({
+            question: ""
           });
+
+          shouldUpdate = true;
+          this.props.navigation.navigate("Success", { shouldUpdate });
+        })
+        .catch(error => {
+          console.log(error);
+        });
       } else {
         this.saveDraftIntoAsyncStorage({
           id: this.state.question.length + 1,
@@ -218,77 +198,23 @@ export default class NewSearch extends Component {
     });
   }
 
-  async onSearch() {
-    var token = await AsyncStorage.getItem("token");
-    var question = this.state.question;
-
-    let formdata = new FormData();
-
-    formdata.append("description", question);
-
-    return fetch("http://sofia.huufma.br/api/solicitation/search", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token
-      },
-      body: formdata
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        console.debug("RETURNING...");
-        console.debug(responseJson);
-
-        var questions = responseJson.data;
-
-        shouldUpdate = true;
-
-        this.props.navigation.navigate("RelatedQuestionsView", { questions });
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }
-
   async onCreateDraftQuestion() {
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
 
-    console.debug("DENTRO DE QUESTION");
-    console.debug(question);
+    Requests.sendDraftRequest(token, question, this.state.file_ids)
+    .then(response => {
 
-    let formdata = new FormData();
-
-    formdata.append("type_id", 52);
-    formdata.append("mode", "draft");
-    formdata.append("mobile", 1);
-    formdata.append("description", question);
-
-    console.debug(formdata);
-
-    return fetch("http://sofia.huufma.br/api/solicitation/handle", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token
-      },
-      body: formdata
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        console.debug("RESPOSTA");
-        console.debug(responseJson);
-
-        this.setState({
-          question: ""
-        });
-
-        shouldUpdate = true;
-        this.props.navigation.navigate("HomeScreen", { shouldUpdate });
-      })
-      .catch(error => {
-        console.error(error);
-
-        Alert.alert("Houve um problema!");
+      this.setState({
+        question: ""
       });
+
+      shouldUpdate = true;
+      this.props.navigation.navigate("HomeScreen", { shouldUpdate });
+    })
+    .catch(error => {
+      console.log(error);
+    });
   }
 
   onPressButtonSend() {

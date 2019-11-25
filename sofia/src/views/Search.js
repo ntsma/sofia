@@ -31,22 +31,24 @@ export default class Search extends Component {
 
   showLoader = bool => this.setState({ isLoading: bool });
 
-  async onSearch() {
+  /*Procura solicitações semelhantes.*/
+  onSearch = async () => {
     var question = this.state.question;
     var token = await AsyncStorage.getItem("token");
-
 
     NetInfo.fetch().then(state => {
       if (!state.isConnected) {
         this.props.navigation.navigate("Question", { question });
       } else {
-        this.showLoader(true);
+        /*Mostra barra de carregamento.*/
+        this.setState({ isLoading: true })
 
         Requests.searchRequests(token, question)
         .then(response => {
           var questions = response.data;
 
-          this.showLoader(false);
+          /*Remove barra de carregamento.*/
+          this.setState({ isLoading: false })
     
           if (!questions) {
             this.props.navigation.navigate("SearchNoResults", {
@@ -57,9 +59,7 @@ export default class Search extends Component {
               questions,
               question
             });
-          }
-    
-        
+          };
         })
         .catch(response => {
           console.error(response);
