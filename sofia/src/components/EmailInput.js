@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput } from 'react-native';
 
-import styles from '../config/Login';
+import styles from '../Styles/Login';
 
 const EmailInput = ({props}) => {
     return(

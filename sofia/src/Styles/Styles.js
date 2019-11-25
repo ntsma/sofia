@@ -3,7 +3,7 @@ import { Dimensions, StyleSheet } from "react-native";
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
-const styles = StyleSheet.create({
+const Styles = StyleSheet.create({
   Container: {
     flex: 1,
     marginLeft: 37,
@@ -46,4 +46,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default styles;
+export default Styles;

@@ -3,7 +3,7 @@ import { TextInput, View } from 'react-native';
 
 import { Icon } from 'native-base';
 
-import styles from '../config/Login';
+import styles from '../Styles/Login';
 
 class PasswordInput extends Component {
     constructor(props) {
