@@ -60,10 +60,18 @@ export default class Search extends Component {
 
           this.showLoader(false);
 
-          this.props.navigation.navigate("RelatedQuestionsView", {
-            questions,
-            question
-          });
+          console.log(questions);
+
+          if (!questions) {
+            this.props.navigation.navigate("SearchNoResults", {
+              question
+            });
+          } else {
+            this.props.navigation.navigate("RelatedQuestionsView", {
+              questions,
+              question
+            });
+          }
         })
         .catch(error => {
           console.error(error);
