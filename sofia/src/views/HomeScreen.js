@@ -22,10 +22,9 @@ import NumberOfIssuesBadge from "../components/NumberOfIssuesBadge";
 import ErrorNoInternetMessage from "../components/ErrorNoInternetMessage";
 import { get } from "../controllers/Issues.js";
 
+import Requests from "../services/Request";
 
-import Requests from '../services/Request';
-
-import styles from '../config/HomeScreen';
+import styles from "../config/HomeScreen";
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -48,11 +47,11 @@ export default class HomeScreen extends Component {
     header: null
   };
 
-  logout = async() => {
+  logout = async () => {
     await AsyncStorage.setItem("token", "");
     await AsyncStorage.setItem("logging", "false");
 
-    if(Platform.OS == "ios") {
+    if (Platform.OS == "ios") {
       this.props.navigation.navigate("Login");
     } else {
       BackHandler.exitApp();
@@ -163,54 +162,52 @@ export default class HomeScreen extends Component {
   }
 
   /*Carregando as solicitações de rascunhos.*/
-  loadDraftRequests = async () => { 
+  loadDraftRequests = async () => {
     const token = await AsyncStorage.getItem("token");
 
-    Requests.getDraftRequests(token).then(response => {
-      const draftRequests = response.data;
-      this.setState({ draftIssues: draftRequests });
-
-    })
-    .catch(error => {
-      console.log(error);
-    })
-  }
+    Requests.getDraftRequests(token)
+      .then(response => {
+        const draftRequests = response.data;
+        this.setState({ draftIssues: draftRequests });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   /*Carregando as questões enviadas para a Sofia.*/
   loadSentRequests = async () => {
     const token = await AsyncStorage.getItem("token");
 
-    Requests.getSentRequests(token).then(response => {
-      const sentRequests = response.data;
-      this.setState({ submittedIssues: sentRequests });
-
-    })
-    .catch(error => {
-      console.log(error);
-    })
-  }
+    Requests.getSentRequests(token)
+      .then(response => {
+        const sentRequests = response.data;
+        this.setState({ submittedIssues: sentRequests });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   /*Carregando as questões respondidas para a Sofia.*/
   loadAnsweredRequests = async () => {
     const token = await AsyncStorage.getItem("token");
 
     Requests.getAnsweredRequests(token)
-    .then(response => {
-      const answeredRequests = response.data;
+      .then(response => {
+        const answeredRequests = response.data;
 
-      this.setState({
-        answeredIssues: answeredRequests
+        this.setState({
+          answeredIssues: answeredRequests
+        });
+
+        /*Procura por solicitações que não foram avaliadas.*/
+        this.searchRequestsWithoutEvaluation();
       })
-
-      /*Procura por solicitações que não foram avaliadas.*/
-      this.searchRequestsWithoutEvaluation()
-  
-    })
-    .catch(error => {
-      console.log(error);
-    })
-
-  }
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   /*Procura por solicitações que não foram avaliadas.*/
   searchRequestsWithoutEvaluation = () => {
@@ -223,50 +220,56 @@ export default class HomeScreen extends Component {
 
     new Promise((resolve, reject) => {
       try {
-        for(index in this.state.answeredIssues) {
+        for (index in this.state.answeredIssues) {
           if (this.state.answeredIssues[index].status_id == 21) {
             requestsWithoutEvaluation.push(this.state.answeredIssues[index]);
             this.state.answeredIssues.splice(index, 1);
           }
         }
         resolve("OK");
-      } catch(error) {
+      } catch (error) {
         reject(error);
       }
     })
-    .then(response => {     
-      this.setState({
-        existsRequestsWithoutEvaluation: true
+      .then(response => {
+        this.setState({
+          existsRequestsWithoutEvaluation: true
+        });
+
+        this.setState({
+          answeredIssues: requestsWithoutEvaluation.concat(
+            this.state.answeredIssues
+          )
+        });
+      })
+      .catch(error => {
+        this.setState({
+          answeredIssues: requestsWithoutEvaluation.concat(
+            this.state.answeredIssues
+          )
+        });
       });
-  
-      this.setState({ answeredIssues: requestsWithoutEvaluation.concat(this.state.answeredIssues) });
-    })
-    .catch(error => {
-      this.setState({ answeredIssues: requestsWithoutEvaluation.concat(this.state.answeredIssues) });
-    });
-  }
+  };
 
   /*Obtendo as questões canceladas para a Sofia pelo Token*/
   loadCanceledRequests = async () => {
     const token = await AsyncStorage.getItem("token");
 
     Requests.getCanceledRequests(token)
-    .then(response => {
-      const canceledRequests = response.data;
-      
-      this.setState({
-        canceledIssues: canceledRequests
-      })
-  
-    })
-    .catch(error => {
-      console.log(error);
-    })
+      .then(response => {
+        const canceledRequests = response.data;
 
-  }
+        this.setState({
+          canceledIssues: canceledRequests
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   onNavigateNewIssue() {
-    const {isConnected} = this.state;
+    const { isConnected } = this.state;
 
     this.props.navigation.navigate("Search", { isConnected });
   }
@@ -363,7 +366,9 @@ export default class HomeScreen extends Component {
                     <NumberOfIssuesBadge
                       number={this.state.answeredIssues.length}
                       isConnected={this.state.isConnected}
-                      existsRequestsWithoutEvaluation={this.state.existsRequestsWithoutEvaluation}
+                      existsRequestsWithoutEvaluation={
+                        this.state.existsRequestsWithoutEvaluation
+                      }
                     />
                   </View>
                 </View>
@@ -442,7 +447,9 @@ export default class HomeScreen extends Component {
               </TouchableNativeFeedback>
 
               <TouchableNativeFeedback
-                
+                onPress={() => {
+                  this.props.navigation.navigate("FAQ");
+                }}
               >
                 <View style={styles.Button}>
                   <Text

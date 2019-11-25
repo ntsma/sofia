@@ -8,7 +8,12 @@ import {
 } from "react-native";
 import { Icon } from "native-base";
 
-export default class Sucess extends Component {
+export default class Success extends Component {
+  /*Remove header padrão*/
+  static navigationOptions = {
+    header: null
+  };
+
   render() {
     return (
       <View style={styles.Container}>
@@ -18,7 +23,11 @@ export default class Sucess extends Component {
           aplicativo!
         </Text>
         <View style={styles.ButtonContainer}>
-          <TouchableNativeFeedback>
+          <TouchableNativeFeedback
+            onPress={() => {
+              this.props.navigation.navigate("Search", { isConected: true });
+            }}
+          >
             <View style={styles.Button}>
               <Icon
                 style={[styles.Icon, { color: "#FFF" }]}
@@ -30,7 +39,11 @@ export default class Sucess extends Component {
               </Text>
             </View>
           </TouchableNativeFeedback>
-          <TouchableNativeFeedback>
+          <TouchableNativeFeedback
+            onPress={() => {
+              this.props.navigation.navigate("HomeScreen");
+            }}
+          >
             <View style={styles.Button}>
               <Icon
                 style={[styles.Icon, { color: "#FFF" }]}

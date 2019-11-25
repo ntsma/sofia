@@ -9,7 +9,13 @@ import {
 import { Icon } from "native-base";
 
 export default class SearchNoResults extends Component {
+  static navigationOptions = {
+    header: null
+  };
+
   render() {
+    const question = this.props.navigation.state.params.question;
+
     return (
       <View style={styles.Container}>
         <Text style={styles.Title}>
@@ -17,7 +23,11 @@ export default class SearchNoResults extends Component {
           base.
         </Text>
         <View style={styles.ButtonContainer}>
-          <TouchableNativeFeedback>
+          <TouchableNativeFeedback
+            onPress={() => {
+              this.props.navigation.navigate("Search", { isConected: true });
+            }}
+          >
             <View style={styles.Button}>
               <Icon
                 style={[styles.Icon, { color: "#FFF" }]}
@@ -27,7 +37,11 @@ export default class SearchNoResults extends Component {
               <Text style={styles.TextLight}>Faça uma nova pergunta</Text>
             </View>
           </TouchableNativeFeedback>
-          <TouchableNativeFeedback>
+          <TouchableNativeFeedback
+            onPress={() =>
+              this.props.navigation.navigate("Question", { question })
+            }
+          >
             <View style={styles.Button}>
               <Icon
                 style={[styles.Icon, { color: "#FFF" }]}
