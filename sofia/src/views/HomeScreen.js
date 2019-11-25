@@ -163,7 +163,7 @@ export default class HomeScreen extends Component {
   }
 
   /*Carregando as solicitações de rascunhos.*/
-  loadDraftRequests = async() => { 
+  loadDraftRequests = async () => { 
     const token = await AsyncStorage.getItem("token");
 
     Requests.getDraftRequests(token).then(response => {
@@ -247,7 +247,7 @@ export default class HomeScreen extends Component {
   }
 
   /*Obtendo as questões canceladas para a Sofia pelo Token*/
-  async loadCanceledRequests() {
+  loadCanceledRequests = async () => {
     const token = await AsyncStorage.getItem("token");
 
     Requests.getCanceledRequests(token)
@@ -266,21 +266,12 @@ export default class HomeScreen extends Component {
   }
 
   onNavigateNewIssue() {
-    /*if(this.state.existsRequestsWithoutEvaluation) {
-      Alert.alert("Primeiro leia todas as questões respondidas!");
-    } else {
-      this.props.navigation.navigate("NewQuestion");
-
-    }*/
-
-    const isConnected = this.state.isConnected;
-
-    console.log(isConnected);
+    const {isConnected} = this.state;
 
     this.props.navigation.navigate("Search", { isConnected });
   }
 
-  atu() {
+  updateScreen() {
     try {
       if (this.props.navigation.state.params.shouldUpdate) {
         if (this.props.navigation.state.params.shouldUpdate == true) {
@@ -293,7 +284,7 @@ export default class HomeScreen extends Component {
   }
 
   render() {
-    this.atu();
+    this.updateScreen();
 
     const answeredIssues = this.state.answeredIssues;
     const submittedIssues = this.state.submittedIssues;
