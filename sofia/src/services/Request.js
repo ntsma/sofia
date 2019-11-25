@@ -131,6 +131,24 @@ exports.sendDraftRequest = (token, description, file_ids) => {
         })
         .then(function(response) {
             resolve(response.data);
+ 
+        })
+        .catch(function(error) {
+            reject(error);
+        })
+    });
+};
+
+
+exports.deleteDraftRequest = (token, id) => {
+    return new Promise((resolve, reject) => {
+        API.get('/solicitation/destroy/' + id, {
+            headers: {
+                Authorization: "Bearer " + token
+            },           
+        })
+        .then(function(response) {
+            resolve(response.data);
 
         })
         .catch(function(error) {
