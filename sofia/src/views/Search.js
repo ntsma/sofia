@@ -13,6 +13,8 @@ import AsyncStorage from "@react-native-community/async-storage";
 import BackHeader from "../components/BackHeader";
 import NetInfo from "@react-native-community/netinfo";
 
+import Requests from '../services/Request';
+
 export default class Search extends Component {
   static navigationOptions = {
     header: null
@@ -39,47 +41,30 @@ export default class Search extends Component {
         this.props.navigation.navigate("Question", { question });
       } else {
         this.showLoader(true);
-    
-        let formdata = new FormData();
-  
-        formdata.append("description", question);
-  
-        return fetch("http://sofia.huufma.br/api/solicitation/search", {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer " + token
-          },
-          body: formdata
-        })
-          .then(response => response.json())
-          .then(responseJson => {
-            console.debug("RETURNING...");
-            console.debug(responseJson);
-  
-            var questions = responseJson.data;
-  
-            shouldUpdate = true;
-  
-            this.showLoader(false);
-  
-            console.log(questions);
-  
-            if (!questions) {
-              this.props.navigation.navigate("SearchNoResults", {
-                question
-              });
-            } else {
-              this.props.navigation.navigate("RelatedQuestionsView", {
-                questions,
-                question
-              });
-            }
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      }
 
+        Requests.searchRequests(token, question)
+        .then(response => {
+          var questions = response.data;
+
+          this.showLoader(false);
+    
+          if (!questions) {
+            this.props.navigation.navigate("SearchNoResults", {
+              question
+            });
+          } else {
+            this.props.navigation.navigate("RelatedQuestionsView", {
+              questions,
+              question
+            });
+          }
+    
+        
+        })
+        .catch(response => {
+          console.error(response);
+        })
+      }
     });
   }
 

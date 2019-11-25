@@ -92,3 +92,24 @@ exports.sendRequest = (token, description, file_ids) => {
         })
     });
 };
+
+exports.searchRequests = (token, description) => {
+    return new Promise((resolve, reject) => {
+        let formdata = new FormData();
+
+        formdata.append("description", description);
+       
+        API.post('/solicitation/search', formdata, {
+            headers: {
+                Authorization: "Bearer " + token
+            },           
+        })
+        .then(function(response) {
+            resolve(response.data);
+
+        })
+        .catch(function(error) {
+            reject(error);
+        })
+    });
+};
