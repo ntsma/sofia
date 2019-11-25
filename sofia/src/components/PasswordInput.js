@@ -33,9 +33,9 @@ class PasswordInput extends Component {
                     placeholderTextColor="#999"
                     style={styles.inputPassword}
                     secureTextEntry={this.state.inputIsVisible}
-                    value={this.props.state.state.password}
-                    ref={input => (this.props.state.passwordInput = input)}
-                    onChangeText={password => this.props.state.setState({ password })}
+                    value={this.props.props.state.password}
+                    ref={input => (this.props.props.passwordInput = input)}
+                    onChangeText={password => this.props.props.setState({ password })}
                 />
     
                 <Icon style={styles.iconPassword} name={this.state.icon} onPress={() => this.changePasswordVisibility()} />

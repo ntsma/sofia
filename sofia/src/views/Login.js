@@ -11,6 +11,7 @@ import styles from '../config/Login';
 import EmailInput from '../components/EmailInput';
 import PasswordInput from '../components/PasswordInput';
 import LoginHeader from '../components/LoginHeader';
+import InvalidEmailOrPasswordModal from '../components/modals/InvalidEmailOrPasswordModal';
 
 export default class Login extends Component {
   constructor(props) {
@@ -18,11 +19,9 @@ export default class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      modalIsVisible: false,
-      inputIsVisible: true, 
-      icon: "eye-off", 
       isLoggedIn: "false",
-      token: ""
+      token: "",
+      isModalVisible: false
     };
   }
 
@@ -71,7 +70,7 @@ export default class Login extends Component {
 
   /*Fecha o modal*/
   handleClose = () => {
-    this.setState({ modalIsVisible: false });
+      this.setState({ modalIsVisible: false });
   };
 
   render() {
@@ -88,7 +87,7 @@ export default class Login extends Component {
 
         <EmailInput props={this} />
 
-        <PasswordInput state={this} />
+        <PasswordInput props={this} />
 
         <TouchableOpacity onPress={this.onLoginButtonPress.bind(this)} style={styles.button}>
           <Text style={styles.buttonText}>Entrar</Text>
@@ -98,21 +97,7 @@ export default class Login extends Component {
           <Text>Cadastrar-se</Text>
         </Button>
 
-        {
-          modalIsVisible && 
-            <ModalComponent 
-              modalIsVisible={this.modalIsVisible} 
-              onClose={this.handleClose}
-              content={
-                <View style={styles.ModalContainer}>
-                  <Text style={styles.ModalText}>E-mail ou senha estão incorretos!</Text>
-                  <TouchableOpacity onPress={ this.handleClose } style={styles.button}>
-                    <Text style={styles.buttonText}>OK</Text>
-                  </TouchableOpacity>
-                </View>
-              }
-            />
-        }
+        { modalIsVisible && <InvalidEmailOrPasswordModal handleClose={this.handleClose} /> }
 
       </KeyboardAvoidingView>
     );
