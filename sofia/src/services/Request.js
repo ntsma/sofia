@@ -67,3 +67,28 @@ exports.getDraftRequests = (token) => {
         })
     });
 };
+
+exports.sendRequest = (token, description, file_ids) => {
+    return new Promise((resolve, reject) => {
+        let formdata = new FormData();
+
+        formdata.append("type_id", 52);
+        formdata.append("mode", "send");
+        formdata.append("description", description);
+        formdata.append("mobile", 1);
+        formdata.append("file_ids", file_ids);
+        
+        API.post('/solicitation/handle', formdata, {
+            headers: {
+                Authorization: "Bearer " + token
+            },           
+        })
+        .then(function(response) {
+            resolve(response.data);
+
+        })
+        .catch(function(error) {
+            reject(error);
+        })
+    });
+};

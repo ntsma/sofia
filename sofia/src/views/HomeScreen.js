@@ -29,7 +29,6 @@ export default class HomeScreen extends Component {
     super(props);
 
     this.state = {
-      shouldEmpty: false,
       isConnected: false,
       refreshing: false,
       answeredIssues: [],
@@ -45,6 +44,7 @@ export default class HomeScreen extends Component {
     header: null
   };
 
+  /*Aciona a ação de sair do app.*/
   logout = async () => {
     await AsyncStorage.setItem("token", "");
     await AsyncStorage.setItem("logging", "false");
@@ -56,33 +56,22 @@ export default class HomeScreen extends Component {
     }
   };
 
-  _onRefresh = () => {
+  /*Atualiza tela.*/
+  refleshScreen = () => {
     this.setState({ refreshing: true });
 
-    this.componentDidMount();
+    this.load();
     this.sendOfflineRequests();
-
-    if (this.state.shouldEmpty == true) {
-      this.onEmptyDraftIssues();
-    }
 
     this.setState({ refreshing: false });
   };
-
-  /*Esvazia listas de rascunhos enviados offline*/
-  async onEmptyDraftIssues() {
-    await AsyncStorage.setItem("draftQuestions", JSON.stringify([]));
-
-    this.setState({
-      shouldEmpty: false
-    });
-  }
 
   /*Carregando questões enviadas, respondidas, canceladas e rascunhos*/
   componentDidMount() {
     this.load();
   }
 
+  /*Envia solicitações não enviadas por falta de internet. */
   sendOfflineRequests = async () => {
     var token = await AsyncStorage.getItem("token");
     var draftQuestions = await AsyncStorage.getItem("draftQuestions");
@@ -91,38 +80,34 @@ export default class HomeScreen extends Component {
 
     NetInfo.fetch().then(state => {
       if (state.isConnected && draftQuestions != null) {
-        for (index in draftQuestions) {
+        new Promise((resolve, reject) => {
+          for (index in draftQuestions) {
 
-          let formdata = new FormData();
-
-          formdata.append("type_id", 52);
-          formdata.append("mode", "send");
-          formdata.append("description", draftQuestions[index].description);
-          formdata.append("mobile", 1);
-          formdata.append("file_ids", draftQuestions[index].file_ids);
-
-          return fetch("http://sofia.huufma.br/api/solicitation/handle", {
-            method: "POST",
-            headers: {
-              Authorization: "Bearer " + token
-            },
-            body: formdata
-          })
-            .then(response => response.json())
-            .then(responseJson => {
-              this.setState({
-                shouldEmpty: true
-              });
-
-              console.log("Enviado com sucesso!");
-              Alert.alert("Solicitação enviada com succeso!");
+            const descripton = draftQuestions[index].description;
+            const file_ids = draftQuestions[index].file_ids;
+  
+            Requests.sendRequest(token, descripton, file_ids)
+            .then(response => {
+              resolve(response);
             })
-            .catch(error => {
-              console.error(error);
-            });
-        }
+            .catch(response => {
+              reject(response);
+            })
+          }
+        })
+        .then(response => {
+          this.emptyOfflineRequests();
+        })
+        .catch(response => {
+          console.log(response);
+        })
       }
     });
+  }
+
+  /*Esvazia listas de rascunhos enviados offline*/
+  emptyOfflineRequests = async () => {
+    await AsyncStorage.setItem("draftQuestions", JSON.stringify([]));
   }
 
   /*Carregando informações do app.*/
@@ -211,9 +196,11 @@ export default class HomeScreen extends Component {
       }
     })
       .then(response => {
-        this.setState({
-          existsRequestsWithoutEvaluation: true
-        });
+        if(!requestsWithoutEvaluation) {
+          this.setState({
+            existsRequestsWithoutEvaluation: true
+          });
+        }
 
         this.setState({
           answeredIssues: requestsWithoutEvaluation.concat(
@@ -300,7 +287,7 @@ export default class HomeScreen extends Component {
             refreshControl={
               <RefreshControl
                 refreshing={this.state.refreshing}
-                onRefresh={this._onRefresh}
+                onRefresh={this.refleshScreen}
               />
             }
           >
