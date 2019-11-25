@@ -12,26 +12,26 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 import { createStackNavigator, createAppContainer } from "react-navigation";
 
-import Login from "./app/views/Login";
-import SignUp from "./app/views/SignUp";
-import HomeScreen from "./app/views/HomeScreen";
-import SubmittedIssues from "./app/views/SubmittedIssues";
-import DraftIssues from "./app/views/DraftIssues";
-import CanceledIssues from "./app/views/CanceledIssues";
-import AnsweredIssues from "./app/views/AnsweredIssues";
-// import NewQuestion from "./app/views/NewQuestion";
-import Overlay from "./app/views/Overlay";
-import Question from "./app/views/Question";
-import EditQuestion from "./app/views/EditQuestion";
-import ShowObservation from "./app/views/ShowObservation";
-import EditCanceledIssue from "./app/views/EditCanceledIssue";
-import ShowDetails from "./app/views/ShowDetails";
-import RelatedQuestionsView from "./app/views/RelatedQuestionsView";
-import Search from "./app/views/Search";
-import RelatedIssueView from "./app/views/RelatedIssueView";
-import CPF from "./app/views/CPF";
-import FAQ from "./app/old/FAQ";
-import TeleconsultoriaRealizada from "./app/views/TeleconsultoriaRealizada";
+import Login from "./src/views/Login";
+import SignUp from "./src/views/SignUp";
+import HomeScreen from "./src/views/HomeScreen";
+import SubmittedIssues from "./src/views/SubmittedIssues";
+import DraftIssues from "./src/views/DraftIssues";
+import CanceledIssues from "./src/views/CanceledIssues";
+import AnsweredIssues from "./src/views/AnsweredIssues";
+import Overlay from "./src/views/Overlay";
+import Question from "./src/views/Question";
+import EditQuestion from "./src/views/EditQuestion";
+import ShowObservation from "./src/views/ShowObservation";
+import EditCanceledIssue from "./src/views/EditCanceledIssue";
+import ShowDetails from "./src/views/ShowDetails";
+import RelatedQuestionsView from "./src/views/RelatedQuestionsView";
+import Search from "./src/views/Search";
+import SearchNoResults from "./src/views/SearchNoResults";
+import RelatedIssueView from "./src/views/RelatedIssueView";
+import FAQ from "./src/views/FAQ";
+import FaqElement from "./src/views/FaqElement";
+import Success from "./src/views/Success";
 
 class Home extends Component {
   state = {
@@ -121,12 +121,7 @@ const App = createStackNavigator(
         title: "Home"
       }
     },
-    TeleconsultoriaRealizada: {
-      screen: TeleconsultoriaRealizada,
-      navigationOptions: {
-        title: "TeleconsultoriaRealizada"
-      }
-    },
+
     HomeScreen: {
       screen: HomeScreen,
       navigationOptions: {
@@ -148,6 +143,13 @@ const App = createStackNavigator(
       }
     },
 
+    SearchNoResults: {
+      screen: SearchNoResults,
+      navigationOptions: {
+        title: "Search"
+      }
+    },
+
     Login: {
       screen: Login,
       navigationOptions: {
@@ -161,13 +163,6 @@ const App = createStackNavigator(
         title: "Cadastro"
       }
     },
-
-    // NewQuestion: {
-    //   screen: NewQuestion,
-    //   navigationOptions: {
-    //     title: "NewQuestion"
-    //   }
-    // },
 
     EditQuestion: {
       screen: EditQuestion,
@@ -246,17 +241,16 @@ const App = createStackNavigator(
       }
     },
 
-    CPF: {
-      screen: CPF,
-      navigationOptions: {
-        title: "CPF"
-      }
-    },
     FAQ: {
-      screen: FAQ,
-      navigationOptions: {
-        title: "Dúvidas Gerais"
-      }
+      screen: FAQ
+    },
+
+    FaqElement: {
+      screen: FaqElement
+    },
+
+    Success: {
+      screen: Success
     }
   },
   {

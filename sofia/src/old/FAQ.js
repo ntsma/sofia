@@ -16,7 +16,14 @@ import {
 
 } from "react-native-elements";
 
+import BackHeader from "../components/BackHeader";
+
 export default class FAQ extends Component {
+  /*Removendo header padrão da tela*/
+  static navigationOptions = {
+    header: null
+  };
+  
   render() {
     const questions = [
                       {
@@ -76,6 +83,11 @@ export default class FAQ extends Component {
 
    return (
      <ThemeProvider>
+       <BackHeader
+          navigation={this.props.navigation}
+          name="Como posso te ajudar?"
+        />
+
        <FlatList
         data={questions}
         keyExtractor={(item, index) => item.title}

@@ -8,36 +8,47 @@ import {
 } from "react-native";
 import { Icon } from "native-base";
 
-export default class Sucess extends Component {
+export default class SearchNoResults extends Component {
+  static navigationOptions = {
+    header: null
+  };
+
   render() {
+    const question = this.props.navigation.state.params.question;
+
     return (
       <View style={styles.Container}>
         <Text style={styles.Title}>
-          Sua pergunta já foi enviada para nossos teleconsultores. A partir de
-          agora, ela será respondida em até 72 horas.{"\n\n"}Fique atento ao
-          aplicativo!
+          Não foi encontrada nenhuma pergunta relacionada a sua dúvida na nossa
+          base.
         </Text>
         <View style={styles.ButtonContainer}>
-          <TouchableNativeFeedback>
+          <TouchableNativeFeedback
+            onPress={() => {
+              this.props.navigation.navigate("Search", { isConected: true });
+            }}
+          >
             <View style={styles.Button}>
               <Icon
                 style={[styles.Icon, { color: "#FFF" }]}
                 type="MaterialIcons"
                 name="search"
               />
-              <Text style={styles.TextLight}>
-                Possui outra dúvida?{"\n"}Faça uma nova pergunta
-              </Text>
+              <Text style={styles.TextLight}>Faça uma nova pergunta</Text>
             </View>
           </TouchableNativeFeedback>
-          <TouchableNativeFeedback>
+          <TouchableNativeFeedback
+            onPress={() =>
+              this.props.navigation.navigate("Question", { question })
+            }
+          >
             <View style={styles.Button}>
               <Icon
                 style={[styles.Icon, { color: "#FFF" }]}
                 type="MaterialIcons"
-                name="apps"
+                name="launch"
               />
-              <Text style={styles.TextLight}>Retornar ao menu principal</Text>
+              <Text style={styles.TextLight}>Prosseguir com a solicitação</Text>
             </View>
           </TouchableNativeFeedback>
         </View>
@@ -61,7 +72,7 @@ const styles = StyleSheet.create({
   },
 
   ButtonContainer: {
-    height: height * 0.5,
+    height: height * 0.4,
     alignItems: "center"
   },
 

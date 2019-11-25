@@ -22,6 +22,10 @@ import NumberOfIssuesBadge from "../components/NumberOfIssuesBadge";
 import ErrorNoInternetMessage from "../components/ErrorNoInternetMessage";
 import { get } from "../controllers/Issues.js";
 
+import Requests from "../services/Request";
+
+import styles from "../config/HomeScreen";
+
 export default class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -34,25 +38,25 @@ export default class HomeScreen extends Component {
       submittedIssues: [],
       draftIssues: [],
       canceledIssues: [],
-      waitingEvaluate: false
+      existsRequestsWithoutEvaluation: false
     };
   }
 
-  async logout() {
-    console.log("teste");
+  /*Remove header padrão*/
+  static navigationOptions = {
+    header: null
+  };
+
+  logout = async () => {
     await AsyncStorage.setItem("token", "");
     await AsyncStorage.setItem("logging", "false");
 
-    log = await AsyncStorage.getItem("logging");
-    console.log(log);
     if (Platform.OS == "ios") {
       this.props.navigation.navigate("Login");
     } else {
       BackHandler.exitApp();
     }
-
-    return true;
-  }
+  };
 
   _onRefresh = () => {
     this.setState({ refreshing: true });
@@ -138,10 +142,10 @@ export default class HomeScreen extends Component {
         isConnected: state.isConnected
       });
 
-      this.getCanceledIssues();
-      this.getDraftIssues();
-      this.getAnsweredIssues();
-      this.getSubmittedIssues();
+      this.loadCanceledRequests();
+      this.loadDraftRequests();
+      this.loadAnsweredRequests();
+      this.loadSentRequests();
     });
   }
 
@@ -153,124 +157,124 @@ export default class HomeScreen extends Component {
       submittedIssues: [],
       draftIssues: [],
       canceledIssues: [],
-      waitingEvaluate: false
+      existsRequestsWithoutEvaluation: false
     };
   }
 
-  /*Obtendo as questões rascunhos para a Sofia pelo Token*/
-  async getDraftIssues() {
+  /*Carregando as solicitações de rascunhos.*/
+  loadDraftRequests = async () => {
     const token = await AsyncStorage.getItem("token");
 
-    return fetch("http://sofia.huufma.br/api/solicitant/drafts", {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + token
-      }
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({ draftIssues: responseJson.data });
+    Requests.getDraftRequests(token)
+      .then(response => {
+        const draftRequests = response.data;
+        this.setState({ draftIssues: draftRequests });
       })
       .catch(error => {
-        console.error(error);
+        console.log(error);
       });
-  }
+  };
 
-  /*Obtendo as questões respondidas para a Sofia pelo Token*/
-  async getAnsweredIssues() {
+  /*Carregando as questões enviadas para a Sofia.*/
+  loadSentRequests = async () => {
     const token = await AsyncStorage.getItem("token");
 
-    console.log("CELULAR");
-    console.log(get(token.toString()));
+    Requests.getSentRequests(token)
+      .then(response => {
+        const sentRequests = response.data;
+        this.setState({ submittedIssues: sentRequests });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
-    return fetch("http://sofia.huufma.br/api/solicitant/answered", {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + token
-      }
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        var answeredIssues = responseJson.data;
+  /*Carregando as questões respondidas para a Sofia.*/
+  loadAnsweredRequests = async () => {
+    const token = await AsyncStorage.getItem("token");
+
+    Requests.getAnsweredRequests(token)
+      .then(response => {
+        const answeredRequests = response.data;
 
         this.setState({
-          waitingEvaluate: false
+          answeredIssues: answeredRequests
         });
 
-        var special = [];
+        /*Procura por solicitações que não foram avaliadas.*/
+        this.searchRequestsWithoutEvaluation();
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
-        for (index in answeredIssues) {
-          if (answeredIssues[index].status_id == 21) {
-            this.setState({
-              waitingEvaluate: true
-            });
+  /*Procura por solicitações que não foram avaliadas.*/
+  searchRequestsWithoutEvaluation = () => {
+    /*Configura como se houvesse solicitações sem avaliação inicialmente.*/
+    this.setState({
+      existsRequestsWithoutEvaluation: false
+    });
 
-            special.push(answeredIssues[index]);
-            answeredIssues.splice(index, 1);
+    var requestsWithoutEvaluation = [];
+
+    new Promise((resolve, reject) => {
+      try {
+        for (index in this.state.answeredIssues) {
+          if (this.state.answeredIssues[index].status_id == 21) {
+            requestsWithoutEvaluation.push(this.state.answeredIssues[index]);
+            this.state.answeredIssues.splice(index, 1);
           }
         }
+        resolve("OK");
+      } catch (error) {
+        reject(error);
+      }
+    })
+      .then(response => {
+        this.setState({
+          existsRequestsWithoutEvaluation: true
+        });
 
-        this.setState({ answeredIssues: special.concat(answeredIssues) });
+        this.setState({
+          answeredIssues: requestsWithoutEvaluation.concat(
+            this.state.answeredIssues
+          )
+        });
       })
       .catch(error => {
-        console.error(error);
+        this.setState({
+          answeredIssues: requestsWithoutEvaluation.concat(
+            this.state.answeredIssues
+          )
+        });
       });
-  }
+  };
 
   /*Obtendo as questões canceladas para a Sofia pelo Token*/
-  async getCanceledIssues() {
+  loadCanceledRequests = async () => {
     const token = await AsyncStorage.getItem("token");
 
-    return fetch("http://sofia.huufma.br/api/solicitant/rejects", {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + token
-      }
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({ canceledIssues: responseJson.data });
+    Requests.getCanceledRequests(token)
+      .then(response => {
+        const canceledRequests = response.data;
+
+        this.setState({
+          canceledIssues: canceledRequests
+        });
       })
       .catch(error => {
-        console.error(error);
+        console.log(error);
       });
-  }
-
-  /*Obtendo as questões enviadas para a Sofia pelo Token*/
-  async getSubmittedIssues() {
-    const token = await AsyncStorage.getItem("token");
-
-    return fetch("http://sofia.huufma.br/api/solicitant/sents", {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + token
-      }
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({ submittedIssues: responseJson.data });
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }
+  };
 
   onNavigateNewIssue() {
-    /*if(this.state.waitingEvaluate) {
-      Alert.alert("Primeiro leia todas as questões respondidas!");
-    } else {
-      this.props.navigation.navigate("NewQuestion");
-
-    }*/
-
-    const isConnected = this.state.isConnected;
-
-    console.log(isConnected);
+    const { isConnected } = this.state;
 
     this.props.navigation.navigate("Search", { isConnected });
   }
 
-  atu() {
+  updateScreen() {
     try {
       if (this.props.navigation.state.params.shouldUpdate) {
         if (this.props.navigation.state.params.shouldUpdate == true) {
@@ -282,12 +286,8 @@ export default class HomeScreen extends Component {
     } catch (e) {}
   }
 
-  static navigationOptions = {
-    header: null
-  };
-
   render() {
-    this.atu();
+    this.updateScreen();
 
     const answeredIssues = this.state.answeredIssues;
     const submittedIssues = this.state.submittedIssues;
@@ -305,7 +305,7 @@ export default class HomeScreen extends Component {
             source={require("../resources/logo.png")}
           />
           <Text style={[styles.TextLight, { fontSize: 24 }]}>Sofia</Text>
-          <TouchableNativeFeedback onPress={this.logout.bind(this)}>
+          <TouchableNativeFeedback onPress={this.logout}>
             <View style={styles.ExitButton}>
               <View style={{ alignItems: "center" }}>
                 <Icon
@@ -366,7 +366,9 @@ export default class HomeScreen extends Component {
                     <NumberOfIssuesBadge
                       number={this.state.answeredIssues.length}
                       isConnected={this.state.isConnected}
-                      waitingEvaluate={this.state.waitingEvaluate}
+                      existsRequestsWithoutEvaluation={
+                        this.state.existsRequestsWithoutEvaluation
+                      }
                     />
                   </View>
                 </View>
@@ -465,80 +467,3 @@ export default class HomeScreen extends Component {
     );
   }
 }
-
-const height = Dimensions.get("window").height;
-
-const styles = StyleSheet.create({
-  Container: {
-    flex: 1,
-    justifyContent: "space-around",
-    marginLeft: 37,
-    marginRight: 37,
-    margin: "1%"
-  },
-
-  Header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "100%",
-    height: "15%",
-    backgroundColor: "#3c8dbc"
-  },
-
-  ExitButton: {
-    width: 40,
-    height: 50,
-    marginRight: 10
-  },
-
-  Body: {
-    width: "100%",
-    height: "85%"
-  },
-
-  Button: {
-    width: "100%",
-    height: 54,
-    backgroundColor: "#eee",
-    borderRadius: 4,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 2,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: height * 0.04
-  },
-
-  Icon: {
-    position: "absolute",
-    left: 20,
-    color: "#202020",
-    fontSize: 24
-  },
-
-  Badge: {
-    position: "absolute",
-    right: 20
-  },
-
-  TextLight: {
-    fontSize: 14,
-    color: "#FFF",
-    fontWeight: "600",
-    textAlign: "center"
-  },
-
-  TextDark: {
-    fontSize: 14,
-    color: "#202020",
-    fontWeight: "600",
-    textAlign: "center"
-  }
-});

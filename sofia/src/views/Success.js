@@ -8,33 +8,49 @@ import {
 } from "react-native";
 import { Icon } from "native-base";
 
-export default class SearchNoResults extends Component {
+export default class Success extends Component {
+  /*Remove header padrão*/
+  static navigationOptions = {
+    header: null
+  };
+
   render() {
     return (
       <View style={styles.Container}>
         <Text style={styles.Title}>
-          Não foi encontrada nenhuma pergunta relacionada a sua dúvida na nossa
-          base.
+          Sua pergunta já foi enviada para nossos teleconsultores. A partir de
+          agora, ela será respondida em até 72 horas.{"\n\n"}Fique atento ao
+          aplicativo!
         </Text>
         <View style={styles.ButtonContainer}>
-          <TouchableNativeFeedback>
+          <TouchableNativeFeedback
+            onPress={() => {
+              this.props.navigation.navigate("Search", { isConected: true });
+            }}
+          >
             <View style={styles.Button}>
               <Icon
                 style={[styles.Icon, { color: "#FFF" }]}
                 type="MaterialIcons"
                 name="search"
               />
-              <Text style={styles.TextLight}>Faça uma nova pergunta</Text>
+              <Text style={styles.TextLight}>
+                Possui outra dúvida?{"\n"}Faça uma nova pergunta
+              </Text>
             </View>
           </TouchableNativeFeedback>
-          <TouchableNativeFeedback>
+          <TouchableNativeFeedback
+            onPress={() => {
+              this.props.navigation.navigate("HomeScreen");
+            }}
+          >
             <View style={styles.Button}>
               <Icon
                 style={[styles.Icon, { color: "#FFF" }]}
                 type="MaterialIcons"
-                name="launch"
+                name="apps"
               />
-              <Text style={styles.TextLight}>Prosseguir com a solicitação</Text>
+              <Text style={styles.TextLight}>Retornar ao menu principal</Text>
             </View>
           </TouchableNativeFeedback>
         </View>
@@ -58,7 +74,7 @@ const styles = StyleSheet.create({
   },
 
   ButtonContainer: {
-    height: height * 0.4,
+    height: height * 0.5,
     alignItems: "center"
   },
 
