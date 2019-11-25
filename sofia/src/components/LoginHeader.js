@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, View } from "react-native";
 import { Text } from "native-base";
 
-import styles from '../config/Login';
+import styles from '../Styles/Login';
 import logo from '../resources/logo.png';
 
 const LoginHeader = () => {

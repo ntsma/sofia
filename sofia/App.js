@@ -19,7 +19,6 @@ import SubmittedIssues from "./src/views/SubmittedIssues";
 import DraftIssues from "./src/views/DraftIssues";
 import CanceledIssues from "./src/views/CanceledIssues";
 import AnsweredIssues from "./src/views/AnsweredIssues";
-// import NewQuestion from "./src/views/NewQuestion";
 import Overlay from "./src/views/Overlay";
 import Question from "./src/views/Question";
 import EditQuestion from "./src/views/EditQuestion";
@@ -28,11 +27,11 @@ import EditCanceledIssue from "./src/views/EditCanceledIssue";
 import ShowDetails from "./src/views/ShowDetails";
 import RelatedQuestionsView from "./src/views/RelatedQuestionsView";
 import Search from "./src/views/Search";
+import SearchNoResults from "./src/views/SearchNoResults";
 import RelatedIssueView from "./src/views/RelatedIssueView";
-import CPF from "./src/views/CPF";
-import FAQ from "./src/old/FAQ";
-import TeleconsultoriaRealizada from "./src/views/TeleconsultoriaRealizada";
-import Success from './src/views/Success';
+import FAQ from "./src/views/FAQ";
+import FaqElement from "./src/views/FaqElement";
+import Success from "./src/views/Success";
 
 class Home extends Component {
   state = {
@@ -122,13 +121,7 @@ const App = createStackNavigator(
         title: "Home"
       }
     },
-  
-    TeleconsultoriaRealizada: {
-      screen: TeleconsultoriaRealizada,
-      navigationOptions: {
-        title: "TeleconsultoriaRealizada"
-      }
-    },
+
     HomeScreen: {
       screen: HomeScreen,
       navigationOptions: {
@@ -150,6 +143,13 @@ const App = createStackNavigator(
       }
     },
 
+    SearchNoResults: {
+      screen: SearchNoResults,
+      navigationOptions: {
+        title: "Search"
+      }
+    },
+
     Login: {
       screen: Login,
       navigationOptions: {
@@ -163,13 +163,6 @@ const App = createStackNavigator(
         title: "Cadastro"
       }
     },
-
-    // NewQuestion: {
-    //   screen: NewQuestion,
-    //   navigationOptions: {
-    //     title: "NewQuestion"
-    //   }
-    // },
 
     EditQuestion: {
       screen: EditQuestion,
@@ -248,18 +241,17 @@ const App = createStackNavigator(
       }
     },
 
-    CPF: {
-      screen: CPF,
-      navigationOptions: {
-        title: "CPF"
-      }
-    },
     FAQ: {
       screen: FAQ
     },
+
+    FaqElement: {
+      screen: FaqElement
+    },
+
     Success: {
       screen: Success
-    } 
+    }
   },
   {
     transitionConfig: NavigationConfig

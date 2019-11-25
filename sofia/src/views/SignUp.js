@@ -1,33 +1,37 @@
 import React, { Component } from "react";
-import { Picker, StatusBar, ScrollView, StyleSheet, TouchableOpacity, TextInput, Text, View } from "react-native";
-import { TextInputMask } from 'react-native-masked-text' 
+import {
+  Picker,
+  StatusBar,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  TextInput,
+  Text,
+  View
+} from "react-native";
 
 import BackHeader from "../components/BackHeader";
+import ModalComponent from "../components/ModalComponent";
+
+import { TextInputMask } from "react-native-masked-text";
 
 export default class SignUp extends Component {
-
   constructor() {
     super();
-
     this.state = {
-        nome: "",
-        cpf: "",
-        cidade: "",
-        unidade: "",
-        equipe: "",
+      cpf: "",
+      email: "",
+      isVisible: false,
+      emailValidation: false,
+      message: ""
     };
-
-  }
-
-  componentDidMount() {
-      const solicitante = this.props.navigation.state.params.solicitante;
-
-      this.setState({
-          cpf: solicitante.cpf,
-      })
   }
 
   static navigationOptions = {
+    headerStyle: {
+      backgroundColor: "#D95D39",
+      elevation: null
+    },
     header: null
   };
 
@@ -36,142 +40,219 @@ export default class SignUp extends Component {
 
     let formdata = new FormData();
 
-    formdata.append("type_id", 52);
-    
-    return fetch('http://sofia.huufma.br/api/solicitation/' + 10, {
-        method: 'POST',
-        body: formdata,
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        
+    formdata.append("email", this.state.email);
+    formdata.append("cpf", "61049006313");
+
+    console.log(formdata);
+
+    return fetch("http://sofia.huufma.br/api/check", {
+      method: "POST",
+      body: formdata
+    })
+      .then(response => response.json())
+      .then(responseJson => {
+        var message = "";
+
+        if (responseJson.message == "success") {
+          message =
+            "Iremos confirmar os dados fornecidos nas Bases Públicas de Profissionais de Saúde e em alguns minutos lhe enviaremos um email com a confirmação de acesso a Sofia.";
+        } else {
+          message = "Email e CPF inválidos ou já cadastrados!";
+        }
+
+        this.setState({
+          message: message
+        });
+
+        this.handleOpen();
+
         this.props.navigation.navigate("Login");
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
-        
       });
-
   }
 
+  handleOpen = value => {
+    this.setState({ isVisible: true, value: value });
+  };
+
+  handleClose = () => {
+    this.setState({ isVisible: false });
+    this.props.navigation.goBack();
+  };
+
+  validateEmail = email => {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  };
+
+  checkEmail = () => {
+    if (!this.validateEmail(this.state.email)) {
+      this.emailValidation = true;
+    } else {
+      this.emailValidation = false;
+    }
+  };
+
   render() {
+    const { isVisible } = this.state;
+
     return (
-        <View>
-            <BackHeader navigation={this.props.navigation} name="Cadastro"/>
-            <StatusBar backgroundColor="#3c8dbc" barStyle="dark-content" />
+      <View>
+        <BackHeader navigation={this.props.navigation} name="Cadastro" />
+        <StatusBar backgroundColor="#3c8dbc" barStyle="dark-content" />
 
-            <ScrollView style={styles.container}>
-                
-                <View>
-                    <Text style={styles.text}>Nome</Text>
-                    <TextInput
-                    keyboardType="default"
-                    returnKeyType="next"
-                    placeholder="Digite seu nome"
-                    placeholderTextColor="#999"
-                    style={styles.input}
-                    value={this.props.teste}
-                    onChangeText={nome => this.setState({ nome })}
-                    onSubmitEditing={() => {}}
-                    />
-                </View>
-                <View>
-                    <Text style={styles.text}>CPF</Text>
-                    <TextInputMask
-                    style={styles.input}
-                    type={'cpf'}
-                    options={{}}
-                    placeholder="123.456.789-00"
-                    value={this.state.cpf}
-                    onChangeText={text => {
-                        this.setState({
-                        cpf: text
-                        })
-                    }}
-                    ref={(ref) => this.cpfField = ref}
-                    />
-                </View>
+        <ScrollView style={styles.container}>
+          <View>
+            <Text style={{ textAlign: "center" }}>
+              Cadastro somente para Profissionais de Saúde.{"\n"}
+              Informe seu CPF e Email para continuar.
+            </Text>
+          </View>
 
-                <View>
-                    <Text style={styles.text}>Cidade</Text>
-                    <Picker selectedValue={this.state.cidade} style={styles.picker} onValueChange={cidade => this.setState({ cidade })}>
-                        <Picker.Item label="Selecione..." value="exemplo" />
-                        <Picker.Item label="Exemplo1" value="exemplo1" />
-                        <Picker.Item label="Exemplo2" value="exemplo2" />
-                    </Picker>
-                </View>
-                <View>
-                    <Text style={styles.text}>Unidade</Text>
-                    <Picker selectedValue={this.state.unidade} style={styles.picker} onValueChange={unidade => this.setState({ unidade })}>
-                        <Picker.Item label="Selecione..." value="exemplo" />
-                        <Picker.Item label="Exemplo1" value="exemplo" />
-                        <Picker.Item label="Exemplo2" value="exemplo" />
-                    </Picker>
-                </View>
-                <View>
-                    <Text style={styles.text}>Equipe</Text>
-                    <Picker selectedValue={this.state.equipe} style={styles.picker} onValueChange={equipe => this.setState({ equipe })}>
-                        <Picker.Item label="Selecione..." value="exemplo" />
-                        <Picker.Item label="Exemplo1" value="exemplo" />
-                        <Picker.Item label="Exemplo2" value="exemplo" />
-                    </Picker>
-                </View>
-            
-                <TouchableOpacity onPress={this.signUp.bind(this) } style={styles.button}>
-                    <Text style={styles.buttonText}>Cadastrar</Text>
-                </TouchableOpacity>
-            </ScrollView>
-        </View>
+          <View>
+            <Text style={styles.text}>CPF</Text>
+            <TextInputMask
+              style={styles.input}
+              type={"cpf"}
+              options={{}}
+              placeholder="000.000.000-00"
+              value={this.state.cpf}
+              onChangeText={text => {
+                this.setState({
+                  cpf: text
+                });
+              }}
+              ref={ref => (this.cpfField = ref)}
+            />
+          </View>
+          <View>
+            <Text style={styles.text}>E-mail</Text>
+            <TextInput
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="email-address"
+              returnKeyType="next"
+              placeholder="mail@mail.com"
+              placeholderTextColor="#999"
+              style={[styles.input, this.emailValidation && styles.inputError]}
+              value={this.state.email}
+              onChangeText={text => {
+                this.setState({
+                  email: text
+                });
+                this.checkEmail();
+              }}
+              ref={ref => (this.emailField = ref)}
+            />
+            {this.emailValidation && (
+              <Text style={styles.error}>
+                E-mail deve estar no formato "nome@mail.com"
+              </Text>
+            )}
+          </View>
+
+          <TouchableOpacity onPress={() => this.signUp()} style={styles.button}>
+            <Text style={styles.buttonText}>Confirmar</Text>
+          </TouchableOpacity>
+
+          {isVisible && (
+            <View>
+              <ModalComponent
+                isVisible={this.isVisible}
+                onClose={this.handleClose}
+                content={
+                  <View style={styles.ModalContainer}>
+                    <Text style={styles.ModalText}>{this.state.message}</Text>
+                    <TouchableOpacity
+                      onPress={this.handleClose}
+                      style={styles.button}
+                    >
+                      <Text style={styles.buttonText}>OK</Text>
+                    </TouchableOpacity>
+                  </View>
+                }
+              />
+              <TouchableOpacity
+                onPress={() => this.signUp()}
+                style={styles.button}
+              >
+                <Text style={styles.buttonText}>Confirmar</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </ScrollView>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
-    marginBottom: 50
+    padding: 20
   },
 
   text: {
     color: "#222",
     fontWeight: "600",
-    paddingTop: 10,
+    paddingTop: 10
   },
 
   input: {
     height: 46,
-    width: '100%',
-    alignSelf: 'stretch',
-    backgroundColor: '#fff',
+    width: "100%",
+    alignSelf: "stretch",
+    backgroundColor: "#fff",
     borderWidth: 1,
-    borderColor: '#DDD',
+    borderColor: "#DDD",
     borderRadius: 4,
     marginTop: 10,
-    paddingHorizontal: 15,
+    paddingHorizontal: 15
+  },
+
+  inputError: {
+    borderColor: "rgba(255, 0, 0, 0.3)"
   },
 
   picker: {
-      color: "#999",
+    color: "#999"
   },
 
   button: {
     height: 46,
-    backgroundColor: '#3c8dbc',
+    backgroundColor: "#3c8dbc",
     borderRadius: 4,
     marginTop: 20,
     marginBottom: 100,
-    alignSelf: 'stretch',
-    justifyContent:'center',
-    alignItems: 'center',
+    alignSelf: "stretch",
+    justifyContent: "center",
+    alignItems: "center"
   },
 
   buttonText: {
-    color: '#FFF',
-    fontWeight: 'bold',
-    fontSize: 16,
+    color: "#FFF",
+    fontWeight: "bold",
+    fontSize: 16
   },
 
-})
+  ModalContainer: {
+    paddingLeft: 20,
+    paddingRight: 20,
+    justifyContent: "center",
+    alignItems: "center"
+  },
 
+  ModalText: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#555",
+    textAlign: "center"
+  },
 
-
+  error: {
+    marginLeft: 10,
+    marginTop: 10,
+    color: "rgba(255, 0, 0, 0.6)"
+  }
+});
