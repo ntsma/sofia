@@ -19,6 +19,10 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 import BackHeader from "../components/BackHeader";
 
+import NetInfo from "@react-native-community/netinfo";
+
+import Requests from '../services/Request';
+
 export default class EditQuestion extends Component {
   /*Removendo header padrão*/
   static navigationOptions = {
@@ -39,42 +43,33 @@ export default class EditQuestion extends Component {
   }
 
   async onCreateQuestion() {
-    const item = this.props.navigation.state.params.item;
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
 
-    console.debug("DENTRO DE QUESTION");
-    console.debug(question);
+    NetInfo.fetch().then(state => {
+      if (state.isConnected) {
+        Requests.sendRequest(token, question, this.state.file_ids)
+        .then(response => {
+          this.setState({
+            question: ""
+          });
 
-    let formdata = new FormData();
-
-    formdata.append("type_id", 52);
-    formdata.append("mode", 'send');
-    formdata.append("mobile", 1);
-    formdata.append("description", question);
-
-    console.debug(formdata);
-
-    return fetch('http://sofia.huufma.br/api/solicitation/' + item.id, {
-        method: 'POST',
-        headers: {
-          Authorization: "Bearer " + token
-        },
-        body: formdata,
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.debug("RESPOSTA");
-        console.debug(responseJson);
-
-        shouldUpdate = true;
-        this.props.navigation.navigate("HomeScreen", {shouldUpdate});
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-
+          shouldUpdate = true;
+          this.props.navigation.navigate("Success", { shouldUpdate });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+      } else {
+        this.saveDraftIntoAsyncStorage({
+          id: this.state.question.length + 1,
+          description: question,
+          file_ids: this.state.file_ids
+        });
+      }
+    });
   }
+
 
   async onCreateDraftQuestion() {
     const item = this.props.navigation.state.params.item;
