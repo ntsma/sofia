@@ -2,17 +2,16 @@ import React, { Component } from "react";
 import {
   Alert,
   BackHandler,
-  Dimensions,
   Image,
   Platform,
   RefreshControl,
   ScrollView,
   StatusBar,
-  StyleSheet,
   Text,
   TouchableNativeFeedback,
   View
 } from "react-native";
+
 import { Icon } from "native-base";
 
 import AsyncStorage from "@react-native-community/async-storage";
@@ -23,8 +22,7 @@ import ErrorNoInternetMessage from "../components/ErrorNoInternetMessage";
 import { get } from "../controllers/Issues.js";
 
 import Requests from "../services/Request";
-
-import styles from "../config/HomeScreen";
+import styles from "../Styles/HomeScreen";
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -62,7 +60,7 @@ export default class HomeScreen extends Component {
     this.setState({ refreshing: true });
 
     this.componentDidMount();
-    this.onSendDraftIssues();
+    this.sendOfflineRequests();
 
     if (this.state.shouldEmpty == true) {
       this.onEmptyDraftIssues();
@@ -71,7 +69,7 @@ export default class HomeScreen extends Component {
     this.setState({ refreshing: false });
   };
 
-  /*Esvaziando listas de rascunhos enviados offline*/
+  /*Esvazia listas de rascunhos enviados offline*/
   async onEmptyDraftIssues() {
     await AsyncStorage.setItem("draftQuestions", JSON.stringify([]));
 
@@ -82,21 +80,18 @@ export default class HomeScreen extends Component {
 
   /*Carregando questões enviadas, respondidas, canceladas e rascunhos*/
   componentDidMount() {
-    this.b();
+    this.load();
   }
 
-  async onSendDraftIssues() {
+  sendOfflineRequests = async () => {
     var token = await AsyncStorage.getItem("token");
     var draftQuestions = await AsyncStorage.getItem("draftQuestions");
 
     draftQuestions = JSON.parse(draftQuestions);
 
-    console.log(draftQuestions);
-
     NetInfo.fetch().then(state => {
       if (state.isConnected && draftQuestions != null) {
         for (index in draftQuestions) {
-          console.log("Entrou");
 
           let formdata = new FormData();
 
@@ -105,8 +100,6 @@ export default class HomeScreen extends Component {
           formdata.append("description", draftQuestions[index].description);
           formdata.append("mobile", 1);
           formdata.append("file_ids", draftQuestions[index].file_ids);
-
-          console.log(formdata);
 
           return fetch("http://sofia.huufma.br/api/solicitation/handle", {
             method: "POST",
@@ -132,11 +125,9 @@ export default class HomeScreen extends Component {
     });
   }
 
-  b() {
-    console.log(this.state);
-
+  /*Carregando informações do app.*/
+  load = () => {
     NetInfo.fetch().then(state => {
-      console.log(state.isConnected);
 
       this.setState({
         isConnected: state.isConnected
@@ -147,18 +138,6 @@ export default class HomeScreen extends Component {
       this.loadAnsweredRequests();
       this.loadSentRequests();
     });
-  }
-
-  componentWillUnmount() {
-    this.state = {
-      isConnected: false,
-      refreshing: false,
-      answeredIssues: [],
-      submittedIssues: [],
-      draftIssues: [],
-      canceledIssues: [],
-      existsRequestsWithoutEvaluation: false
-    };
   }
 
   /*Carregando as solicitações de rascunhos.*/
@@ -268,17 +247,11 @@ export default class HomeScreen extends Component {
       });
   };
 
-  onNavigateNewIssue() {
-    const { isConnected } = this.state;
-
-    this.props.navigation.navigate("Search", { isConnected });
-  }
-
   updateScreen() {
     try {
       if (this.props.navigation.state.params.shouldUpdate) {
         if (this.props.navigation.state.params.shouldUpdate == true) {
-          this.b();
+          this.load();
 
           this.props.navigation.state.params.shouldUpdate = false;
         }
@@ -338,7 +311,7 @@ export default class HomeScreen extends Component {
               ]}
             >
               <TouchableNativeFeedback
-                onPress={() => this.onNavigateNewIssue()}
+                onPress={() => this.props.navigation.navigate("Search")}
               >
                 <View style={[styles.Button, { backgroundColor: "#3c8dbc" }]}>
                   <Icon
