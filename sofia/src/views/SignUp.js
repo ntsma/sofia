@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   TextInput,
   Text,
-  View
+  View,
+  TouchableNativeFeedback
 } from "react-native";
 
 import BackHeader from "../components/BackHeader";
@@ -15,13 +16,15 @@ import ModalComponent from "../components/ModalComponent";
 
 import { TextInputMask } from "react-native-masked-text";
 
+import styles from "../Styles/Styles";
+
 export default class SignUp extends Component {
   constructor() {
     super();
     this.state = {
       cpf: "",
       email: "",
-      isVisible: false,
+      modalIsVisible: false,
       emailValidation: false,
       message: ""
     };
@@ -65,8 +68,6 @@ export default class SignUp extends Component {
         });
 
         this.handleOpen();
-
-        this.props.navigation.navigate("Login");
       })
       .catch(error => {
         console.error(error);
@@ -74,12 +75,11 @@ export default class SignUp extends Component {
   }
 
   handleOpen = value => {
-    this.setState({ isVisible: true, value: value });
+    this.setState({ modalIsVisible: true, value: value });
   };
 
   handleClose = () => {
-    this.setState({ isVisible: false });
-    this.props.navigation.goBack();
+    this.setState({ modalIsVisible: false });
   };
 
   validateEmail = email => {
@@ -96,25 +96,25 @@ export default class SignUp extends Component {
   };
 
   render() {
-    const { isVisible } = this.state;
+    const { modalIsVisible } = this.state;
 
     return (
       <View>
         <BackHeader navigation={this.props.navigation} name="Cadastro" />
-        <StatusBar backgroundColor="#3c8dbc" barStyle="dark-content" />
+        <StatusBar backgroundColor="#3c8dbc" barStyle="light-content" />
 
-        <ScrollView style={styles.container}>
+        <ScrollView style={{ padding: 20 }}>
           <View>
-            <Text style={{ textAlign: "center" }}>
+            <Text style={styles.TextDark}>
               Cadastro somente para Profissionais de Saúde.{"\n"}
               Informe seu CPF e Email para continuar.
             </Text>
           </View>
 
           <View>
-            <Text style={styles.text}>CPF</Text>
+            <Text style={[styles.TextDark, signUpStyles.Label]}>CPF</Text>
             <TextInputMask
-              style={styles.input}
+              style={styles.Input}
               type={"cpf"}
               options={{}}
               placeholder="000.000.000-00"
@@ -128,7 +128,7 @@ export default class SignUp extends Component {
             />
           </View>
           <View>
-            <Text style={styles.text}>E-mail</Text>
+            <Text style={[styles.TextDark, signUpStyles.Label]}>E-mail</Text>
             <TextInput
               autoCapitalize="none"
               autoCorrect={false}
@@ -136,7 +136,10 @@ export default class SignUp extends Component {
               returnKeyType="next"
               placeholder="mail@mail.com"
               placeholderTextColor="#999"
-              style={[styles.input, this.emailValidation && styles.inputError]}
+              style={[
+                styles.Input,
+                this.emailValidation && signUpStyles.InputError
+              ]}
               value={this.state.email}
               onChangeText={text => {
                 this.setState({
@@ -147,40 +150,30 @@ export default class SignUp extends Component {
               ref={ref => (this.emailField = ref)}
             />
             {this.emailValidation && (
-              <Text style={styles.error}>
+              <Text style={signUpStyles.Error}>
                 E-mail deve estar no formato "nome@mail.com"
               </Text>
             )}
           </View>
 
-          <TouchableOpacity onPress={() => this.signUp()} style={styles.button}>
-            <Text style={styles.buttonText}>Confirmar</Text>
-          </TouchableOpacity>
-
-          {isVisible && (
-            <View>
-              <ModalComponent
-                isVisible={this.isVisible}
-                onClose={this.handleClose}
-                content={
-                  <View style={styles.ModalContainer}>
-                    <Text style={styles.ModalText}>{this.state.message}</Text>
-                    <TouchableOpacity
-                      onPress={this.handleClose}
-                      style={styles.button}
-                    >
-                      <Text style={styles.buttonText}>OK</Text>
-                    </TouchableOpacity>
-                  </View>
-                }
-              />
-              <TouchableOpacity
-                onPress={() => this.signUp()}
-                style={styles.button}
-              >
-                <Text style={styles.buttonText}>Confirmar</Text>
-              </TouchableOpacity>
+          <TouchableNativeFeedback onPress={() => this.signUp()}>
+            <View style={[styles.Button, { marginTop: 40 }]}>
+              <Text style={[styles.TextLight, { fontWeight: "bold" }]}>
+                Confirmar
+              </Text>
             </View>
+          </TouchableNativeFeedback>
+
+          {modalIsVisible && (
+            <ModalComponent
+              handleClose={this.handleClose}
+              isModalVisible={this.modalIsVisible}
+              content={
+                <View>
+                  <Text>{this.state.message}</Text>
+                </View>
+              }
+            />
           )}
         </ScrollView>
       </View>
@@ -188,69 +181,18 @@ export default class SignUp extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 20
+const signUpStyles = StyleSheet.create({
+  Label: {
+    textAlign: "left",
+    fontWeight: "bold",
+    marginTop: 10
   },
 
-  text: {
-    color: "#222",
-    fontWeight: "600",
-    paddingTop: 10
-  },
-
-  input: {
-    height: 46,
-    width: "100%",
-    alignSelf: "stretch",
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#DDD",
-    borderRadius: 4,
-    marginTop: 10,
-    paddingHorizontal: 15
-  },
-
-  inputError: {
+  InputError: {
     borderColor: "rgba(255, 0, 0, 0.3)"
   },
 
-  picker: {
-    color: "#999"
-  },
-
-  button: {
-    height: 46,
-    backgroundColor: "#3c8dbc",
-    borderRadius: 4,
-    marginTop: 20,
-    marginBottom: 100,
-    alignSelf: "stretch",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-
-  buttonText: {
-    color: "#FFF",
-    fontWeight: "bold",
-    fontSize: 16
-  },
-
-  ModalContainer: {
-    paddingLeft: 20,
-    paddingRight: 20,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-
-  ModalText: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#555",
-    textAlign: "center"
-  },
-
-  error: {
+  Error: {
     marginLeft: 10,
     marginTop: 10,
     color: "rgba(255, 0, 0, 0.6)"

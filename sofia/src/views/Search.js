@@ -13,6 +13,8 @@ import AsyncStorage from "@react-native-community/async-storage";
 import BackHeader from "../components/BackHeader";
 import NetInfo from "@react-native-community/netinfo";
 
+import styles from "../Styles/Styles";
+
 export default class Search extends Component {
   static navigationOptions = {
     header: null
@@ -33,17 +35,16 @@ export default class Search extends Component {
     var question = this.state.question;
     var token = await AsyncStorage.getItem("token");
 
-
     NetInfo.fetch().then(state => {
       if (!state.isConnected) {
         this.props.navigation.navigate("Question", { question });
       } else {
         this.showLoader(true);
-    
+
         let formdata = new FormData();
-  
+
         formdata.append("description", question);
-  
+
         return fetch("http://sofia.huufma.br/api/solicitation/search", {
           method: "POST",
           headers: {
@@ -55,15 +56,15 @@ export default class Search extends Component {
           .then(responseJson => {
             console.debug("RETURNING...");
             console.debug(responseJson);
-  
+
             var questions = responseJson.data;
-  
+
             shouldUpdate = true;
-  
+
             this.showLoader(false);
-  
+
             console.log(questions);
-  
+
             if (!questions) {
               this.props.navigation.navigate("SearchNoResults", {
                 question
@@ -79,7 +80,6 @@ export default class Search extends Component {
             console.error(error);
           });
       }
-
     });
   }
 
@@ -91,16 +91,20 @@ export default class Search extends Component {
           name="Como posso te ajudar?"
         />
         {this.state.isLoading ? (
-          <ActivityIndicator style={styles.load} size="large" color="#3c8dbc" />
+          <ActivityIndicator
+            style={searchStyles.load}
+            size="large"
+            color="#3c8dbc"
+          />
         ) : (
-          <View style={styles.Container}>
+          <View style={searchStyles.Container}>
             <Text style={styles.Title}>
               Digite aqui sua pergunta para que sejam encontradas respostas
               adequadas
             </Text>
 
             <Textarea
-              style={styles.Input}
+              style={searchStyles.Input}
               value={this.state.question}
               onChangeText={question => this.setState({ question })}
               placeholder="Digite aqui..."
@@ -127,16 +131,12 @@ export default class Search extends Component {
 
 const height = Dimensions.get("window").height;
 
-const styles = StyleSheet.create({
+const searchStyles = StyleSheet.create({
   Container: {
     flex: 1,
     marginLeft: 37,
     marginRight: 37,
     marginTop: 20
-  },
-
-  Title: {
-    fontSize: 16
   },
 
   Input: {
@@ -147,37 +147,5 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginTop: 20,
     marginBottom: 20
-  },
-
-  Button: {
-    width: "100%",
-    height: 54,
-    backgroundColor: "#3c8dbc",
-    borderRadius: 4,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 2,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center"
-  },
-
-  Icon: {
-    position: "absolute",
-    left: 20,
-    color: "#202020",
-    fontSize: 24
-  },
-
-  TextLight: {
-    fontSize: 14,
-    color: "#FFF",
-    fontWeight: "600",
-    textAlign: "center"
   }
 });

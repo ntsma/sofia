@@ -1,7 +1,4 @@
-import {
-  Dimensions,
-  StyleSheet
-} from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
 const height = Dimensions.get("window").height;
 
@@ -11,7 +8,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     marginLeft: 37,
     marginRight: 37,
-    margin: "1%"
+    margin: "1%",
+    marginTop: "5%",
+    marginBottom: "5%"
   },
 
   Header: {
@@ -21,6 +20,23 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "15%",
     backgroundColor: "#3c8dbc"
+  },
+
+  Image: {
+    width: 40,
+    height: 40,
+    marginLeft: 10
+  },
+
+  Title: {
+    fontSize: 24,
+    fontWeight: "600"
+  },
+
+  Icon: {
+    alignSelf: "center",
+    color: "#FFF",
+    fontSize: 24
   },
 
   ExitButton: {
@@ -34,49 +50,8 @@ const styles = StyleSheet.create({
     height: "85%"
   },
 
-  Button: {
-    width: "100%",
-    height: 54,
-    backgroundColor: "#eee",
-    borderRadius: 4,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 2,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: height * 0.04
-  },
-
-  Icon: {
-    position: "absolute",
-    left: 20,
-    color: "#202020",
-    fontSize: 24
-  },
-
-  Badge: {
-    position: "absolute",
-    right: 20
-  },
-
-  TextLight: {
-    fontSize: 14,
-    color: "#FFF",
-    fontWeight: "600",
-    textAlign: "center"
-  },
-
-  TextDark: {
-    fontSize: 14,
-    color: "#202020",
-    fontWeight: "600",
-    textAlign: "center"
+  Gray: {
+    backgroundColor: "#eee"
   }
 });
 
