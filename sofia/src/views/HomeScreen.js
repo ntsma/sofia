@@ -22,7 +22,9 @@ import ErrorNoInternetMessage from "../components/ErrorNoInternetMessage";
 import { get } from "../controllers/Issues.js";
 
 import Requests from "../services/Request";
-import styles from "../Styles/HomeScreen";
+
+import homeStyles from "../Styles/HomeScreen";
+import styles from "../Styles/Styles";
 
 export default class HomeScreen extends Component {
   constructor(props) {
@@ -103,7 +105,7 @@ export default class HomeScreen extends Component {
         })
       }
     });
-  }
+  };
 
   /*Esvazia listas de rascunhos enviados offline*/
   emptyOfflineRequests = async () => {
@@ -113,7 +115,6 @@ export default class HomeScreen extends Component {
   /*Carregando informações do app.*/
   load = () => {
     NetInfo.fetch().then(state => {
-
       this.setState({
         isConnected: state.isConnected
       });
@@ -123,7 +124,7 @@ export default class HomeScreen extends Component {
       this.loadAnsweredRequests();
       this.loadSentRequests();
     });
-  }
+  };
 
   /*Carregando as solicitações de rascunhos.*/
   loadDraftRequests = async () => {
@@ -259,29 +260,29 @@ export default class HomeScreen extends Component {
       <View>
         <StatusBar backgroundColor="#3c8dbc" barStyle="light-content" />
 
-        <View style={styles.Header}>
+        <View style={homeStyles.Header}>
           <Image
-            style={{ width: 40, height: 40, marginLeft: 10 }}
+            style={homeStyles.Image}
             source={require("../resources/logo.png")}
           />
-          <Text style={[styles.TextLight, { fontSize: 24 }]}>Sofia</Text>
+          <Text style={[styles.TextLight, homeStyles.Title]}>Sofia</Text>
           <TouchableNativeFeedback onPress={this.logout}>
-            <View style={styles.ExitButton}>
-              <View style={{ alignItems: "center" }}>
+            <View style={homeStyles.ExitButton}>
+              <View>
                 <Icon
-                  style={{ color: "#FFF", fontSize: 24 }}
+                  style={homeStyles.Icon}
                   type="MaterialIcons"
                   name="exit-to-app"
                 />
               </View>
               <View>
-                <Text style={[styles.TextLight]}>Sair</Text>
+                <Text style={styles.TextLight}>Sair</Text>
               </View>
             </View>
           </TouchableNativeFeedback>
         </View>
 
-        <View style={styles.Body}>
+        <View style={homeStyles.Body}>
           <ErrorNoInternetMessage isConnected={this.state.isConnected} />
           <ScrollView
             refreshControl={
@@ -291,16 +292,11 @@ export default class HomeScreen extends Component {
               />
             }
           >
-            <View
-              style={[
-                styles.Container,
-                { marginTop: "5%", marginBottom: "5%" }
-              ]}
-            >
+            <View style={homeStyles.Container}>
               <TouchableNativeFeedback
                 onPress={() => this.props.navigation.navigate("Search")}
               >
-                <View style={[styles.Button, { backgroundColor: "#3c8dbc" }]}>
+                <View style={styles.Button}>
                   <Icon
                     style={[styles.Icon, { color: "#FFF" }]}
                     type="MaterialIcons"
@@ -319,7 +315,7 @@ export default class HomeScreen extends Component {
                   });
                 }}
               >
-                <View style={styles.Button}>
+                <View style={[styles.Button, homeStyles.Gray]}>
                   <Icon style={styles.Icon} type="MaterialIcons" name="chat" />
                   <Text style={styles.TextDark}>Respondidas</Text>
                   <View style={styles.Badge}>
@@ -342,7 +338,7 @@ export default class HomeScreen extends Component {
                   });
                 }}
               >
-                <View style={styles.Button}>
+                <View style={[styles.Button, homeStyles.Gray]}>
                   <Icon
                     style={styles.Icon}
                     type="MaterialIcons"
@@ -366,7 +362,7 @@ export default class HomeScreen extends Component {
                   });
                 }}
               >
-                <View style={styles.Button}>
+                <View style={[styles.Button, homeStyles.Gray]}>
                   <Icon
                     style={styles.Icon}
                     type="MaterialIcons"
@@ -390,7 +386,7 @@ export default class HomeScreen extends Component {
                   });
                 }}
               >
-                <View style={styles.Button}>
+                <View style={[styles.Button, homeStyles.Gray]}>
                   <Icon
                     style={styles.Icon}
                     type="MaterialIcons"
@@ -411,7 +407,7 @@ export default class HomeScreen extends Component {
                   this.props.navigation.navigate("FAQ");
                 }}
               >
-                <View style={styles.Button}>
+                <View style={[styles.Button, homeStyles.Gray]}>
                   <Text
                     style={[styles.Icon, { marginLeft: 4, fontWeight: "700" }]}
                   >

@@ -5,7 +5,8 @@ import {
   StatusBar,
   TouchableOpacity,
   TouchableNativeFeedback,
-  View
+  View,
+  StyleSheet
 } from "react-native";
 
 import { Button, Text } from "native-base";
@@ -13,8 +14,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 import login from "../services/Solicitant";
 
-import Styles from "../Styles/Styles";
-import styles from "../Styles/Login";
+import styles from "../Styles/Styles";
 
 import EmailInput from "../components/EmailInput";
 import PasswordInput from "../components/PasswordInput";
@@ -87,7 +87,7 @@ export default class Login extends Component {
       <KeyboardAvoidingView
         behavior="padding"
         enabled={Platform.OS == "ios"}
-        style={Styles.Container}
+        style={styles.Container}
       >
         <StatusBar backgroundColor="#3c8dbc" barStyle="light-content" />
 
@@ -100,11 +100,13 @@ export default class Login extends Component {
         <TouchableNativeFeedback onPress={this.onLoginButtonPress.bind(this)}>
           <View
             style={[
-              Styles.Button,
+              styles.Button,
               { backgroundColor: "#3c8dbc", marginTop: 20 }
             ]}
           >
-            <Text style={styles.buttonText}>Entrar</Text>
+            <Text style={[styles.TextLight, { fontWeight: "600" }]}>
+              Entrar
+            </Text>
           </View>
         </TouchableNativeFeedback>
 
@@ -121,10 +123,8 @@ export default class Login extends Component {
             handleClose={this.handleClose}
             isModalVisible={this.modalIsVisible}
             content={
-              <View style={styles.ModalContainer}>
-                <Text style={styles.ModalText}>
-                  E-mail ou senha incorretos!
-                </Text>
+              <View>
+                <Text>E-mail ou senha incorretos!</Text>
               </View>
             }
           />

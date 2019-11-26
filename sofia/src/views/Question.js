@@ -16,11 +16,8 @@ import {
 import { Icon, Textarea } from "native-base";
 
 import AsyncStorage from "@react-native-community/async-storage";
-
 import NetInfo from "@react-native-community/netinfo";
-
 import ImagePicker from "react-native-image-picker";
-
 import BackHeader from "../components/BackHeader";
 
 import Requests from "../services/Request";
@@ -291,7 +288,9 @@ export default class NewSearch extends Component {
                   </View>
                 </TouchableNativeFeedback>
               </View>
-              <TouchableNativeFeedback onPress={this.onCreateQuestion.bind(this)}>
+              <TouchableNativeFeedback
+                onPress={this.onCreateQuestion.bind(this)}
+              >
                 <View style={styles.Button}>
                   <Icon
                     style={[styles.Icon, { color: "#FFF" }]}
