@@ -53,8 +53,10 @@ export default class Evaluation extends Component {
     this.state = {
       "sastifaction": 0,
       "attendance": 0,
+      "observation": "",
       isModalRateVisible: false,
-      buttonIsVisible: false
+      buttonIsVisible: false,
+      commentIsNecessary: false
     };
   }
 
@@ -71,11 +73,12 @@ onPressRate(){
   componentDidMount() {
     const evaluation_satisfaction_status_id = this.props.data.evaluation_satisfaction_status_id;
     const evaluation_attendance_status_id = this.props.data.evaluation_attendance_status_id;
+    const evaluation_observation = this.props.data.evaluation_description;
 
     this.setState({
       "sastifaction": [31, 30, 29, 28, 27].indexOf(evaluation_satisfaction_status_id),
-      "attendance": [34, 33, 32].indexOf(evaluation_attendance_status_id)
-
+      "attendance": [34, 33, 32].indexOf(evaluation_attendance_status_id),
+      "observation": evaluation_observation
     })
 
     if(this.props.buttonIsVisible) { 
@@ -83,6 +86,7 @@ onPressRate(){
         "buttonIsVisible": true,
         "sastifaction": 0,
         "attendance": 0,
+        "observation": ""
       })  
     } else {
       this.setState({
@@ -145,8 +149,39 @@ onPressRate(){
           <RatedPopUp changeModalRateVisibility={this.changeModalRateVisibility}/>
         </Modal>
 
-        <EvaluateButton onClose={this.props.onClose} navigation={this.props.navigation} data={this.props.data} sastifaction={this.state.sastifaction} attendance={this.state.attendance} buttonIsVisible={this.state.buttonIsVisible} judgeType={this.props.judgeType} />
+        <Textarea
+          style={searchStyles.Input}
+          value={this.state.observation}
+          onChangeText={observation => this.setState({ observation })}
+          placeholder="Críticas e sugestões"
+          placeholderTextColor="#999"
+          bordered
+        />
+
+        <EvaluateButton onClose={this.props.onClose} navigation={this.props.navigation} data={this.props.data} observation={this.state.observation} sastifaction={this.state.sastifaction} attendance={this.state.attendance} buttonIsVisible={this.state.buttonIsVisible} judgeType={this.props.judgeType} />
       </Card>
     );
   }
 }
+
+
+const height = Dimensions.get("window").height;
+
+const searchStyles = StyleSheet.create({
+  Container: {
+    flex: 1,
+    marginLeft: 37,
+    marginRight: 37,
+    marginTop: 20
+  },
+
+  Input: {
+    width: "100%",
+    height: height * 0.5,
+    borderColor: "#EEE",
+    borderWidth: 2,
+    borderRadius: 4,
+    marginTop: 20,
+    marginBottom: 20
+  }
+});

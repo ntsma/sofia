@@ -93,7 +93,7 @@ export default class Search extends Component {
               style={searchStyles.Input}
               value={this.state.question}
               onChangeText={question => this.setState({ question })}
-              placeholder="Digite aqui..."
+              placeholder="Digite aqui ..."
               placeholderTextColor="#999"
               bordered
             />
