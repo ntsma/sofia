@@ -3,8 +3,9 @@ import React, { Component } from "react";
 import { StyleSheet, Alert } from "react-native";
 import { Badge, Body, Container, Icon, Left, Right, ListItem, Text } from "native-base";
 
-
 import AsyncStorage from '@react-native-community/async-storage';
+
+import Requests from '../services/Request';
 
 export default class DraftIssue extends Component {
 
@@ -17,29 +18,18 @@ export default class DraftIssue extends Component {
   }
 
   async onDeleteDraftIssue() {
-    //this.props.changeDraftDeletedModalVisibility(true);
     var token = await AsyncStorage.getItem("token");
     const item = this.props.question;
 
-    console.log('item', item);
-      return fetch('http://sofia.huufma.br/api/solicitation/destroy/' + item.id, {
-          method: 'GET',
-          headers: {
-            Authorization: "Bearer " + token
-          },
-        })
-        .then((response) => response.json())
-        .then((responseJson) => {
-          console.debug("RESPOSTA");
-          console.debug(responseJson);
-
-          shouldUpdate = true;
-          this.props.navigation.navigate("HomeScreen", {shouldUpdate});
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
+    Requests.deleteDraftRequest(token, item.id)
+    .then(response => {
+      shouldUpdate = true;
+      this.props.navigation.navigate("HomeScreen", {shouldUpdate});
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
 
 onPressYes(){
  console.log('onpressyes props', this.props);

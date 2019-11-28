@@ -41,7 +41,7 @@ export default class Success extends Component {
           </TouchableNativeFeedback>
           <TouchableNativeFeedback
             onPress={() => {
-              this.props.navigation.navigate("HomeScreen");
+              this.props.navigation.navigate("HomeScreen", { shouldUpdate: true });
             }}
           >
             <View style={styles.Button}>

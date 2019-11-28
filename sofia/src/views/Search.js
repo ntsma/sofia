@@ -13,6 +13,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import BackHeader from "../components/BackHeader";
 import NetInfo from "@react-native-community/netinfo";
 
+import Requests from '../services/Request';
 import styles from "../Styles/Styles";
 
 export default class Search extends Component {
@@ -31,7 +32,8 @@ export default class Search extends Component {
 
   showLoader = bool => this.setState({ isLoading: bool });
 
-  async onSearch() {
+  /*Procura solicitações semelhantes.*/
+  onSearch = async () => {
     var question = this.state.question;
     var token = await AsyncStorage.getItem("token");
 
@@ -39,46 +41,30 @@ export default class Search extends Component {
       if (!state.isConnected) {
         this.props.navigation.navigate("Question", { question });
       } else {
-        this.showLoader(true);
+        /*Mostra barra de carregamento.*/
+        this.setState({ isLoading: true })
 
-        let formdata = new FormData();
+        Requests.searchRequests(token, question)
+        .then(response => {
+          var questions = response.data;
 
-        formdata.append("description", question);
-
-        return fetch("http://sofia.huufma.br/api/solicitation/search", {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer " + token
-          },
-          body: formdata
+          /*Remove barra de carregamento.*/
+          this.setState({ isLoading: false })
+    
+          if (!questions) {
+            this.props.navigation.navigate("SearchNoResults", {
+              question
+            });
+          } else {
+            this.props.navigation.navigate("RelatedQuestionsView", {
+              questions,
+              question
+            });
+          };
         })
-          .then(response => response.json())
-          .then(responseJson => {
-            console.debug("RETURNING...");
-            console.debug(responseJson);
-
-            var questions = responseJson.data;
-
-            shouldUpdate = true;
-
-            this.showLoader(false);
-
-            console.log(questions);
-
-            if (!questions) {
-              this.props.navigation.navigate("SearchNoResults", {
-                question
-              });
-            } else {
-              this.props.navigation.navigate("RelatedQuestionsView", {
-                questions,
-                question
-              });
-            }
-          })
-          .catch(error => {
-            console.error(error);
-          });
+        .catch(response => {
+          console.error(response);
+        })
       }
     });
   }
