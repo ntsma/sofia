@@ -38,14 +38,14 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 export default class EvaluateButton extends Component {
 
-  judgeNormal(token, sastifaction, attendance) {
+  judgeNormal(token, sastifaction, attendance, observation) {
     let formdata = new FormData();
 
     formdata.append("satisfaction", sastifaction);
     formdata.append("attendance", attendance);
     formdata.append("avoided_forwarding", false);
     formdata.append("induced_forwarding", false);
-    formdata.append("observation", "");
+    formdata.append("observation", observation);
 
     console.log(this.props.data);
     console.debug(formdata);
@@ -71,14 +71,14 @@ export default class EvaluateButton extends Component {
     });
   }
   
-  judgeRelatedIssue(token, sastifaction, attendance) {
+  judgeRelatedIssue(token, sastifaction, attendance, observation) {
     let formdata = new FormData();
 
     formdata.append("sats", sastifaction);
     formdata.append("att", attendance);
     formdata.append("avoided_forwarding", false);
     formdata.append("induced_forwarding", false);
-    formdata.append("observation", "");
+    formdata.append("observation", observation);
     formdata.append("answer_id", this.props.data.answer_id);
 
     console.log("RUBEM");
@@ -109,14 +109,15 @@ export default class EvaluateButton extends Component {
   async judge() {
     const sastifaction = this.props.sastifaction;
     const attendance = this.props.attendance;
+    const observation = this.props.observation;
 
     const token = await AsyncStorage.getItem("token");
 
     if(this.props.judgeType == "1") {
-      this.judgeNormal(token, sastifaction, attendance);
+      this.judgeNormal(token, sastifaction, attendance, observation);
 
     } else {
-      this.judgeRelatedIssue(token, sastifaction, attendance);
+      this.judgeRelatedIssue(token, sastifaction, attendance, observation);
       this.props.onClose();
     }
 
