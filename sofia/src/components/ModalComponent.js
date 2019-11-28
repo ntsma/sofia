@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   Modal: {
     width: "100%",
     height: "100%",
-    backgroundColor: "#f7f7f7",
+    backgroundColor: "#FFF",
     alignItems: "center",
     justifyContent: "space-around",
     margin: 50
