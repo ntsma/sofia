@@ -76,8 +76,8 @@ onPressRate(){
     const evaluation_observation = this.props.data.evaluation_description;
 
     this.setState({
-      "sastifaction": [31, 30, 29, 28, 27].indexOf(evaluation_satisfaction_status_id),
-      "attendance": [34, 33, 32].indexOf(evaluation_attendance_status_id),
+      "sastifaction": 1 + [31, 30, 29, 28, 27].indexOf(evaluation_satisfaction_status_id),
+      "attendance": 1 + [34, 33, 32].indexOf(evaluation_attendance_status_id),
       "observation": evaluation_observation
     })
 
@@ -100,6 +100,8 @@ onPressRate(){
     const array = [31, 30, 29, 28, 27];
     const sastifaction = array[text - 1];
 
+    console.log(sastifaction);
+
     this.setState({
       "sastifaction": sastifaction
     });
@@ -110,6 +112,8 @@ onPressRate(){
   setAttendance(text) {
     const array = [34, 33, 32];
     const attendance = array[text - 1];
+
+    console.log(attendance);
 
     this.setState({
       "attendance": attendance
