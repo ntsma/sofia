@@ -94,7 +94,7 @@ export default class Overlay extends Component {
         "answer": responseJson.data.answer,
         "complement": responseJson.data.complement,
         "attributes": responseJson.data.attributes,
-        "permanent_education": responseJson.data.attributes,
+        "permanent_education": responseJson.data.permanent_education,
         "references": responseJson.data.references,
         "showME": false
       });
