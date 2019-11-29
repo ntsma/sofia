@@ -181,7 +181,7 @@ const searchStyles = StyleSheet.create({
 
   Input: {
     width: "100%",
-    height: height * 0.5,
+    height: height * 0.2,
     borderColor: "#EEE",
     borderWidth: 2,
     borderRadius: 4,

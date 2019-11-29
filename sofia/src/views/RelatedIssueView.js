@@ -120,6 +120,7 @@ export default class RelatedIssueView extends Component {
                   <ModalComponent 
                     isVisible={this.isVisible} 
                     onClose={this.handleClose}
+                    hasButton={true}
                     content={
                       <View style={styles.ModalContainer}>
                         <Evaluation onClose={this.handleClose} navigation={this.props.navigation} data={this.state.data} judgeType="0" buttonIsVisible={true}/>
