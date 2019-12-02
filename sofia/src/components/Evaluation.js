@@ -1,42 +1,16 @@
 import React, { Component } from "react";
 import {
-  Alert,
-  AppRegistry,
   Dimensions,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  Image,
-  TextInput,
   StyleSheet,
-  View,
   Modal
 } from "react-native";
 
 import {
-  Badge,
-  Body,
-  Button,
-  Container,
-  Content,
-  Form,
-  Header,
-  Icon,
-  Item,
-  Input,
   Label,
-  Left,
-  Right,
-  Tab,
-  TabHeading,
-  Tabs,
-  Text,
-  Textarea,
-  Title,
-  Thumbnail
+  Textarea
 } from "native-base";
 
 import {
-    Rating,
     AirbnbRating,
     Card
 
@@ -134,6 +108,7 @@ onPressRate(){
       <Card title="Avaliação">
         <Label>Grau de Satisfação</Label>
         <AirbnbRating
+          isDisabled={!this.state.buttonIsVisible}
           count={5}
           defaultRating={this.state.sastifaction}
           reviews={["Péssimo", "Ruim", "Regular", "Boa", "Ótima"]}
@@ -143,6 +118,7 @@ onPressRate(){
 
       <Label>Grau de Atendimento</Label>
         <AirbnbRating
+          isDisabled={!this.state.buttonIsVisible}
           count={3}
           reviews={["Não Atendeu", "Parcialmente", "Totalmente"]}
           defaultRating={this.state.attendance}
@@ -154,6 +130,7 @@ onPressRate(){
         </Modal>
 
         <Textarea
+          disabled={!this.state.buttonIsVisible}
           style={searchStyles.Input}
           value={this.state.observation}
           onChangeText={observation => this.setState({ observation })}
