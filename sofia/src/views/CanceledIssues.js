@@ -13,7 +13,7 @@ export default class CanceledIssues extends Component {
   };
 
   render() {
-    const canceledIssues = this.props.navigation.state.params.canceledIssues;
+    const {canceledIssues} = this.props.navigation.state.params;
 
     return (
       <Container>

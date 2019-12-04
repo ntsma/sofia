@@ -2,8 +2,6 @@
 
 import React, { Component } from "react";
 
-import { Platform, Alert } from "react-native";
-
 import {
   ActivityIndicator,
   Dimensions,
@@ -42,6 +40,42 @@ export default class EditQuestion extends Component {
     });
   }
 
+  onUpdateRequest = async () => {
+    const item = this.props.navigation.state.params.item;
+    var token = await AsyncStorage.getItem("token");
+    var question = this.state.question;
+
+    console.debug("DENTRO DE QUESTION");
+    console.debug(question);
+
+    let formdata = new FormData();
+
+    formdata.append("type_id", 52);
+    formdata.append("mode", 'send');
+    formdata.append("description", question);
+
+    console.debug(formdata);
+
+    return fetch('http://sofia.huufma.br/api/solicitation/' + item.id, {
+        method: 'POST',
+        headers: {
+          Authorization: "Bearer " + token
+        },
+        body: formdata,
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.debug("RESPOSTA");
+        console.debug(responseJson);
+
+        this.props.navigation.navigate("HomeScreen");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+  }
+
   async onCreateQuestion() {
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
@@ -69,7 +103,6 @@ export default class EditQuestion extends Component {
       }
     });
   }
-
 
   async onCreateDraftQuestion() {
     const item = this.props.navigation.state.params.item;
@@ -178,6 +211,8 @@ export default class EditQuestion extends Component {
   }
 
   render() {
+    const {isReturnedRequest} = this.props.navigation.state.params;
+
     return (
       <View>
         <BackHeader
@@ -239,16 +274,31 @@ export default class EditQuestion extends Component {
                   </View>
                 </TouchableNativeFeedback>
               </View>
-              <TouchableNativeFeedback onPress={this.onCreateQuestion.bind(this)}>
-                <View style={styles.Button}>
-                  <Icon
-                    style={[styles.Icon, { color: "#FFF" }]}
-                    type="MaterialIcons"
-                    name="search"
-                  />
-                  <Text style={styles.TextLight}>Enviar pergunta</Text>
-                </View>
-              </TouchableNativeFeedback>
+              {
+                (isReturnedRequest) ?
+                  <TouchableNativeFeedback onPress={this.onUpdateRequest.bind(this)}>
+                    <View style={styles.Button}>
+                      <Icon
+                        style={[styles.Icon, { color: "#FFF" }]}
+                        type="MaterialIcons"
+                        name="search"
+                      />
+                      <Text style={styles.TextLight}>Atualizar pergunta</Text>
+                    </View>
+                  </TouchableNativeFeedback>
+                :
+                <TouchableNativeFeedback onPress={this.onCreateQuestion.bind(this)}>
+                  <View style={styles.Button}>
+                    <Icon
+                      style={[styles.Icon, { color: "#FFF" }]}
+                      type="MaterialIcons"
+                      name="search"
+                    />
+                    <Text style={styles.TextLight}>Enviar pergunta</Text>
+                  </View>
+                </TouchableNativeFeedback>
+
+              }
             </View>
           </View>
         )}

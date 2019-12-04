@@ -22,9 +22,13 @@ export default class ModalComponent extends Component {
             <View style={styles.Modal}>
               {this.props.content}
               <TouchableNativeFeedback onPress={this.props.handleClose}>
+              {
+                this.props.hasButton ? <View></View> :
+              
                 <View style={styles.Button}>
                   <Text style={Styles.TextLight}>OK</Text>
                 </View>
+              }
               </TouchableNativeFeedback>
             </View>
           </View>
