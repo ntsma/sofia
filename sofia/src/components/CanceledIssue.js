@@ -1,15 +1,16 @@
 /*CanceledIssue.js*/
 import React, { Component } from "react";
 import { StyleSheet } from "react-native";
-import { Badge, Body, Container, Icon, Left, Right, ListItem, Text } from "native-base";
+import { Badge, Body, Icon, Left, Right, ListItem, Text } from "native-base";
 
 export default class CanceledIssue extends Component {
 
   render() {
     const item = this.props.question;
+
     return (
       <ListItem thumbnail style={styles.list}
-      onPress={() => this.props.navigation.navigate("ShowObservation", {item})}>
+        onPress={() => this.props.navigation.navigate("ShowObservation", {item})}>
         <Left>
           <Icon style={styles.inbox} type="MaterialIcons" name="inbox" />
         </Left>

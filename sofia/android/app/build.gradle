@@ -105,8 +105,8 @@ android {
         applicationId "com.huufmasofia1.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "6.2"
+        versionCode 10
+        versionName "6.4"
     }
 
     signingConfigs {

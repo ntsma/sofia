@@ -2,27 +2,20 @@
 
 import React, { Component } from "react";
 import {
-  Image,
-  TextInput,
   StyleSheet,
   View
 } from "react-native";
 
 import {
-  Body,
   Button,
-  Card,
-  CardItem,
   Container,
   Content,
   Form,
   Icon,
-  Item,
-  Input,
   Label,
   Text,
   Textarea,
-  Title,
+
 } from "native-base";
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -48,7 +41,7 @@ export default class EditQuestion extends Component {
     });
   }
 
-  async onCreateQuestion() {
+  async updateRequest() {
     const item = this.props.navigation.state.params.item;
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;

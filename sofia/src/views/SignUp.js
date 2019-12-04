@@ -44,7 +44,7 @@ export default class SignUp extends Component {
     let formdata = new FormData();
 
     formdata.append("email", this.state.email);
-    formdata.append("cpf", "61049006313");
+    formdata.append("cpf", this.state.cpf);
 
     console.log(formdata);
 
@@ -55,6 +55,8 @@ export default class SignUp extends Component {
       .then(response => response.json())
       .then(responseJson => {
         var message = "";
+
+        console.log(responseJson)
 
         if (responseJson.message == "success") {
           message =

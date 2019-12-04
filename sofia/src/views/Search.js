@@ -63,7 +63,7 @@ export default class Search extends Component {
           };
         })
         .catch(response => {
-          console.error(response);
+          console.log(response);
         })
       }
     });
