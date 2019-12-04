@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import { Icon } from "native-base";
 
+import styles from "../Styles/Styles";
+
 export default class SearchNoResults extends Component {
   static navigationOptions = {
     header: null
@@ -17,12 +19,12 @@ export default class SearchNoResults extends Component {
     const question = this.props.navigation.state.params.question;
 
     return (
-      <View style={styles.Container}>
+      <View style={searchNoReStyles.Container}>
         <Text style={styles.Title}>
           Não foi encontrada nenhuma pergunta relacionada a sua dúvida na nossa
           base.
         </Text>
-        <View style={styles.ButtonContainer}>
+        <View style={searchNoReStyles.ButtonContainer}>
           <TouchableNativeFeedback
             onPress={() => {
               this.props.navigation.navigate("Search", { isConected: true });
@@ -59,7 +61,7 @@ export default class SearchNoResults extends Component {
 
 const height = Dimensions.get("window").height;
 
-const styles = StyleSheet.create({
+const searchNoReStyles = StyleSheet.create({
   Container: {
     flex: 1,
     marginLeft: 37,
@@ -67,45 +69,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-around"
   },
 
-  Title: {
-    fontSize: 18
-  },
-
   ButtonContainer: {
     height: height * 0.4,
     alignItems: "center"
-  },
-
-  Button: {
-    width: "100%",
-    height: 54,
-    backgroundColor: "#3c8dbc",
-    borderRadius: 4,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 2,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 20
-  },
-
-  Icon: {
-    position: "absolute",
-    left: 20,
-    color: "#202020",
-    fontSize: 24
-  },
-
-  TextLight: {
-    fontSize: 14,
-    color: "#FFF",
-    fontWeight: "600",
-    textAlign: "center"
   }
 });

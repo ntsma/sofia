@@ -69,67 +69,11 @@ export default class Overlay extends Component {
   }
 
   componentDidMount() {
-    this.getSubmittedIssues();
-  }
-
-  setSatifaction(text) {
-    const array = [31, 30, 29, 28, 27];
-    const sastifaction = array[text - 1];
-
-    this.setState({
-      "sastifaction": sastifaction
-    });
-  }
-
-  setAttendance(text) {
-    const array = [34, 33, 32];
-    const attendance = array[text - 1];
-
-    this.setState({
-      "attendance": attendance
-    });
-  }
-
-  async judge() {
-    const sastifaction = this.state.sastifaction;
-    const attendance = this.state.attendance;
-
-    const token = await AsyncStorage.getItem("token");
-
-    console.debug("OBTENDO O TOKEN DE ACESSO...");
-    console.debug("TOKEN: " + token);
-
-    let formdata = new FormData();
-
-    formdata.append("satisfaction", sastifaction);
-    formdata.append("attendance", attendance);
-    formdata.append("avoided_forwarding", false);
-    formdata.append("induced_forwarding", false);
-    formdata.append("observation", "");
-
-    console.debug(formdata);
-
-    return fetch('http://sofia.huufma.br/api/solicitation/evaluate/' + this.props.navigation.state.params.item.id, {
-      method: 'POST',
-      headers: {
-        Authorization: "Bearer " + token
-      },
-      body: formdata
-    })
-    .then((response) => response.json())
-    .then((responseJson) => {
-
-      console.debug(responseJson);
-
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-
+    this.getIssue();
   }
 
   /*Obtendo as questões enviadas para a Sofia pelo Token*/
-  async getSubmittedIssues() {
+  async getIssue() {
     const token = await AsyncStorage.getItem("token");
 
     console.debug("OBTENDO O TOKEN DE ACESSO...");
@@ -143,9 +87,6 @@ export default class Overlay extends Component {
     })
     .then((response) => response.json())
     .then((responseJson) => {
-      console.debug("OBTENDO RESPOSTA...");
-      console.debug("RESPOSTA");
-      console.debug(responseJson);
 
       this.setState({
         "data": responseJson.data,
@@ -199,6 +140,7 @@ export default class Overlay extends Component {
 
                 <View style={styles.section}>
                   <Evaluation navigation={this.props.navigation} data={this.state.data} judgeType="1" buttonIsVisible={false}/>
+                  
                 </View>
               </View>
           }
@@ -237,6 +179,26 @@ const styles = StyleSheet.create({
     borderBottomColor: '#bbb',
     borderBottomWidth: 0.5,
     }
+});
+const height = Dimensions.get("window").height;
+
+const searchStyles = StyleSheet.create({
+  Container: {
+    flex: 1,
+    marginLeft: 37,
+    marginRight: 37,
+    marginTop: 20
+  },
+
+  Input: {
+    width: "100%",
+    height: height * 0.5,
+    borderColor: "#EEE",
+    borderWidth: 2,
+    borderRadius: 4,
+    marginTop: 20,
+    marginBottom: 20
+  }
 });
 
 
