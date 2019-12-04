@@ -3,8 +3,6 @@ import React, { Component } from "react";
 import { FlatList, Modal } from "react-native";
 import { Container } from "native-base";
 
-import AsyncStorage from "@react-native-community/async-storage";
-
 import DraftIssue from "../components/DraftIssue";
 import BackHeader from "../components/BackHeader";
 import DraftDeletedPopUp from "../components/DraftDeletedPopUp";
@@ -18,50 +16,16 @@ export default class DraftIssues extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      draftIssues: [],
-      isDraftDeletedModalVisible: false
+      'isDraftDeletedModalVisible': false
     };
-    //  this.changeDraftDeletedModalVisibility= this.changeDraftDeletedModalVisibility.bind(this)
-  }
-
-  componentDidMount() {
-    this.a();
-  }
-
-  async a() {
-    var draftQuestions = null;
-
-    console.log("DRAFT QUESTIONS");
-    console.log(draftQuestions);
-
-    if (draftQuestions == null) {
-      draftQuestions = "[]";
-    }
-
-    this.setState({
-      draftIssues: JSON.parse(draftQuestions)
-    });
-
-    console.log("DRAFT ISSUES");
-    console.log(this.state.draftIssues);
-
-    var v = this.state.draftIssues.concat(
-      this.props.navigation.state.params.draftIssues
-    );
-
-    this.setState({
-      draftIssues: v
-    });
-
-    console.log("DRAFT QUESTIONS");
-    console.log(this.state.draftIssues);
-  }
-
+  };
+  
   changeDraftDeletedModalVisibility = bool =>
     this.setState({ isDraftDeletedModalVisible: bool });
 
   render() {
-    const draftIssues = this.state.draftIssues;
+    const {draftIssues} = this.props.navigation.state.params;
+
     return (
       <Container>
         <BackHeader navigation={this.props.navigation} name="Rascunhos" />
@@ -69,7 +33,7 @@ export default class DraftIssues extends Component {
         <FlatList
           data={draftIssues}
           keyExtractor={item =>
-            item.id.toString() + this.state.draftIssues.length + 1
+            item.id.toString()
           }
           renderItem={({ item }) => (
             <DraftIssue

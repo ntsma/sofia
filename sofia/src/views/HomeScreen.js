@@ -19,7 +19,6 @@ import NetInfo from "@react-native-community/netinfo";
 
 import NumberOfIssuesBadge from "../components/NumberOfIssuesBadge";
 import ErrorNoInternetMessage from "../components/ErrorNoInternetMessage";
-import { get } from "../controllers/Issues.js";
 
 import Requests from "../services/Request";
 
@@ -244,7 +243,9 @@ export default class HomeScreen extends Component {
           this.props.navigation.state.params.shouldUpdate = false;
         }
       }
-    } catch (e) {}
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   render() {
