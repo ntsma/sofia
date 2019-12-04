@@ -1,24 +1,22 @@
 /*NewQuestion.js*/
-
 import React, { Component } from "react";
-
-import { Platform, Alert } from "react-native";
-
 import {
+  Alert,
   ActivityIndicator,
   Dimensions,
+  Platform,
   StyleSheet,
   TouchableNativeFeedback,
   Text,
   View
 } from "react-native";
-
 import { Icon, Textarea } from "native-base";
 
 import AsyncStorage from "@react-native-community/async-storage";
 import NetInfo from "@react-native-community/netinfo";
 import ImagePicker from "react-native-image-picker";
 import BackHeader from "../components/BackHeader";
+import ModalComponent from "../components/ModalComponent";
 
 import Requests from "../services/Request";
 
@@ -34,8 +32,9 @@ export default class NewSearch extends Component {
       file_ids: "",
       source: "",
       question: "",
-      isDraftModalVisible: false,
-      isModalVisible: false
+      modalIsVisible: false,
+      message: "",
+      success: true
     };
   }
 
@@ -45,11 +44,20 @@ export default class NewSearch extends Component {
     });
   }
 
-  changeModalDraftVisibility = bool =>
-    this.setState({ isDraftModalVisible: bool });
+  handleOpen(message, success) {
+    this.setState({
+      modalIsVisible: true,
+      message: message,
+      success: success
+    });
+  }
 
-  changeModalQuestionVisibility = bool =>
-    this.setState({ isModalVisible: bool });
+  handleClose() {
+    this.setState({ modalIsVisible: false });
+    if (this.state.success) {
+      this.props.navigation.navigate("HomeScreen", { shouldUpdate });
+    }
+  }
 
   createFormData(photo, body) {
     const data = new FormData();
@@ -123,7 +131,8 @@ export default class NewSearch extends Component {
           .then(response => response.json())
           .then(response => {
             console.log("upload success", response);
-            alert("Foto carregada com sucesso!");
+
+            this.handleOpen("Foto carregada com sucesso.", false);
 
             ids = "";
             for (index in response.files) {
@@ -164,7 +173,10 @@ export default class NewSearch extends Component {
     });
 
     shouldUpdate = true;
-    this.props.navigation.navigate("HomeScreen", { shouldUpdate });
+    this.handleOpen(
+      "Sua solicitação foi salva como rascunho devido a falta de conexão com a internet.",
+      true
+    );
   }
 
   async onCreateQuestion() {
@@ -174,17 +186,17 @@ export default class NewSearch extends Component {
     NetInfo.fetch().then(state => {
       if (state.isConnected) {
         Requests.sendRequest(token, question, this.state.file_ids)
-        .then(response => {
-          this.setState({
-            question: ""
-          });
+          .then(response => {
+            this.setState({
+              question: ""
+            });
 
-          shouldUpdate = true;
-          this.props.navigation.navigate("Success", { shouldUpdate });
-        })
-        .catch(error => {
-          console.log(error);
-        });
+            shouldUpdate = true;
+            this.props.navigation.navigate("Success", { shouldUpdate });
+          })
+          .catch(error => {
+            console.log(error);
+          });
       } else {
         this.saveDraftIntoAsyncStorage({
           id: this.state.question.length + 1,
@@ -200,108 +212,108 @@ export default class NewSearch extends Component {
     var question = this.state.question;
 
     Requests.sendDraftRequest(token, question, this.state.file_ids)
-    .then(response => {
+      .then(response => {
+        this.setState({
+          question: ""
+        });
 
-      this.setState({
-        question: ""
+        shouldUpdate = true;
+        this.handleOpen("Sua solicitação foi salva como rascunho.", true);
+      })
+      .catch(error => {
+        console.log(error);
+        this.handleOpen("Erro ao salvar a solicitação como rascunho.", false);
       });
-
-      shouldUpdate = true;
-      this.props.navigation.navigate("HomeScreen", { shouldUpdate });
-    })
-    .catch(error => {
-      console.log(error);
-    });
-  }
-
-  onPressButtonSend() {
-    this.changeModalQuestionVisibility(true);
-    this.onCreateQuestion();
-    //console.log('çodal', this.isModalVisible)
-  }
-
-  onPressButtonDraft() {
-    this.changeModalDraftVisibility(true);
-    this.onCreateDraftQuestion();
-    //console.log('çodal', this.isModalVisible)
   }
 
   render() {
+    const { modalIsVisible } = this.state;
     return (
-      <View>
+      <View
+        style={[
+          { flex: 1 },
+          modalIsVisible && { backgroundColor: "rgba(0, 0, 0, 0.05)" }
+        ]}
+      >
         <BackHeader
           navigation={this.props.navigation}
           name="Como posso te ajudar?"
         />
-        {this.state.isLoading ? (
-          <ActivityIndicator style={styles.load} size="large" color="#3c8dbc" />
-        ) : (
-          <View style={styles.Container}>
-            <Text style={styles.Title}>
-              Digite aqui sua pergunta para que sejam encontradas respostas
-              adequadas
-            </Text>
+        <View style={styles.Container}>
+          <Text style={styles.Title}>
+            Digite aqui sua pergunta para que sejam encontradas respostas
+            adequadas
+          </Text>
 
-            <Textarea
-              style={styles.Input}
-              value={this.state.question}
-              onChangeText={question => this.setState({ question })}
-              placeholder="Digite aqui..."
-              placeholderTextColor="#999"
-              bordered
-            />
+          <Textarea
+            style={styles.Input}
+            value={this.state.question}
+            onChangeText={question => this.setState({ question })}
+            placeholder="Digite aqui..."
+            placeholderTextColor="#999"
+            bordered
+          />
 
-            <View>
-              <View style={styles.ButtonContainer}>
-                <TouchableNativeFeedback onPress={this.onUploadFile.bind(this)}>
-                  <View
-                    style={[
-                      styles.Button,
-                      { width: "48%", backgroundColor: "#eee" }
-                    ]}
-                  >
-                    <Icon
-                      style={[styles.Icon, { left: 10 }]}
-                      type="MaterialIcons"
-                      name="attach-file"
-                    />
-                    <Text style={styles.TextDark}>Inserir{"\n"}anexo</Text>
-                  </View>
-                </TouchableNativeFeedback>
-                <TouchableNativeFeedback
-                  onPress={this.onPressButtonDraft.bind(this)}
+          <View>
+            <View style={styles.ButtonContainer}>
+              <TouchableNativeFeedback onPress={this.onUploadFile.bind(this)}>
+                <View
+                  style={[
+                    styles.Button,
+                    { width: "48%", backgroundColor: "#eee" }
+                  ]}
                 >
-                  <View
-                    style={[
-                      styles.Button,
-                      { width: "48%", backgroundColor: "#eee" }
-                    ]}
-                  >
-                    <Icon
-                      style={[styles.Icon, { left: 10 }]}
-                      type="MaterialIcons"
-                      name="create"
-                    />
-                    <Text style={styles.TextDark}>
-                      Salvar como{"\n"}rascunho
-                    </Text>
-                  </View>
-                </TouchableNativeFeedback>
-              </View>
-              <TouchableNativeFeedback
-                onPress={this.onCreateQuestion.bind(this)}
-              >
-                <View style={styles.Button}>
                   <Icon
-                    style={[styles.Icon, { color: "#FFF" }]}
+                    style={[styles.Icon, { left: 10 }]}
                     type="MaterialIcons"
-                    name="search"
+                    name="attach-file"
                   />
-                  <Text style={styles.TextLight}>Enviar pergunta</Text>
+                  <Text style={styles.TextDark}>Inserir{"\n"}anexo</Text>
+                </View>
+              </TouchableNativeFeedback>
+              <TouchableNativeFeedback
+                onPress={this.onCreateDraftQuestion.bind(this)}
+              >
+                <View
+                  style={[
+                    styles.Button,
+                    { width: "48%", backgroundColor: "#eee" }
+                  ]}
+                >
+                  <Icon
+                    style={[styles.Icon, { left: 10 }]}
+                    type="MaterialIcons"
+                    name="create"
+                  />
+                  <Text style={styles.TextDark}>Salvar como{"\n"}rascunho</Text>
                 </View>
               </TouchableNativeFeedback>
             </View>
+            <TouchableNativeFeedback onPress={this.onCreateQuestion.bind(this)}>
+              <View style={styles.Button}>
+                <Icon
+                  style={[styles.Icon, { color: "#FFF" }]}
+                  type="MaterialIcons"
+                  name="search"
+                />
+                <Text style={styles.TextLight}>Enviar pergunta</Text>
+              </View>
+            </TouchableNativeFeedback>
           </View>
+        </View>
+
+        {modalIsVisible && (
+          <ModalComponent
+            handleClose={this.handleClose.bind(this)}
+            isModalVisible={this.modalIsVisible}
+            content={
+              <View>
+                <Text style={{ backgroundColor: "00FF00" }}>
+                  {this.state.message}
+                </Text>
+              </View>
+            }
+          />
         )}
       </View>
     );
