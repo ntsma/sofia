@@ -1,21 +1,14 @@
 /*RelatedQuestionsView.js*/
-
 import React, { Component } from "react";
-
-import { FlatList, StyleSheet } from "react-native";
-
-import { ThemeProvider, Card } from "react-native-elements";
-
 import {
-  Icon,
+  View,
   Text,
-  Button,
-  Body,
-  Left,
-  Right,
-  ListItem,
-  View
-} from "native-base";
+  FlatList,
+  StyleSheet,
+  TouchableNativeFeedback
+} from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 import BackHeader from "../components/BackHeader";
 
@@ -27,69 +20,167 @@ export default class RelatedQuestionsView extends Component {
 
   render() {
     const questions = this.props.navigation.state.params.questions;
+    const user_questions = this.props.navigation.state.params.user_questions;
     const question = this.props.navigation.state.params.question;
 
     return (
-      <ThemeProvider>
+      <View>
         <BackHeader
           navigation={this.props.navigation}
           name="Perguntas relacionadas"
         />
 
-        <FlatList
-          data={questions}
-          keyExtractor={(item, index) => item.id.toString()}
-          renderItem={({ item }) => (
-            <ListItem
-              thumbnail
-              style={styles.list}
-              onPress={() =>
-                this.props.navigation.navigate("RelatedIssueView", { item })
-              }
-            >
-              <Body>
-                <Text numberOfLines={3} style={styles.bodyText}>
-                  {item.description}
-                </Text>
-              </Body>
-              <Right>
-                <Icon
-                  style={styles.next}
-                  type="MaterialIcons"
-                  name="chevron-right"
-                />
-              </Right>
-            </ListItem>
-          )}
-        />
+        <ScrollView>
+          {user_questions && (
+            <View>
+              <Text style={stylesLocal.Title}>
+                Perguntas realizadas por você que podem ter relação com a
+                pergunta atual
+              </Text>
 
-        <Button
-          block
-          danger
+              <FlatList
+                data={user_questions}
+                keyExtractor={(item, index) => item.id.toString()}
+                renderItem={({ item }) => (
+                  <TouchableNativeFeedback
+                    onPress={() =>
+                      this.props.navigation.navigate("RelatedIssueView", {
+                        item
+                      })
+                    }
+                  >
+                    <View style={stylesLocal.Item}>
+                      <View style={stylesLocal.Icon}>
+                        <Icon name="person-outline" size={30} color="#3c8dbc" />
+                      </View>
+                      <View style={stylesLocal.ContainerText}>
+                        <Text numberOfLines={2} style={stylesLocal.Text}>
+                          {item.description}
+                        </Text>
+                      </View>
+                      <View style={stylesLocal.Arrow}>
+                        <Icon name="chevron-right" size={30} color="#3c8dbc" />
+                      </View>
+                    </View>
+                  </TouchableNativeFeedback>
+                )}
+              />
+            </View>
+          )}
+
+          <View>
+            <Text style={stylesLocal.Title}>
+              Perguntas que possivelmente possuam uma resposta para você
+            </Text>
+
+            <FlatList
+              data={questions}
+              keyExtractor={(item, index) => item.id.toString()}
+              renderItem={({ item }) => (
+                <TouchableNativeFeedback
+                  onPress={() =>
+                    this.props.navigation.navigate("RelatedIssueView", { item })
+                  }
+                >
+                  <View style={stylesLocal.Item}>
+                    <View style={stylesLocal.Icon}>
+                      <Icon name="assignment" size={30} color="#3c8dbc" />
+                    </View>
+                    <View style={stylesLocal.ContainerText}>
+                      <Text numberOfLines={2} style={stylesLocal.Text}>
+                        {item.description}
+                      </Text>
+                    </View>
+                    <View style={stylesLocal.Arrow}>
+                      <Icon name="chevron-right" size={30} color="#3c8dbc" />
+                    </View>
+                  </View>
+                </TouchableNativeFeedback>
+              )}
+            />
+          </View>
+        </ScrollView>
+
+        <TouchableNativeFeedback
           onPress={() =>
             this.props.navigation.navigate("Question", { question })
           }
         >
-          <Text style={{ color: "#FFF" }}>Não solucionou sua dúvida?</Text>
-        </Button>
-      </ThemeProvider>
+          <View style={stylesLocal.Button}>
+            <Text style={stylesLocal.TextButton}>
+              Não solucionou sua dúvida?
+            </Text>
+          </View>
+        </TouchableNativeFeedback>
+      </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  bodyText: {
-    marginTop: -5,
-    minHeight: 30
+const stylesLocal = StyleSheet.create({
+  Title: {
+    color: "#3c8dbc",
+    fontSize: 16,
+    textAlign: "center",
+    fontWeight: "bold",
+    marginLeft: 37,
+    marginRight: 37,
+    marginTop: 20,
+    marginBottom: 10
   },
-  inbox: {
-    width: 30,
-    height: 30,
-    fontSize: 30
+
+  Item: {
+    width: "100%",
+    height: "auto",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    backgroundColor: "#fff"
   },
-  next: {
-    height: 30,
-    fontSize: 30,
-    color: "#3c8dbc80"
+
+  Icon: {
+    width: "15%",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+
+  ContainerText: {
+    width: "75%",
+    height: 64,
+    justifyContent: "center",
+    borderBottomWidth: 0.5,
+    borderBottomColor: "rgba(0, 0, 0, 0.5)",
+    paddingTop: 15,
+    paddingBottom: 15
+  },
+
+  Text: {
+    fontSize: 14,
+    color: "#202020",
+    fontWeight: "normal"
+  },
+
+  Arrow: {
+    width: "10%",
+    justifyContent: "center",
+    alignItems: "center",
+    borderBottomWidth: 0.5,
+    borderBottomColor: "rgba(0, 0, 0, 0.5)"
+  },
+
+  Button: {
+    width: "100%",
+    height: 54,
+    backgroundColor: "#bc493c",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 54
+  },
+
+  TextButton: {
+    fontSize: 14,
+    color: "#FFF",
+    fontWeight: "bold"
   }
 });

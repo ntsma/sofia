@@ -13,7 +13,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import BackHeader from "../components/BackHeader";
 import NetInfo from "@react-native-community/netinfo";
 
-import Requests from '../services/Request';
+import Requests from "../services/Request";
 import styles from "../Styles/Styles";
 
 export default class Search extends Component {
@@ -42,32 +42,34 @@ export default class Search extends Component {
         this.props.navigation.navigate("Question", { question });
       } else {
         /*Mostra barra de carregamento.*/
-        this.setState({ isLoading: true })
+        this.setState({ isLoading: true });
 
         Requests.searchRequests(token, question)
-        .then(response => {
-          var questions = response.data;
+          .then(response => {
+            var questions = response.data;
+            var user_questions = response.users_solicitations;
 
-          /*Remove barra de carregamento.*/
-          this.setState({ isLoading: false })
-    
-          if (!questions) {
-            this.props.navigation.navigate("SearchNoResults", {
-              question
-            });
-          } else {
-            this.props.navigation.navigate("RelatedQuestionsView", {
-              questions,
-              question
-            });
-          };
-        })
-        .catch(response => {
-          console.log(response);
-        })
+            /*Remove barra de carregamento.*/
+            this.setState({ isLoading: false });
+
+            if (!questions) {
+              this.props.navigation.navigate("SearchNoResults", {
+                question
+              });
+            } else {
+              this.props.navigation.navigate("RelatedQuestionsView", {
+                questions,
+                user_questions,
+                question
+              });
+            }
+          })
+          .catch(response => {
+            console.log(response);
+          });
       }
     });
-  }
+  };
 
   render() {
     return (
