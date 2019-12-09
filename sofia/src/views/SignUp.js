@@ -13,7 +13,6 @@ import {
   TouchableHighlight
 } from "react-native";
 
-import BackHeader from "../components/BackHeader";
 import ModalComponent from "../components/ModalComponent";
 
 import { TextInputMask } from "react-native-masked-text";
@@ -31,14 +30,6 @@ export default class SignUp extends Component {
       message: ""
     };
   }
-
-  static navigationOptions = {
-    headerStyle: {
-      backgroundColor: "#D95D39",
-      elevation: null
-    },
-    header: null
-  };
 
   signUp() {
     console.log(this.state);
@@ -106,7 +97,6 @@ export default class SignUp extends Component {
 
     return (
       <View>
-        <BackHeader navigation={this.props.navigation} name="Cadastro" />
         <StatusBar backgroundColor="#3c8dbc" barStyle="light-content" />
 
         <ScrollView style={{ padding: 20 }}>

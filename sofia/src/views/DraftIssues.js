@@ -4,37 +4,27 @@ import { FlatList, Modal } from "react-native";
 import { Container } from "native-base";
 
 import DraftIssue from "../components/DraftIssue";
-import BackHeader from "../components/BackHeader";
 import DraftDeletedPopUp from "../components/DraftDeletedPopUp";
 
 export default class DraftIssues extends Component {
-  /*Removendo header padrão*/
-  static navigationOptions = {
-    header: null
-  };
-
   constructor(props) {
     super(props);
     this.state = {
-      'isDraftDeletedModalVisible': false
+      isDraftDeletedModalVisible: false
     };
-  };
-  
+  }
+
   changeDraftDeletedModalVisibility = bool =>
     this.setState({ isDraftDeletedModalVisible: bool });
 
   render() {
-    const {draftIssues} = this.props.navigation.state.params;
+    const { draftIssues } = this.props.navigation.state.params;
 
     return (
       <Container>
-        <BackHeader navigation={this.props.navigation} name="Rascunhos" />
-
         <FlatList
           data={draftIssues}
-          keyExtractor={item =>
-            item.id.toString()
-          }
+          keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => (
             <DraftIssue
               changeDraftDeletedModalVisibility={this.changeDraftDeletedModalVisibility.bind(
