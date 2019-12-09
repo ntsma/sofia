@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import {
   Dimensions,
+  Platform,
   StyleSheet,
   Text,
   TouchableNativeFeedback,
+  TouchableHighlight,
   View
 } from "react-native";
 import { Icon } from "native-base";
@@ -15,6 +17,8 @@ export default class Success extends Component {
   };
 
   render() {
+    let TouchablePlatformSpecific =
+      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
     return (
       <View style={styles.Container}>
         <Text style={styles.Title}>
@@ -23,7 +27,7 @@ export default class Success extends Component {
           aplicativo!
         </Text>
         <View style={styles.ButtonContainer}>
-          <TouchableNativeFeedback
+          <TouchablePlatformSpecific
             onPress={() => {
               this.props.navigation.navigate("Search", { isConected: true });
             }}
@@ -38,10 +42,12 @@ export default class Success extends Component {
                 Possui outra dúvida?{"\n"}Faça uma nova pergunta
               </Text>
             </View>
-          </TouchableNativeFeedback>
-          <TouchableNativeFeedback
+          </TouchablePlatformSpecific>
+          <TouchablePlatformSpecific
             onPress={() => {
-              this.props.navigation.navigate("HomeScreen", { shouldUpdate: true });
+              this.props.navigation.navigate("HomeScreen", {
+                shouldUpdate: true
+              });
             }}
           >
             <View style={styles.Button}>
@@ -52,7 +58,7 @@ export default class Success extends Component {
               />
               <Text style={styles.TextLight}>Retornar ao menu principal</Text>
             </View>
-          </TouchableNativeFeedback>
+          </TouchablePlatformSpecific>
         </View>
       </View>
     );

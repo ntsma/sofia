@@ -2,10 +2,12 @@
 import React, { Component } from "react";
 import {
   View,
+  Platform,
   Text,
   FlatList,
   StyleSheet,
-  TouchableNativeFeedback
+  TouchableNativeFeedback,
+  TouchableHighlight
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -23,8 +25,11 @@ export default class RelatedQuestionsView extends Component {
     const user_questions = this.props.navigation.state.params.user_questions;
     const question = this.props.navigation.state.params.question;
 
+    let TouchablePlatformSpecific =
+      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <BackHeader
           navigation={this.props.navigation}
           name="Perguntas relacionadas"
@@ -42,7 +47,7 @@ export default class RelatedQuestionsView extends Component {
                 data={user_questions}
                 keyExtractor={(item, index) => item.id.toString()}
                 renderItem={({ item }) => (
-                  <TouchableNativeFeedback
+                  <TouchablePlatformSpecific
                     onPress={() =>
                       this.props.navigation.navigate("RelatedIssueView", {
                         item
@@ -62,7 +67,7 @@ export default class RelatedQuestionsView extends Component {
                         <Icon name="chevron-right" size={30} color="#3c8dbc" />
                       </View>
                     </View>
-                  </TouchableNativeFeedback>
+                  </TouchablePlatformSpecific>
                 )}
               />
             </View>
@@ -77,7 +82,7 @@ export default class RelatedQuestionsView extends Component {
               data={questions}
               keyExtractor={(item, index) => item.id.toString()}
               renderItem={({ item }) => (
-                <TouchableNativeFeedback
+                <TouchablePlatformSpecific
                   onPress={() =>
                     this.props.navigation.navigate("RelatedIssueView", { item })
                   }
@@ -95,13 +100,13 @@ export default class RelatedQuestionsView extends Component {
                       <Icon name="chevron-right" size={30} color="#3c8dbc" />
                     </View>
                   </View>
-                </TouchableNativeFeedback>
+                </TouchablePlatformSpecific>
               )}
             />
           </View>
         </ScrollView>
 
-        <TouchableNativeFeedback
+        <TouchablePlatformSpecific
           onPress={() =>
             this.props.navigation.navigate("Question", { question })
           }
@@ -111,7 +116,7 @@ export default class RelatedQuestionsView extends Component {
               Não solucionou sua dúvida?
             </Text>
           </View>
-        </TouchableNativeFeedback>
+        </TouchablePlatformSpecific>
       </View>
     );
   }
@@ -175,7 +180,7 @@ const stylesLocal = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
-    bottom: 54
+    bottom: 0
   },
 
   TextButton: {

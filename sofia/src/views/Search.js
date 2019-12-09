@@ -2,10 +2,13 @@ import React, { Component } from "react";
 import {
   ActivityIndicator,
   Dimensions,
+  Platform,
   StyleSheet,
   Text,
   TouchableNativeFeedback,
-  View
+  TouchableHighlight,
+  View,
+  Keyboard
 } from "react-native";
 import { Icon, Textarea } from "native-base";
 
@@ -28,6 +31,11 @@ export default class Search extends Component {
       question: "",
       isLoading: false
     };
+  }
+
+  handleUnhandledTouches() {
+    Keyboard.dismiss;
+    return false;
   }
 
   showLoader = bool => this.setState({ isLoading: bool });
@@ -72,8 +80,11 @@ export default class Search extends Component {
   };
 
   render() {
+    let TouchablePlatformSpecific =
+      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+
     return (
-      <View>
+      <View onStartShouldSetResponder={this.handleUnhandledTouches}>
         <BackHeader
           navigation={this.props.navigation}
           name="Como posso te ajudar?"
@@ -100,7 +111,7 @@ export default class Search extends Component {
               bordered
             />
 
-            <TouchableNativeFeedback onPress={this.onSearch.bind(this)}>
+            <TouchablePlatformSpecific onPress={this.onSearch.bind(this)}>
               <View style={styles.Button}>
                 <Icon
                   style={[styles.Icon, { color: "#FFF" }]}
@@ -109,7 +120,7 @@ export default class Search extends Component {
                 />
                 <Text style={styles.TextLight}>Pesquisar</Text>
               </View>
-            </TouchableNativeFeedback>
+            </TouchablePlatformSpecific>
           </View>
         )}
       </View>

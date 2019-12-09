@@ -5,6 +5,7 @@ import {
   StatusBar,
   TouchableOpacity,
   TouchableNativeFeedback,
+  TouchableHighlight,
   View,
   StyleSheet
 } from "react-native";
@@ -83,6 +84,9 @@ export default class Login extends Component {
   render() {
     const { modalIsVisible } = this.state;
 
+    let TouchablePlatformSpecific =
+      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+
     return (
       <KeyboardAvoidingView
         behavior="padding"
@@ -97,7 +101,7 @@ export default class Login extends Component {
 
         <PasswordInput props={this} />
 
-        <TouchableNativeFeedback onPress={this.onLoginButtonPress.bind(this)}>
+        <TouchablePlatformSpecific onPress={this.onLoginButtonPress.bind(this)}>
           <View
             style={[
               styles.Button,
@@ -108,7 +112,7 @@ export default class Login extends Component {
               Entrar
             </Text>
           </View>
-        </TouchableNativeFeedback>
+        </TouchablePlatformSpecific>
 
         <TouchableOpacity
           onPress={() => {

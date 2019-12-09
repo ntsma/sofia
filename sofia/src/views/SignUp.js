@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {
   Picker,
+  Platform,
   StatusBar,
   ScrollView,
   StyleSheet,
@@ -8,7 +9,8 @@ import {
   TextInput,
   Text,
   View,
-  TouchableNativeFeedback
+  TouchableNativeFeedback,
+  TouchableHighlight
 } from "react-native";
 
 import BackHeader from "../components/BackHeader";
@@ -56,7 +58,7 @@ export default class SignUp extends Component {
       .then(responseJson => {
         var message = "";
 
-        console.log(responseJson)
+        console.log(responseJson);
 
         if (responseJson.message == "success") {
           message =
@@ -99,6 +101,8 @@ export default class SignUp extends Component {
 
   render() {
     const { modalIsVisible } = this.state;
+    let TouchablePlatformSpecific =
+      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
 
     return (
       <View>
@@ -158,13 +162,13 @@ export default class SignUp extends Component {
             )}
           </View>
 
-          <TouchableNativeFeedback onPress={() => this.signUp()}>
+          <TouchablePlatformSpecific onPress={() => this.signUp()}>
             <View style={[styles.Button, { marginTop: 40 }]}>
               <Text style={[styles.TextLight, { fontWeight: "bold" }]}>
                 Confirmar
               </Text>
             </View>
-          </TouchableNativeFeedback>
+          </TouchablePlatformSpecific>
 
           {modalIsVisible && (
             <ModalComponent

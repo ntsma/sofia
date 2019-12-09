@@ -5,8 +5,10 @@ import React, { Component } from "react";
 import {
   ActivityIndicator,
   Dimensions,
+  Platform,
   StyleSheet,
   TouchableNativeFeedback,
+  TouchableHighlight,
   Text,
   View
 } from "react-native";
@@ -19,7 +21,7 @@ import BackHeader from "../components/BackHeader";
 
 import NetInfo from "@react-native-community/netinfo";
 
-import Requests from '../services/Request';
+import Requests from "../services/Request";
 
 export default class EditQuestion extends Component {
   /*Removendo header padrão*/
@@ -36,7 +38,7 @@ export default class EditQuestion extends Component {
 
   componentDidMount() {
     this.setState({
-      "question": this.props.navigation.state.params.item.description
+      question: this.props.navigation.state.params.item.description
     });
   }
 
@@ -51,30 +53,29 @@ export default class EditQuestion extends Component {
     let formdata = new FormData();
 
     formdata.append("type_id", 52);
-    formdata.append("mode", 'send');
+    formdata.append("mode", "send");
     formdata.append("description", question);
 
     console.debug(formdata);
 
-    return fetch('http://sofia.huufma.br/api/solicitation/' + item.id, {
-        method: 'POST',
-        headers: {
-          Authorization: "Bearer " + token
-        },
-        body: formdata,
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
+    return fetch("http://sofia.huufma.br/api/solicitation/" + item.id, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token
+      },
+      body: formdata
+    })
+      .then(response => response.json())
+      .then(responseJson => {
         console.debug("RESPOSTA");
         console.debug(responseJson);
 
         this.props.navigation.navigate("HomeScreen");
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
       });
-
-  }
+  };
 
   async onCreateQuestion() {
     var token = await AsyncStorage.getItem("token");
@@ -83,17 +84,17 @@ export default class EditQuestion extends Component {
     NetInfo.fetch().then(state => {
       if (state.isConnected) {
         Requests.sendRequest(token, question, this.state.file_ids)
-        .then(response => {
-          this.setState({
-            question: ""
-          });
+          .then(response => {
+            this.setState({
+              question: ""
+            });
 
-          shouldUpdate = true;
-          this.props.navigation.navigate("Success", { shouldUpdate });
-        })
-        .catch(error => {
-          console.log(error);
-        });
+            shouldUpdate = true;
+            this.props.navigation.navigate("Success", { shouldUpdate });
+          })
+          .catch(error => {
+            console.log(error);
+          });
       } else {
         this.saveDraftIntoAsyncStorage({
           id: this.state.question.length + 1,
@@ -115,31 +116,30 @@ export default class EditQuestion extends Component {
     let formdata = new FormData();
 
     formdata.append("type_id", 52);
-    formdata.append("mode", 'draft');
+    formdata.append("mode", "draft");
     formdata.append("mobile", 1);
-    formdata.append("description", question)
+    formdata.append("description", question);
 
     console.debug(formdata);
 
-    return fetch('http://sofia.huufma.br/api/solicitation/' + item.id, {
-        method: 'POST',
-        headers: {
-          Authorization: "Bearer " + token
-        },
-        body: formdata,
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
+    return fetch("http://sofia.huufma.br/api/solicitation/" + item.id, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token
+      },
+      body: formdata
+    })
+      .then(response => response.json())
+      .then(responseJson => {
         console.debug("RESPOSTA");
         console.debug(responseJson);
 
         shouldUpdate = true;
-        this.props.navigation.navigate("HomeScreen", {shouldUpdate});
+        this.props.navigation.navigate("HomeScreen", { shouldUpdate });
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
       });
-
   }
 
   async onUploadFile() {
@@ -211,7 +211,10 @@ export default class EditQuestion extends Component {
   }
 
   render() {
-    const {isReturnedRequest} = this.props.navigation.state.params;
+    const { isReturnedRequest } = this.props.navigation.state.params;
+
+    let TouchablePlatformSpecific =
+      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
 
     return (
       <View>
@@ -239,7 +242,9 @@ export default class EditQuestion extends Component {
 
             <View>
               <View style={styles.ButtonContainer}>
-                <TouchableNativeFeedback onPress={this.onUploadFile.bind(this)}>
+                <TouchablePlatformSpecific
+                  onPress={this.onUploadFile.bind(this)}
+                >
                   <View
                     style={[
                       styles.Button,
@@ -253,8 +258,8 @@ export default class EditQuestion extends Component {
                     />
                     <Text style={styles.TextDark}>Inserir{"\n"}anexo</Text>
                   </View>
-                </TouchableNativeFeedback>
-                <TouchableNativeFeedback
+                </TouchablePlatformSpecific>
+                <TouchablePlatformSpecific
                   onPress={this.onCreateDraftQuestion.bind(this)}
                 >
                   <View
@@ -272,22 +277,25 @@ export default class EditQuestion extends Component {
                       Salvar como{"\n"}rascunho
                     </Text>
                   </View>
-                </TouchableNativeFeedback>
+                </TouchablePlatformSpecific>
               </View>
-              {
-                (isReturnedRequest) ?
-                  <TouchableNativeFeedback onPress={this.onUpdateRequest.bind(this)}>
-                    <View style={styles.Button}>
-                      <Icon
-                        style={[styles.Icon, { color: "#FFF" }]}
-                        type="MaterialIcons"
-                        name="search"
-                      />
-                      <Text style={styles.TextLight}>Atualizar pergunta</Text>
-                    </View>
-                  </TouchableNativeFeedback>
-                :
-                <TouchableNativeFeedback onPress={this.onCreateQuestion.bind(this)}>
+              {isReturnedRequest ? (
+                <TouchablePlatformSpecific
+                  onPress={this.onUpdateRequest.bind(this)}
+                >
+                  <View style={styles.Button}>
+                    <Icon
+                      style={[styles.Icon, { color: "#FFF" }]}
+                      type="MaterialIcons"
+                      name="search"
+                    />
+                    <Text style={styles.TextLight}>Atualizar pergunta</Text>
+                  </View>
+                </TouchablePlatformSpecific>
+              ) : (
+                <TouchablePlatformSpecific
+                  onPress={this.onCreateQuestion.bind(this)}
+                >
                   <View style={styles.Button}>
                     <Icon
                       style={[styles.Icon, { color: "#FFF" }]}
@@ -296,9 +304,8 @@ export default class EditQuestion extends Component {
                     />
                     <Text style={styles.TextLight}>Enviar pergunta</Text>
                   </View>
-                </TouchableNativeFeedback>
-
-              }
+                </TouchablePlatformSpecific>
+              )}
             </View>
           </View>
         )}
@@ -377,4 +384,3 @@ const styles = StyleSheet.create({
     textAlign: "center"
   }
 });
-

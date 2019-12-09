@@ -1,22 +1,19 @@
 /*CanceledIssue.js*/
 import React, { Component } from "react";
 
-import {
-  ThemeProvider,
-  Card
-} from "react-native-elements";
+import { ThemeProvider, Card } from "react-native-elements";
 
 import {
+  Platform,
   Text,
   TouchableNativeFeedback,
+  TouchableHighlight,
   View,
   Dimensions,
   StyleSheet
 } from "react-native";
 
-import {
-  Icon
-} from 'native-base';
+import { Icon } from "native-base";
 
 import BackHeader from "../components/BackHeader";
 
@@ -28,37 +25,46 @@ export default class ShowObservation extends Component {
 
   render() {
     const item = this.props.navigation.state.params.item;
+    let TouchablePlatformSpecific =
+      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
     return (
       <View style={{ flex: 1 }}>
         <BackHeader navigation={this.props.navigation} name="Observação" />
 
         <Card title="Observação">
-          <Text style={{marginBottom: 150}}>
-            { this.props.navigation.state.params.item.solicitation_observations_description }
+          <Text style={{ marginBottom: 150 }}>
+            {
+              this.props.navigation.state.params.item
+                .solicitation_observations_description
+            }
           </Text>
         </Card>
 
-        {item.status_id != 20 && 
-        <View style={styles.ButtonContainer}>
-          <TouchableNativeFeedback onPress={() => this.props.navigation.navigate("EditQuestion", {item, isReturnedRequest: true})}>
-            <View style={styles.Button}>
-              <Icon
-                style={[styles.Icon, { color: "#FFF" }]}
-                type="MaterialIcons"
-                name="search"
-              />
-              <Text style={styles.TextLight}>Editar pergunta</Text>
-            </View>
-          </TouchableNativeFeedback>
+        {item.status_id != 20 && (
+          <View style={styles.ButtonContainer}>
+            <TouchablePlatformSpecific
+              onPress={() =>
+                this.props.navigation.navigate("EditQuestion", {
+                  item,
+                  isReturnedRequest: true
+                })
+              }
+            >
+              <View style={styles.Button}>
+                <Icon
+                  style={[styles.Icon, { color: "#FFF" }]}
+                  type="MaterialIcons"
+                  name="search"
+                />
+                <Text style={styles.TextLight}>Editar pergunta</Text>
+              </View>
+            </TouchablePlatformSpecific>
           </View>
-        }
-
+        )}
       </View>
     );
   }
-
 }
-
 
 const height = Dimensions.get("window").height;
 
@@ -130,4 +136,3 @@ const styles = StyleSheet.create({
     textAlign: "center"
   }
 });
-

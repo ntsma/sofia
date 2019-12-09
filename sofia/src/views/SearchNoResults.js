@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import {
   Dimensions,
+  Platform,
   StyleSheet,
   Text,
   TouchableNativeFeedback,
+  TouchableHighlight,
   View
 } from "react-native";
 import { Icon } from "native-base";
@@ -18,6 +20,9 @@ export default class SearchNoResults extends Component {
   render() {
     const question = this.props.navigation.state.params.question;
 
+    let TouchablePlatformSpecific =
+      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+
     return (
       <View style={searchNoReStyles.Container}>
         <Text style={styles.Title}>
@@ -25,7 +30,7 @@ export default class SearchNoResults extends Component {
           base.
         </Text>
         <View style={searchNoReStyles.ButtonContainer}>
-          <TouchableNativeFeedback
+          <TouchablePlatformSpecific
             onPress={() => {
               this.props.navigation.navigate("Search", { isConected: true });
             }}
@@ -38,8 +43,8 @@ export default class SearchNoResults extends Component {
               />
               <Text style={styles.TextLight}>Faça uma nova pergunta</Text>
             </View>
-          </TouchableNativeFeedback>
-          <TouchableNativeFeedback
+          </TouchablePlatformSpecific>
+          <TouchablePlatformSpecific
             onPress={() =>
               this.props.navigation.navigate("Question", { question })
             }
@@ -52,7 +57,7 @@ export default class SearchNoResults extends Component {
               />
               <Text style={styles.TextLight}>Prosseguir com a solicitação</Text>
             </View>
-          </TouchableNativeFeedback>
+          </TouchablePlatformSpecific>
         </View>
       </View>
     );
