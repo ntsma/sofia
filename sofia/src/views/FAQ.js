@@ -3,10 +3,12 @@
 import React, { Component } from "react";
 
 import {
+  Platform,
   StyleSheet,
   Text,
   View,
   TouchableNativeFeedback,
+  TouchableHighlight,
   FlatList
 } from "react-native";
 
@@ -89,6 +91,9 @@ export default class FAQ extends Component {
       }
     ];
 
+    let TouchablePlatformSpecific =
+      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+
     return (
       <View>
         <BackHeader
@@ -100,7 +105,7 @@ export default class FAQ extends Component {
           data={questions}
           keyExtractor={(item, index) => item.title}
           renderItem={({ item }) => (
-            <TouchableNativeFeedback
+            <TouchablePlatformSpecific
               onPress={() =>
                 this.props.navigation.navigate("FaqElement", { item })
               }
@@ -113,7 +118,7 @@ export default class FAQ extends Component {
                   name="chevron-right"
                 />
               </View>
-            </TouchableNativeFeedback>
+            </TouchablePlatformSpecific>
           )}
         />
       </View>

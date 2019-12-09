@@ -9,6 +9,7 @@ import {
   StatusBar,
   Text,
   TouchableNativeFeedback,
+  TouchableHighlight,
   View
 } from "react-native";
 
@@ -83,25 +84,24 @@ export default class HomeScreen extends Component {
       if (state.isConnected && draftQuestions != null) {
         new Promise((resolve, reject) => {
           for (index in draftQuestions) {
-
             const descripton = draftQuestions[index].description;
             const file_ids = draftQuestions[index].file_ids;
-  
+
             Requests.sendRequest(token, descripton, file_ids)
-            .then(response => {
-              resolve(response);
-            })
-            .catch(response => {
-              reject(response);
-            })
+              .then(response => {
+                resolve(response);
+              })
+              .catch(response => {
+                reject(response);
+              });
           }
         })
-        .then(response => {
-          this.emptyOfflineRequests();
-        })
-        .catch(response => {
-          console.log(response);
-        })
+          .then(response => {
+            this.emptyOfflineRequests();
+          })
+          .catch(response => {
+            console.log(response);
+          });
       }
     });
   };
@@ -109,7 +109,7 @@ export default class HomeScreen extends Component {
   /*Esvazia listas de rascunhos enviados offline*/
   emptyOfflineRequests = async () => {
     await AsyncStorage.setItem("draftQuestions", JSON.stringify([]));
-  }
+  };
 
   /*Carregando informações do app.*/
   load = () => {
@@ -196,7 +196,7 @@ export default class HomeScreen extends Component {
       }
     })
       .then(response => {
-        if(!requestsWithoutEvaluation) {
+        if (!requestsWithoutEvaluation) {
           this.setState({
             existsRequestsWithoutEvaluation: true
           });
@@ -257,6 +257,9 @@ export default class HomeScreen extends Component {
     const draftIssues = this.state.draftIssues;
     const estado = this.state;
 
+    let TouchablePlatformSpecific =
+      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+
     return (
       <View>
         <StatusBar backgroundColor="#3c8dbc" barStyle="light-content" />
@@ -267,7 +270,7 @@ export default class HomeScreen extends Component {
             source={require("../resources/logo.png")}
           />
           <Text style={[styles.TextLight, homeStyles.Title]}>Sofia</Text>
-          <TouchableNativeFeedback onPress={this.logout}>
+          <TouchablePlatformSpecific onPress={this.logout}>
             <View style={homeStyles.ExitButton}>
               <View>
                 <Icon
@@ -280,7 +283,7 @@ export default class HomeScreen extends Component {
                 <Text style={styles.TextLight}>Sair</Text>
               </View>
             </View>
-          </TouchableNativeFeedback>
+          </TouchablePlatformSpecific>
         </View>
 
         <View style={homeStyles.Body}>
@@ -294,7 +297,7 @@ export default class HomeScreen extends Component {
             }
           >
             <View style={homeStyles.Container}>
-              <TouchableNativeFeedback
+              <TouchablePlatformSpecific
                 onPress={() => this.props.navigation.navigate("Search")}
               >
                 <View style={styles.Button}>
@@ -305,9 +308,9 @@ export default class HomeScreen extends Component {
                   />
                   <Text style={styles.TextLight}>Como posso te ajudar?</Text>
                 </View>
-              </TouchableNativeFeedback>
+              </TouchablePlatformSpecific>
 
-              <TouchableNativeFeedback
+              <TouchablePlatformSpecific
                 disabled={!this.state.isConnected}
                 onPress={() => {
                   this.props.navigation.navigate("AnsweredIssues", {
@@ -329,9 +332,9 @@ export default class HomeScreen extends Component {
                     />
                   </View>
                 </View>
-              </TouchableNativeFeedback>
+              </TouchablePlatformSpecific>
 
-              <TouchableNativeFeedback
+              <TouchablePlatformSpecific
                 disabled={!this.state.isConnected}
                 onPress={() => {
                   this.props.navigation.navigate("SubmittedIssues", {
@@ -353,9 +356,9 @@ export default class HomeScreen extends Component {
                     />
                   </View>
                 </View>
-              </TouchableNativeFeedback>
+              </TouchablePlatformSpecific>
 
-              <TouchableNativeFeedback
+              <TouchablePlatformSpecific
                 disabled={!this.state.isConnected}
                 onPress={() => {
                   this.props.navigation.navigate("CanceledIssues", {
@@ -377,9 +380,9 @@ export default class HomeScreen extends Component {
                     />
                   </View>
                 </View>
-              </TouchableNativeFeedback>
+              </TouchablePlatformSpecific>
 
-              <TouchableNativeFeedback
+              <TouchablePlatformSpecific
                 disabled={!this.state.isConnected}
                 onPress={() => {
                   this.props.navigation.navigate("DraftIssues", {
@@ -401,9 +404,9 @@ export default class HomeScreen extends Component {
                     />
                   </View>
                 </View>
-              </TouchableNativeFeedback>
+              </TouchablePlatformSpecific>
 
-              <TouchableNativeFeedback
+              <TouchablePlatformSpecific
                 onPress={() => {
                   this.props.navigation.navigate("FAQ");
                 }}
@@ -416,7 +419,7 @@ export default class HomeScreen extends Component {
                   </Text>
                   <Text style={styles.TextDark}>Dúvidas gerais</Text>
                 </View>
-              </TouchableNativeFeedback>
+              </TouchablePlatformSpecific>
             </View>
           </ScrollView>
         </View>

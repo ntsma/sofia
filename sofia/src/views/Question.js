@@ -6,7 +6,9 @@ import {
   Dimensions,
   Platform,
   StyleSheet,
+  Keyboard,
   TouchableNativeFeedback,
+  TouchableHighlight,
   Text,
   View
 } from "react-native";
@@ -57,6 +59,11 @@ export default class NewSearch extends Component {
     if (this.state.success) {
       this.props.navigation.navigate("HomeScreen", { shouldUpdate });
     }
+  }
+
+  handleUnhandledTouches() {
+    Keyboard.dismiss;
+    return false;
   }
 
   createFormData(photo, body) {
@@ -228,12 +235,17 @@ export default class NewSearch extends Component {
 
   render() {
     const { modalIsVisible } = this.state;
+
+    let TouchablePlatformSpecific =
+      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+
     return (
       <View
         style={[
           { flex: 1 },
           modalIsVisible && { backgroundColor: "rgba(0, 0, 0, 0.05)" }
         ]}
+        onStartShouldSetResponder={this.handleUnhandledTouches}
       >
         <BackHeader
           navigation={this.props.navigation}
@@ -256,7 +268,7 @@ export default class NewSearch extends Component {
 
           <View>
             <View style={styles.ButtonContainer}>
-              <TouchableNativeFeedback onPress={this.onUploadFile.bind(this)}>
+              <TouchablePlatformSpecific onPress={this.onUploadFile.bind(this)}>
                 <View
                   style={[
                     styles.Button,
@@ -270,8 +282,8 @@ export default class NewSearch extends Component {
                   />
                   <Text style={styles.TextDark}>Inserir{"\n"}anexo</Text>
                 </View>
-              </TouchableNativeFeedback>
-              <TouchableNativeFeedback
+              </TouchablePlatformSpecific>
+              <TouchablePlatformSpecific
                 onPress={this.onCreateDraftQuestion.bind(this)}
               >
                 <View
@@ -287,9 +299,11 @@ export default class NewSearch extends Component {
                   />
                   <Text style={styles.TextDark}>Salvar como{"\n"}rascunho</Text>
                 </View>
-              </TouchableNativeFeedback>
+              </TouchablePlatformSpecific>
             </View>
-            <TouchableNativeFeedback onPress={this.onCreateQuestion.bind(this)}>
+            <TouchablePlatformSpecific
+              onPress={this.onCreateQuestion.bind(this)}
+            >
               <View style={styles.Button}>
                 <Icon
                   style={[styles.Icon, { color: "#FFF" }]}
@@ -298,7 +312,7 @@ export default class NewSearch extends Component {
                 />
                 <Text style={styles.TextLight}>Enviar pergunta</Text>
               </View>
-            </TouchableNativeFeedback>
+            </TouchablePlatformSpecific>
           </View>
         </View>
 
