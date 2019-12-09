@@ -12,14 +12,7 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-import BackHeader from "../components/BackHeader";
-
 export default class RelatedQuestionsView extends Component {
-  /*Removendo header padrão*/
-  static navigationOptions = {
-    header: null
-  };
-
   render() {
     const questions = this.props.navigation.state.params.questions;
     const user_questions = this.props.navigation.state.params.user_questions;
@@ -30,11 +23,6 @@ export default class RelatedQuestionsView extends Component {
 
     return (
       <View style={{ flex: 1 }}>
-        <BackHeader
-          navigation={this.props.navigation}
-          name="Perguntas relacionadas"
-        />
-
         <ScrollView>
           {user_questions && (
             <View>

@@ -140,14 +140,14 @@ const App = createStackNavigator(
     RelatedQuestionsView: {
       screen: RelatedQuestionsView,
       navigationOptions: {
-        title: "RelatedQuestionsView"
+        title: "Perguntas relacionadas"
       }
     },
 
     Search: {
       screen: Search,
       navigationOptions: {
-        title: "Search"
+        title: "Como posso te ajudar?"
       }
     },
 
@@ -175,86 +175,92 @@ const App = createStackNavigator(
     EditQuestion: {
       screen: EditQuestion,
       navigationOptions: {
-        title: "EditQuestion"
+        title: "Editar pergunta"
       }
     },
 
     Question: {
       screen: Question,
       navigationOptions: {
-        title: "Question"
+        title: "Como posso te ajudar?"
       }
     },
 
     DraftIssues: {
       screen: DraftIssues,
       navigationOptions: {
-        title: "DraftIssues"
+        title: "Rascunhos"
       }
     },
 
     CanceledIssues: {
       screen: CanceledIssues,
       navigationOptions: {
-        title: "CanceledIssues"
+        title: "Devolvidas/Canceladas"
       }
     },
 
     AnsweredIssues: {
       screen: AnsweredIssues,
       navigationOptions: {
-        title: "AnsweredIssues"
+        title: "Respondidas"
       }
     },
 
     SubmittedIssues: {
       screen: SubmittedIssues,
       navigationOptions: {
-        title: "SubmittedIssues"
+        title: "Enviadas"
       }
     },
 
     Overlay: {
       screen: Overlay,
       navigationOptions: {
-        title: "Overlay"
+        title: "Respondidas"
       }
     },
 
     ShowObservation: {
       screen: ShowObservation,
       navigationOptions: {
-        title: "ShowObservation"
+        title: "Observação"
       }
     },
 
     RelatedIssueView: {
       screen: RelatedIssueView,
       navigationOptions: {
-        title: "RelatedIssueView"
+        title: "Pergunta relacionada"
       }
     },
 
     ShowDetails: {
       screen: ShowDetails,
       navigationOptions: {
-        title: "ShowDetails"
+        title: "Detalhes"
       }
     },
 
     EditCanceledIssue: {
       screen: EditCanceledIssue,
       navigationOptions: {
-        title: "EditCanceledIssue"
+        title: "Atualizar pergunta"
       }
     },
 
     FAQ: {
-      screen: FAQ
+      screen: FAQ,
+      navigationOptions: {
+        title: "Dúvidas frequentes"
+      }
     },
 
     FaqElement: {
-      screen: FaqElement
+      screen: FaqElement,
+      navigationOptions: {
+        title: "Dúvida"
+      }
     },
 
     Success: {
@@ -262,6 +268,15 @@ const App = createStackNavigator(
     }
   },
   {
+    defaultNavigationOptions: {
+      headerTintColor: "#fff",
+      headerStyle: {
+        backgroundColor: "#3c8dbc"
+      }
+    },
+    navigationOptions: {
+      tabBarLabel: "Home!"
+    },
     transitionConfig: NavigationConfig
   }
 );

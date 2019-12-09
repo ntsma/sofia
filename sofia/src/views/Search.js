@@ -13,17 +13,12 @@ import {
 import { Icon, Textarea } from "native-base";
 
 import AsyncStorage from "@react-native-community/async-storage";
-import BackHeader from "../components/BackHeader";
 import NetInfo from "@react-native-community/netinfo";
 
 import Requests from "../services/Request";
 import styles from "../Styles/Styles";
 
 export default class Search extends Component {
-  static navigationOptions = {
-    header: null
-  };
-
   constructor() {
     super();
     this.state = {
@@ -85,10 +80,6 @@ export default class Search extends Component {
 
     return (
       <View onStartShouldSetResponder={this.handleUnhandledTouches}>
-        <BackHeader
-          navigation={this.props.navigation}
-          name="Como posso te ajudar?"
-        />
         {this.state.isLoading ? (
           <ActivityIndicator
             style={searchStyles.load}

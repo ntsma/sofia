@@ -12,25 +12,15 @@ import {
   Dimensions,
   StyleSheet
 } from "react-native";
-
 import { Icon } from "native-base";
 
-import BackHeader from "../components/BackHeader";
-
 export default class ShowObservation extends Component {
-  /*Removendo header padrão*/
-  static navigationOptions = {
-    header: null
-  };
-
   render() {
     const item = this.props.navigation.state.params.item;
     let TouchablePlatformSpecific =
       Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
     return (
       <View style={{ flex: 1 }}>
-        <BackHeader navigation={this.props.navigation} name="Observação" />
-
         <Card title="Observação">
           <Text style={{ marginBottom: 150 }}>
             {

@@ -1,7 +1,6 @@
 /*EditQuestion.js*/
 
 import React, { Component } from "react";
-
 import {
   ActivityIndicator,
   Dimensions,
@@ -16,19 +15,10 @@ import {
 import { Icon, Textarea } from "native-base";
 
 import AsyncStorage from "@react-native-community/async-storage";
-
-import BackHeader from "../components/BackHeader";
-
 import NetInfo from "@react-native-community/netinfo";
-
 import Requests from "../services/Request";
 
 export default class EditQuestion extends Component {
-  /*Removendo header padrão*/
-  static navigationOptions = {
-    header: null
-  };
-
   constructor() {
     super();
     this.state = {
@@ -218,10 +208,6 @@ export default class EditQuestion extends Component {
 
     return (
       <View>
-        <BackHeader
-          navigation={this.props.navigation}
-          name="Como posso te ajudar?"
-        />
         {this.state.isLoading ? (
           <ActivityIndicator style={styles.load} size="large" color="#3c8dbc" />
         ) : (

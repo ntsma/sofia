@@ -12,15 +12,9 @@ import {
   FlatList
 } from "react-native";
 
-import BackHeader from "../components/BackHeader";
 import { Icon } from "native-base";
 
 export default class FAQ extends Component {
-  /*Removendo header padrão da tela*/
-  static navigationOptions = {
-    header: null
-  };
-
   render() {
     const questions = [
       {
@@ -96,11 +90,6 @@ export default class FAQ extends Component {
 
     return (
       <View>
-        <BackHeader
-          navigation={this.props.navigation}
-          name="Dúvidas Frequentes"
-        />
-
         <FlatList
           data={questions}
           keyExtractor={(item, index) => item.title}

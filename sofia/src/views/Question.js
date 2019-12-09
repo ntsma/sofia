@@ -17,17 +17,11 @@ import { Icon, Textarea } from "native-base";
 import AsyncStorage from "@react-native-community/async-storage";
 import NetInfo from "@react-native-community/netinfo";
 import ImagePicker from "react-native-image-picker";
-import BackHeader from "../components/BackHeader";
 import ModalComponent from "../components/ModalComponent";
 
 import Requests from "../services/Request";
 
 export default class NewSearch extends Component {
-  /*Removendo header padrão*/
-  static navigationOptions = {
-    header: null
-  };
-
   constructor() {
     super();
     this.state = {
@@ -247,10 +241,6 @@ export default class NewSearch extends Component {
         ]}
         onStartShouldSetResponder={this.handleUnhandledTouches}
       >
-        <BackHeader
-          navigation={this.props.navigation}
-          name="Como posso te ajudar?"
-        />
         <View style={styles.Container}>
           <Text style={styles.Title}>
             Digite aqui sua pergunta para que sejam encontradas respostas
