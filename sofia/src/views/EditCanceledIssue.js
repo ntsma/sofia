@@ -1,10 +1,7 @@
 /*EditQuestion.js*/
 
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  View
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import {
   Button,
@@ -14,20 +11,12 @@ import {
   Icon,
   Label,
   Text,
-  Textarea,
-
+  Textarea
 } from "native-base";
 
-import AsyncStorage from '@react-native-community/async-storage';
-
-import BackHeader from "../components/BackHeader";
+import AsyncStorage from "@react-native-community/async-storage";
 
 export default class EditQuestion extends Component {
-  /*Removendo header padrão*/
-  static navigationOptions = {
-    header: null
-  };
-
   constructor() {
     super();
     this.state = {
@@ -37,7 +26,7 @@ export default class EditQuestion extends Component {
 
   componentDidMount() {
     this.setState({
-      "question": this.props.navigation.state.params.item.description
+      question: this.props.navigation.state.params.item.description
     });
   }
 
@@ -52,29 +41,28 @@ export default class EditQuestion extends Component {
     let formdata = new FormData();
 
     formdata.append("type_id", 52);
-    formdata.append("mode", 'send');
+    formdata.append("mode", "send");
     formdata.append("description", question);
 
     console.debug(formdata);
 
-    return fetch('http://sofia.huufma.br/api/solicitation/' + item.id, {
-        method: 'POST',
-        headers: {
-          Authorization: "Bearer " + token
-        },
-        body: formdata,
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
+    return fetch("http://sofia.huufma.br/api/solicitation/" + item.id, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token
+      },
+      body: formdata
+    })
+      .then(response => response.json())
+      .then(responseJson => {
         console.debug("RESPOSTA");
         console.debug(responseJson);
 
         this.props.navigation.navigate("HomeScreen");
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
       });
-
   }
 
   render() {
@@ -82,25 +70,32 @@ export default class EditQuestion extends Component {
 
     return (
       <Container>
-        <BackHeader navigation={this.props.navigation} name="Atualizar Pergunta"/>
-
         <Content>
-
           <Form style={styles.container}>
             <View style={styles.title}>
               <Label style={styles.textTitle}>Descreva sua pergunta</Label>
             </View>
-            <Textarea value={this.state.question} style={styles.textArea} rowSpan={10} onChangeText={(question) => this.setState({question})} placeholder="Sua pergunta..." placeholderTextColor="#ccc" bordered />
-              <Button block success style={styles.button} onPress={this.onCreateQuestion.bind(this)}>
-                <Text>Atualizar</Text>
-                <Icon type="MaterialIcons" name="file-upload"/>
-              </Button>
-              <View style={{height: 3}}>
-              </View>
+            <Textarea
+              value={this.state.question}
+              style={styles.textArea}
+              rowSpan={10}
+              onChangeText={question => this.setState({ question })}
+              placeholder="Sua pergunta..."
+              placeholderTextColor="#ccc"
+              bordered
+            />
+            <Button
+              block
+              success
+              style={styles.button}
+              onPress={this.onCreateQuestion.bind(this)}
+            >
+              <Text>Atualizar</Text>
+              <Icon type="MaterialIcons" name="file-upload" />
+            </Button>
+            <View style={{ height: 3 }}></View>
           </Form>
-
-         </Content>
-
+        </Content>
       </Container>
     );
   }
@@ -108,35 +103,35 @@ export default class EditQuestion extends Component {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#3c8dbc",
+    backgroundColor: "#3c8dbc"
   },
   image: {
     width: 40,
     height: 40
   },
   button: {
-    width: '90%',
+    width: "90%",
     height: 60,
     marginTop: 10,
-    marginLeft: '5%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginLeft: "5%",
+    justifyContent: "center",
+    alignItems: "center"
   },
   container: {
-    alignItems: 'center'
+    alignItems: "center"
   },
   title: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'stretch',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "stretch",
     margin: 10
   },
   textTitle: {
     fontSize: 20
   },
   textArea: {
-    width: '90%',
-    backgroundColor: '#f6f6f6'
+    width: "90%",
+    backgroundColor: "#f6f6f6"
   }
 });

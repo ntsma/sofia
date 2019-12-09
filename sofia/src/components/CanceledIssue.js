@@ -3,22 +3,28 @@ import React, { Component } from "react";
 import { StyleSheet } from "react-native";
 import { Badge, Body, Icon, Left, Right, ListItem, Text } from "native-base";
 
-export default class CanceledIssue extends Component {
+import BadgeContent from "../components/BadgeContent";
 
+export default class CanceledIssue extends Component {
   render() {
     const item = this.props.question;
 
     return (
-      <ListItem thumbnail style={styles.list}
-        onPress={() => this.props.navigation.navigate("ShowObservation", {item})}>
+      <ListItem
+        thumbnail
+        style={styles.list}
+        onPress={() =>
+          this.props.navigation.navigate("ShowObservation", { item })
+        }
+      >
         <Left>
           <Icon style={styles.inbox} type="MaterialIcons" name="inbox" />
         </Left>
         <Body>
-          <Text numberOfLines={1} style={styles.bodyText}>{item.description}</Text>
-          <Badge style={styles.badge}>
-            <Text style={styles.badgeText}>Cancelada</Text>
-          </Badge>
+          <Text numberOfLines={1} style={styles.bodyText}>
+            {item.description}
+          </Text>
+          <BadgeContent status_id={item.status_id} />
         </Body>
         <Right>
           <Icon style={styles.next} type="MaterialIcons" name="chevron-right" />
@@ -28,14 +34,14 @@ export default class CanceledIssue extends Component {
   }
 }
 
-const styles = StyleSheet.create ({
+const styles = StyleSheet.create({
   bodyText: {
     marginTop: -5
   },
   inbox: {
     width: 30,
     height: 30,
-    fontSize: 30,
+    fontSize: 30
   },
   badge: {
     height: 20,
