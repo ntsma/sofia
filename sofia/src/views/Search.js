@@ -34,7 +34,7 @@ export default class Search extends Component {
   }
 
   handleUnhandledTouches() {
-    Keyboard.dismiss;
+    Keyboard.dismiss();
     return false;
   }
 

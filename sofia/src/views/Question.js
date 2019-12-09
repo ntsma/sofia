@@ -62,7 +62,7 @@ export default class NewSearch extends Component {
   }
 
   handleUnhandledTouches() {
-    Keyboard.dismiss;
+    Keyboard.dismiss();
     return false;
   }
 
