@@ -32,6 +32,7 @@ import RelatedIssueView from "./src/views/RelatedIssueView";
 import FAQ from "./src/views/FAQ";
 import FaqElement from "./src/views/FaqElement";
 import Success from "./src/views/Success";
+import EvaluationFeedback from './src/views/EvaluationFeedback';
 
 class Home extends Component {
   state = {
@@ -126,6 +127,13 @@ const App = createStackNavigator(
       screen: HomeScreen,
       navigationOptions: {
         title: "HomeScreen"
+      }
+    },
+
+    EvaluationFeedback: {
+      screen: EvaluationFeedback,
+      navigationOptions: {
+        title: "EvaluationFeedback"
       }
     },
 
