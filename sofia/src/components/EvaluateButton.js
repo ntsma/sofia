@@ -1,37 +1,8 @@
 import React, { Component } from "react";
-import {
-  Alert,
-  AppRegistry,
-  Dimensions,
-  KeyboardAvoidingView,
-  TouchableOpacity,
-  Image,
-  TextInput,
-  StyleSheet,
-  View
-} from "react-native";
 
 import {
-  Badge,
-  Body,
   Button,
-  Container,
-  Content,
-  Form,
-  Header,
-  Icon,
-  Item,
-  Input,
-  Label,
-  Left,
-  Right,
-  Tab,
-  TabHeading,
-  Tabs,
   Text,
-  Textarea,
-  Title,
-  Thumbnail
 } from "native-base";
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -48,7 +19,7 @@ export default class EvaluateButton extends Component {
       console.debug(response);
 
       shouldUpdate = true;
-      this.props.navigation.navigate("HomeScreen", {shouldUpdate});
+      this.props.navigation.navigate("EvaluationFeedback", {shouldUpdate});
 
     })
     .catch(error => {
@@ -64,7 +35,7 @@ export default class EvaluateButton extends Component {
       console.debug(response);
 
       shouldUpdate = true;
-      this.props.navigation.navigate("HomeScreen", {shouldUpdate});
+      this.props.navigation.navigate("EvaluationFeedback", {shouldUpdate});
 
     })
     .catch(error => {
