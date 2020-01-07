@@ -46,13 +46,11 @@ export default class Login extends Component {
     const email = this.state.email;
     const password = this.state.password;
 
-    console.log(email);
-
     login(email, password)
       .then(response => {
-        const { token, message } = response;
+        const { token, forwards_indications } = response;
 
-        this.saveCredentials(token);
+        this.saveCredentials(token, forwards_indications);
       })
       .catch(response => {
         this.handleOpen();
@@ -60,10 +58,14 @@ export default class Login extends Component {
   };
 
   /*Guarda o token de acesso no armazenamento local.*/
-  saveCredentials = async token => {
+  saveCredentials = async (token, forwards_indications) => {
     try {
       await AsyncStorage.setItem("token", token);
       await AsyncStorage.setItem("logging", "true");
+      await AsyncStorage.setItem("forwards_indications", forwards_indications.toString());
+
+      console.log("ENCAMINHAMENTO ------------")
+      console.log(await AsyncStorage.getItem("forwards_indications"));
 
       this.props.navigation.navigate("HomeScreen");
     } catch (error) {

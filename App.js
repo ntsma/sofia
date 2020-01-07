@@ -23,7 +23,6 @@ import Overlay from "./src/views/Overlay";
 import Question from "./src/views/Question";
 import EditQuestion from "./src/views/EditQuestion";
 import ShowObservation from "./src/views/ShowObservation";
-import EditCanceledIssue from "./src/views/EditCanceledIssue";
 import ShowDetails from "./src/views/ShowDetails";
 import RelatedQuestionsView from "./src/views/RelatedQuestionsView";
 import Search from "./src/views/Search";
@@ -239,13 +238,6 @@ const App = createStackNavigator(
       screen: ShowDetails,
       navigationOptions: {
         title: "Detalhes"
-      }
-    },
-
-    EditCanceledIssue: {
-      screen: EditCanceledIssue,
-      navigationOptions: {
-        title: "Atualizar pergunta"
       }
     },
 
