@@ -88,6 +88,28 @@ exports.sendRequest = (token, description, file_ids) => {
   });
 };
 
+exports.updateRequest = (token, description) => {
+  return new Promise((resolve, reject) => {
+    let formdata = new FormData();
+
+    formdata.append("type_id", 52);
+    formdata.append("mode", "send");
+    formdata.append("description", description);
+
+    API.post("/solicitation/" + item.id, formdata, {
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    })
+      .then(function(response) {
+        resolve(response.data);
+      })
+      .catch(function(error) {
+        reject(error);
+      });
+  });
+};
+
 exports.searchRequests = (token, description) => {
   return new Promise((resolve, reject) => {
     let formdata = new FormData();
