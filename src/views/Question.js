@@ -20,6 +20,7 @@ import ImagePicker from "react-native-image-picker";
 import ModalComponent from "../components/ModalComponent";
 
 import Requests from "../services/Request";
+import {uploadImages} from '../services/Images';
 
 export default class NewSearch extends Component {
   constructor() {
@@ -102,50 +103,23 @@ export default class NewSearch extends Component {
           source: response
         });
 
-        console.log("Carregando imagem...");
-        console.log(this.state.source.fileName);
+        uploadImages(token, response)
+        .then(response => {
+          console.log("upload success", response);
 
-        console.log("TOKEN");
-        console.log(token);
+          this.handleOpen("Foto carregada com sucesso.", false);
 
-        console.log("BODY");
-        console.log(this.createFormData(this.state.source, { userId: "123" }));
+          ids = "";
+          for (index in response.files) {
+            ids += response.files[index].fileID + ", ";
+          }
 
-        const data = new FormData();
-
-        data.append("photos[]", {
-          uri: response.uri,
-          name: response.fileName,
-          type: "image/jpg"
-        });
-
-        fetch("http://sofia.huufma.br/api/solicitation/file/upload", {
-          method: "POST",
-          Accept: "application/json",
-          "Content-Type":
-            "multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d",
-          headers: {
-            Authorization: "Bearer " + token
-          },
-          body: data
+          this.setState({ file_ids: ids });
         })
-          .then(response => response.json())
-          .then(response => {
-            console.log("upload success", response);
-
-            this.handleOpen("Foto carregada com sucesso.", false);
-
-            ids = "";
-            for (index in response.files) {
-              ids += response.files[index].fileID + ", ";
-            }
-
-            this.setState({ file_ids: ids });
-          })
-          .catch(error => {
-            console.log("upload error", error);
-            alert("O carregamento da foto falhou!");
-          });
+        .catch(error => {
+          console.log("upload error", error);
+          alert("O carregamento da foto falhou!");
+        });
       }
     });
   }
@@ -312,7 +286,7 @@ export default class NewSearch extends Component {
             isModalVisible={this.modalIsVisible}
             content={
               <View>
-                <Text style={{ backgroundColor: "00FF00" }}>
+                <Text>
                   {this.state.message}
                 </Text>
               </View>

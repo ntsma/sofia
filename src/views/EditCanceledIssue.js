@@ -16,53 +16,36 @@ import {
 
 import AsyncStorage from "@react-native-community/async-storage";
 
+import Requests from '../services/Request';
+
 export default class EditQuestion extends Component {
   constructor() {
     super();
     this.state = {
-      question: ""
+      description: ""
     };
   }
 
   componentDidMount() {
     this.setState({
-      question: this.props.navigation.state.params.item.description
+      description: this.props.navigation.state.params.item.description
     });
   }
 
-  async updateRequest() {
-    const item = this.props.navigation.state.params.item;
-    var token = await AsyncStorage.getItem("token");
-    var question = this.state.question;
+  updateRequest = async () => {
+    const request_id = this.props.navigation.state.params.item.id;
+    const token = await AsyncStorage.getItem("token");
+    const description = this.state.description;
 
-    console.debug("DENTRO DE QUESTION");
-    console.debug(question);
-
-    let formdata = new FormData();
-
-    formdata.append("type_id", 52);
-    formdata.append("mode", "send");
-    formdata.append("description", question);
-
-    console.debug(formdata);
-
-    return fetch("http://sofia.huufma.br/api/solicitation/" + item.id, {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token
-      },
-      body: formdata
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        console.debug("RESPOSTA");
-        console.debug(responseJson);
-
-        this.props.navigation.navigate("HomeScreen");
-      })
-      .catch(error => {
-        console.error(error);
+    Requests.updateRequest(token, description, request_id)
+    .then(response => {
+      this.props.navigation.navigate("HomeScreen", {
+        shouldUpdate: true
       });
+    })
+    .catch(error => {
+      console.error(error);
+    });
   }
 
   render() {
@@ -76,10 +59,10 @@ export default class EditQuestion extends Component {
               <Label style={styles.textTitle}>Descreva sua pergunta</Label>
             </View>
             <Textarea
-              value={this.state.question}
+              value={this.state.description}
               style={styles.textArea}
               rowSpan={10}
-              onChangeText={question => this.setState({ question })}
+              onChangeText={description => this.setState({ description })}
               placeholder="Sua pergunta..."
               placeholderTextColor="#ccc"
               bordered
