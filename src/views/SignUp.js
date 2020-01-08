@@ -19,6 +19,8 @@ import { TextInputMask } from "react-native-masked-text";
 
 import styles from "../Styles/Styles";
 
+import {checkEmailAndCPF} from '../services/Utils';
+
 export default class SignUp extends Component {
   constructor() {
     super();
@@ -31,42 +33,29 @@ export default class SignUp extends Component {
     };
   }
 
-  signUp() {
-    console.log(this.state);
+  signUp = async () => {
+    const {email, cpf} = this.state;
 
-    let formdata = new FormData();
+    checkEmailAndCPF(email, cpf)
+    .then(response => {
+      var message = "";
 
-    formdata.append("email", this.state.email);
-    formdata.append("cpf", this.state.cpf);
+      if (response.message == "success") {
+        message =
+          "Iremos confirmar os dados fornecidos nas Bases Públicas de Profissionais de Saúde e em alguns minutos lhe enviaremos um email com a confirmação de acesso a Sofia.";
+      } else {
+        message = "Email e CPF inválidos ou já cadastrados!";
+      }
 
-    console.log(formdata);
-
-    return fetch("http://sofia.huufma.br/api/check", {
-      method: "POST",
-      body: formdata
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        var message = "";
-
-        console.log(responseJson);
-
-        if (responseJson.message == "success") {
-          message =
-            "Iremos confirmar os dados fornecidos nas Bases Públicas de Profissionais de Saúde e em alguns minutos lhe enviaremos um email com a confirmação de acesso a Sofia.";
-        } else {
-          message = "Email e CPF inválidos ou já cadastrados!";
-        }
-
-        this.setState({
-          message: message
-        });
-
-        this.handleOpen();
-      })
-      .catch(error => {
-        console.error(error);
+      this.setState({
+        message: message
       });
+
+      this.handleOpen();
+    })
+    .catch(error => {
+      console.error(error);
+    });
   }
 
   handleOpen = value => {

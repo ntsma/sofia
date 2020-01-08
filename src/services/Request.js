@@ -88,6 +88,28 @@ exports.sendRequest = (token, description, file_ids) => {
   });
 };
 
+exports.updateRequest = (token, description) => {
+  return new Promise((resolve, reject) => {
+    let formdata = new FormData();
+
+    formdata.append("type_id", 52);
+    formdata.append("mode", "send");
+    formdata.append("description", description);
+
+    API.post("/solicitation/" + item.id, formdata, {
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    })
+      .then(function(response) {
+        resolve(response.data);
+      })
+      .catch(function(error) {
+        reject(error);
+      });
+  });
+};
+
 exports.searchRequests = (token, description) => {
   return new Promise((resolve, reject) => {
     let formdata = new FormData();
@@ -132,6 +154,29 @@ exports.sendDraftRequest = (token, description, file_ids) => {
   });
 };
 
+exports.updateDraftRequest = (token, description, id) => {
+  return new Promise((resolve, reject) => {
+    let formdata = new FormData();
+
+    formdata.append("type_id", 52);
+    formdata.append("mode", "draft");
+    formdata.append("description", description);
+    formdata.append("mobile", 1);
+
+    API.post("/solicitation/" + id, formdata, {
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    })
+      .then(function(response) {
+        resolve(response.data);
+      })
+      .catch(function(error) {
+        reject(error);
+      });
+  });
+};
+
 exports.deleteDraftRequest = (token, id) => {
   return new Promise((resolve, reject) => {
     API.get("/solicitation/destroy/" + id, {
@@ -151,6 +196,22 @@ exports.deleteDraftRequest = (token, id) => {
 exports.getCBO = token => {
   return new Promise((resolve, reject) => {
     API.get("/cbo/list", {
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    })
+      .then(function(response) {
+        resolve(response.data);
+      })
+      .catch(function(error) {
+        reject(error);
+      });
+  });
+};
+
+exports.getRequest = (token, id) => {
+  return new Promise((resolve, reject) => {
+    API.get("/answer/read/" + id, {
       headers: {
         Authorization: "Bearer " + token
       }

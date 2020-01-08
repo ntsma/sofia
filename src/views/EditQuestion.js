@@ -16,67 +16,56 @@ import { Icon, Textarea } from "native-base";
 
 import AsyncStorage from "@react-native-community/async-storage";
 import NetInfo from "@react-native-community/netinfo";
+import ImagePicker from "react-native-image-picker";
+import ModalComponent from "../components/ModalComponent";
+
 import Requests from "../services/Request";
+
+import {uploadImages} from '../services/Images';
 
 export default class EditQuestion extends Component {
   constructor() {
     super();
     this.state = {
-      question: ""
+      description: "",
+      modalIsVisible: false,
+      message: "",
+      success: true
     };
   }
 
   componentDidMount() {
     this.setState({
-      question: this.props.navigation.state.params.item.description
+      description: this.props.navigation.state.params.item.description
     });
   }
 
-  onUpdateRequest = async () => {
-    const item = this.props.navigation.state.params.item;
-    var token = await AsyncStorage.getItem("token");
-    var question = this.state.question;
+  updateRequest = async () => {
+    const request_id = this.props.navigation.state.params.item.id;
+    const token = await AsyncStorage.getItem("token");
+    const description = this.state.description;
 
-    console.debug("DENTRO DE QUESTION");
-    console.debug(question);
-
-    let formdata = new FormData();
-
-    formdata.append("type_id", 52);
-    formdata.append("mode", "send");
-    formdata.append("description", question);
-
-    console.debug(formdata);
-
-    return fetch("http://sofia.huufma.br/api/solicitation/" + item.id, {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token
-      },
-      body: formdata
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        console.debug("RESPOSTA");
-        console.debug(responseJson);
-
-        this.props.navigation.navigate("HomeScreen");
-      })
-      .catch(error => {
-        console.error(error);
+    Requests.updateRequest(token, description, request_id)
+    .then(response => {
+      this.props.navigation.navigate("HomeScreen", {
+        shouldUpdate: true
       });
-  };
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
 
   async onCreateQuestion() {
     var token = await AsyncStorage.getItem("token");
-    var question = this.state.question;
+    var description = this.state.description;
 
     NetInfo.fetch().then(state => {
       if (state.isConnected) {
-        Requests.sendRequest(token, question, this.state.file_ids)
+        Requests.sendRequest(token, description, this.state.file_ids)
           .then(response => {
             this.setState({
-              question: ""
+              description: ""
             });
 
             shouldUpdate = true;
@@ -87,49 +76,43 @@ export default class EditQuestion extends Component {
           });
       } else {
         this.saveDraftIntoAsyncStorage({
-          id: this.state.question.length + 1,
-          description: question,
+          id: this.state.description.length + 1,
+          description: description,
           file_ids: this.state.file_ids
         });
       }
     });
   }
 
-  async onCreateDraftQuestion() {
-    const item = this.props.navigation.state.params.item;
-    var token = await AsyncStorage.getItem("token");
-    var question = this.state.question;
+  onUpdateDraftRequest = async () => {
+    const request_id = this.props.navigation.state.params.item.id;
+    const token = await AsyncStorage.getItem("token");
+    const description = this.state.description;
 
-    console.debug("DENTRO DE QUESTION");
-    console.debug(question);
-
-    let formdata = new FormData();
-
-    formdata.append("type_id", 52);
-    formdata.append("mode", "draft");
-    formdata.append("mobile", 1);
-    formdata.append("description", question);
-
-    console.debug(formdata);
-
-    return fetch("http://sofia.huufma.br/api/solicitation/" + item.id, {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token
-      },
-      body: formdata
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        console.debug("RESPOSTA");
-        console.debug(responseJson);
-
-        shouldUpdate = true;
-        this.props.navigation.navigate("HomeScreen", { shouldUpdate });
-      })
-      .catch(error => {
-        console.error(error);
+    Requests.updateDraftRequest(token, description, request_id)
+    .then(response => {
+      this.props.navigation.navigate("HomeScreen", { 
+        shouldUpdate: true
       });
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
+
+  handleOpen(message, success) {
+    this.setState({
+      modalIsVisible: true,
+      message: message,
+      success: success
+    });
+  }
+
+  handleClose() {
+    this.setState({ modalIsVisible: false });
+    if (this.state.success) {
+      this.props.navigation.navigate("HomeScreen", { shouldUpdate });
+    }
   }
 
   async onUploadFile() {
@@ -142,6 +125,7 @@ export default class EditQuestion extends Component {
         path: "images"
       }
     };
+  
 
     ImagePicker.launchImageLibrary(options, response => {
       if (response.didCancel) {
@@ -153,49 +137,23 @@ export default class EditQuestion extends Component {
           source: response
         });
 
-        console.log("Carregando imagem...");
-        console.log(this.state.source.fileName);
+        uploadImages(token, response)
+        .then(response => {
+          console.log("upload success", response);
 
-        console.log("TOKEN");
-        console.log(token);
+          this.handleOpen("Foto carregada com sucesso.", false);
 
-        console.log("BODY");
-        console.log(this.createFormData(this.state.source, { userId: "123" }));
+          ids = "";
+          for (index in response.files) {
+            ids += response.files[index].fileID + ", ";
+          }
 
-        const data = new FormData();
-
-        data.append("photos[]", {
-          uri: response.uri,
-          name: response.fileName,
-          type: "image/jpg"
-        });
-
-        fetch("http://sofia.huufma.br/api/solicitation/file/upload", {
-          method: "POST",
-          Accept: "application/json",
-          "Content-Type":
-            "multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d",
-          headers: {
-            Authorization: "Bearer " + token
-          },
-          body: data
+          this.setState({ file_ids: ids });
         })
-          .then(response => response.json())
-          .then(response => {
-            console.log("upload success", response);
-            alert("Foto carregada com sucesso!");
-
-            ids = "";
-            for (index in response.files) {
-              ids += response.files[index].fileID + ", ";
-            }
-
-            this.setState({ file_ids: ids });
-          })
-          .catch(error => {
-            console.log("upload error", error);
-            alert("O carregamento da foto falhou!");
-          });
+        .catch(error => {
+          console.log("upload error", error);
+          alert("O carregamento da foto falhou!");
+        });
       }
     });
   }
@@ -205,6 +163,9 @@ export default class EditQuestion extends Component {
 
     let TouchablePlatformSpecific =
       Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+
+    const { modalIsVisible } = this.state;
+
 
     return (
       <View>
@@ -219,8 +180,8 @@ export default class EditQuestion extends Component {
 
             <Textarea
               style={styles.Input}
-              value={this.state.question}
-              onChangeText={question => this.setState({ question })}
+              value={this.state.description}
+              onChangeText={description => this.setState({ description })}
               placeholder="Digite aqui..."
               placeholderTextColor="#999"
               bordered
@@ -246,7 +207,7 @@ export default class EditQuestion extends Component {
                   </View>
                 </TouchablePlatformSpecific>
                 <TouchablePlatformSpecific
-                  onPress={this.onCreateDraftQuestion.bind(this)}
+                  onPress={this.onUpdateDraftRequest}
                 >
                   <View
                     style={[
@@ -294,6 +255,20 @@ export default class EditQuestion extends Component {
               )}
             </View>
           </View>
+        )}
+
+        {modalIsVisible && (
+          <ModalComponent
+            handleClose={this.handleClose.bind(this)}
+            isModalVisible={this.modalIsVisible}
+            content={
+              <View>
+                <Text>
+                  {this.state.message}
+                </Text>
+              </View>
+            }
+          />
         )}
       </View>
     );
