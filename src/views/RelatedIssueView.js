@@ -20,6 +20,8 @@ import ModalComponent from "../components/ModalComponent";
 
 import AsyncStorage from "@react-native-community/async-storage";
 
+import {getRequest} from "../services/Request";
+
 export default class RelatedIssueView extends Component {
   static navigationOptions = {
     header: null
@@ -64,37 +66,25 @@ export default class RelatedIssueView extends Component {
   /*Obtendo as questões enviadas para a Sofia pelo Token*/
   async getRelatedIssue() {
     const token = await AsyncStorage.getItem("token");
+    const request_id = this.props.navigation.state.params.item.id;
 
-    return fetch(
-      "http://sofia.huufma.br/api/answer/read/" +
-        this.props.navigation.state.params.item.id,
-      {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + token
-        }
-      }
-    )
-      .then(response => response.json())
-      .then(responseJson => {
-        console.debug("RETURNING...");
-        console.debug(responseJson);
-
-        this.setState({
-          answer_id: responseJson.data.answer_id,
-          data: responseJson.data,
-          status_description: responseJson.data.status_description,
-          answer: responseJson.data.answer,
-          complement: responseJson.data.complement,
-          attributes: responseJson.data.attributes,
-          permanent_education: responseJson.data.permanent_education,
-          references: responseJson.data.references,
-          showME: false
-        });
-      })
-      .catch(error => {
-        console.error(error);
+    getRequest(token, request_id)
+    .then(response => {
+      this.setState({
+        answer_id: response.data.answer_id,
+        data: response.data,
+        status_description: response.data.status_description,
+        answer: response.data.answer,
+        complement: response.data.complement,
+        attributes: response.data.attributes,
+        permanent_education: response.data.permanent_education,
+        references: response.data.references,
+        showME: false
       });
+    })
+    .catch(error => {
+      console.error(error);
+    });
   }
 
   render() {
