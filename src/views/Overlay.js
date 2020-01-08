@@ -11,6 +11,8 @@ import { Container, Content, Text } from "native-base";
 import Evaluation from "../components/Evaluation";
 import AsyncStorage from "@react-native-community/async-storage";
 
+import Requests from '../services/Request';
+
 export default class Overlay extends Component {
   constructor(props) {
     super(props);
@@ -30,42 +32,30 @@ export default class Overlay extends Component {
   }
 
   componentDidMount() {
-    this.getIssue();
+    this.onGetRequest();
   }
 
   /*Obtendo as questões enviadas para a Sofia pelo Token*/
-  async getIssue() {
+  onGetRequest = async () => {
     const token = await AsyncStorage.getItem("token");
+    const request_id = this.props.navigation.state.params.item.id;
 
-    console.debug("OBTENDO O TOKEN DE ACESSO...");
-    console.debug("TOKEN: " + token);
-
-    return fetch(
-      "http://sofia.huufma.br/api/answer/read/" +
-        this.props.navigation.state.params.item.id,
-      {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + token
-        }
-      }
-    )
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({
-          data: responseJson.data,
-          status_description: responseJson.data.status_description,
-          answer: responseJson.data.answer,
-          complement: responseJson.data.complement,
-          attributes: responseJson.data.attributes,
-          permanent_education: responseJson.data.permanent_education,
-          references: responseJson.data.references,
-          showME: false
-        });
-      })
-      .catch(error => {
-        console.error(error);
+    Requests.getRequest(token, request_id)
+    .then(response => {
+      this.setState({
+        data: response.data,
+        status_description: response.data.status_description,
+        answer: response.data.answer,
+        complement: response.data.complement,
+        attributes: response.data.attributes,
+        permanent_education: response.data.permanent_education,
+        references: response.data.references,
+        showME: false
       });
+    })
+    .catch(error => {
+      console.error(error);
+    });
   }
 
   render() {

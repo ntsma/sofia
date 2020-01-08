@@ -147,3 +147,20 @@ exports.deleteDraftRequest = (token, id) => {
       });
   });
 };
+
+
+exports.getRequest = (token, id) => {
+  return new Promise((resolve, reject) => {
+    API.get("/answer/read/" + id, {
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    })
+      .then(function(response) {
+        resolve(response.data);
+      })
+      .catch(function(error) {
+        reject(error);
+      });
+  });
+};
