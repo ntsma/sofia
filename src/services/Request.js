@@ -154,6 +154,29 @@ exports.sendDraftRequest = (token, description, file_ids) => {
   });
 };
 
+exports.updateDraftRequest = (token, description, id) => {
+  return new Promise((resolve, reject) => {
+    let formdata = new FormData();
+
+    formdata.append("type_id", 52);
+    formdata.append("mode", "draft");
+    formdata.append("description", description);
+    formdata.append("mobile", 1);
+
+    API.post("/solicitation/" + id, formdata, {
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    })
+      .then(function(response) {
+        resolve(response.data);
+      })
+      .catch(function(error) {
+        reject(error);
+      });
+  });
+};
+
 exports.deleteDraftRequest = (token, id) => {
   return new Promise((resolve, reject) => {
     API.get("/solicitation/destroy/" + id, {

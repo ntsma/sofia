@@ -76,41 +76,20 @@ export default class EditQuestion extends Component {
     });
   }
 
-  async onCreateDraftQuestion() {
-    const item = this.props.navigation.state.params.item;
-    var token = await AsyncStorage.getItem("token");
-    var description = this.state.description;
+  onUpdateDraftRequest = async () => {
+    const request_id = this.props.navigation.state.params.item.id;
+    const token = await AsyncStorage.getItem("token");
+    const description = this.state.description;
 
-    console.debug("DENTRO DE QUESTION");
-    console.debug(description);
-
-    let formdata = new FormData();
-
-    formdata.append("type_id", 52);
-    formdata.append("mode", "draft");
-    formdata.append("mobile", 1);
-    formdata.append("description", description);
-
-    console.debug(formdata);
-
-    return fetch("http://sofia.huufma.br/api/solicitation/" + item.id, {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token
-      },
-      body: formdata
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        console.debug("RESPOSTA");
-        console.debug(responseJson);
-
-        shouldUpdate = true;
-        this.props.navigation.navigate("HomeScreen", { shouldUpdate });
-      })
-      .catch(error => {
-        console.error(error);
+    Requests.updateDraftRequest(token, description, request_id)
+    .then(response => {
+      this.props.navigation.navigate("HomeScreen", { 
+        shouldUpdate: true
       });
+    })
+    .catch(error => {
+      console.error(error);
+    });
   }
 
   async onUploadFile() {
@@ -227,7 +206,7 @@ export default class EditQuestion extends Component {
                   </View>
                 </TouchablePlatformSpecific>
                 <TouchablePlatformSpecific
-                  onPress={this.onCreateDraftQuestion.bind(this)}
+                  onPress={this.onUpdateDraftRequest}
                 >
                   <View
                     style={[
