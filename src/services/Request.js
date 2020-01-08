@@ -147,3 +147,19 @@ exports.deleteDraftRequest = (token, id) => {
       });
   });
 };
+
+exports.getCBO = token => {
+  return new Promise((resolve, reject) => {
+    API.get("/cbo/list", {
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    })
+      .then(function(response) {
+        resolve(response.data);
+      })
+      .catch(function(error) {
+        reject(error);
+      });
+  });
+};
