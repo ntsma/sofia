@@ -155,6 +155,9 @@ export default class NewSearch extends Component {
   }
 
   async onCreateQuestion() {
+
+    // this.props.navigation.navigate("ForwardQuestion");
+
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
 

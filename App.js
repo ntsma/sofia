@@ -32,6 +32,7 @@ import FAQ from "./src/views/FAQ";
 import FaqElement from "./src/views/FaqElement";
 import Success from "./src/views/Success";
 import EvaluationFeedback from './src/views/EvaluationFeedback';
+import ForwardQuestion from './src/views/ForwardQuestion';
 
 class Home extends Component {
   state = {
@@ -252,6 +253,13 @@ const App = createStackNavigator(
       screen: FaqElement,
       navigationOptions: {
         title: "Dúvida"
+      }
+    },
+
+    ForwardQuestion: {
+      screen: ForwardQuestion,
+      navigationOptions: {
+        title: "Encaminhar Paciente"
       }
     },
 
