@@ -22,61 +22,42 @@ export default class EditQuestion extends Component {
   constructor() {
     super();
     this.state = {
-      question: ""
+      description: ""
     };
   }
 
   componentDidMount() {
     this.setState({
-      question: this.props.navigation.state.params.item.description
+      description: this.props.navigation.state.params.item.description
     });
   }
 
-  onUpdateRequest = async () => {
-    const item = this.props.navigation.state.params.item;
-    var token = await AsyncStorage.getItem("token");
-    var question = this.state.question;
+  updateRequest = async () => {
+    const request_id = this.props.navigation.state.params.item.id;
+    const token = await AsyncStorage.getItem("token");
+    const description = this.state.description;
 
-    console.debug("DENTRO DE QUESTION");
-    console.debug(question);
-
-    let formdata = new FormData();
-
-    formdata.append("type_id", 52);
-    formdata.append("mode", "send");
-    formdata.append("description", question);
-
-    console.debug(formdata);
-
-    return fetch("http://sofia.huufma.br/api/solicitation/" + item.id, {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token
-      },
-      body: formdata
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        console.debug("RESPOSTA");
-        console.debug(responseJson);
-
-        this.props.navigation.navigate("HomeScreen");
-      })
-      .catch(error => {
-        console.error(error);
+    Requests.updateRequest(token, description, request_id)
+    .then(response => {
+      this.props.navigation.navigate("HomeScreen", {
+        shouldUpdate: true
       });
-  };
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
 
   async onCreateQuestion() {
     var token = await AsyncStorage.getItem("token");
-    var question = this.state.question;
+    var description = this.state.description;
 
     NetInfo.fetch().then(state => {
       if (state.isConnected) {
-        Requests.sendRequest(token, question, this.state.file_ids)
+        Requests.sendRequest(token, description, this.state.file_ids)
           .then(response => {
             this.setState({
-              question: ""
+              description: ""
             });
 
             shouldUpdate = true;
@@ -87,8 +68,8 @@ export default class EditQuestion extends Component {
           });
       } else {
         this.saveDraftIntoAsyncStorage({
-          id: this.state.question.length + 1,
-          description: question,
+          id: this.state.description.length + 1,
+          description: description,
           file_ids: this.state.file_ids
         });
       }
@@ -98,17 +79,17 @@ export default class EditQuestion extends Component {
   async onCreateDraftQuestion() {
     const item = this.props.navigation.state.params.item;
     var token = await AsyncStorage.getItem("token");
-    var question = this.state.question;
+    var description = this.state.description;
 
     console.debug("DENTRO DE QUESTION");
-    console.debug(question);
+    console.debug(description);
 
     let formdata = new FormData();
 
     formdata.append("type_id", 52);
     formdata.append("mode", "draft");
     formdata.append("mobile", 1);
-    formdata.append("description", question);
+    formdata.append("description", description);
 
     console.debug(formdata);
 
@@ -219,8 +200,8 @@ export default class EditQuestion extends Component {
 
             <Textarea
               style={styles.Input}
-              value={this.state.question}
-              onChangeText={question => this.setState({ question })}
+              value={this.state.description}
+              onChangeText={description => this.setState({ description })}
               placeholder="Digite aqui..."
               placeholderTextColor="#999"
               bordered

@@ -312,7 +312,7 @@ export default class NewSearch extends Component {
             isModalVisible={this.modalIsVisible}
             content={
               <View>
-                <Text style={{ backgroundColor: "00FF00" }}>
+                <Text>
                   {this.state.message}
                 </Text>
               </View>
