@@ -13,6 +13,9 @@ import {
   Alert
 } from "react-native";
 
+import { TextInputMask } from "react-native-masked-text";
+import { Icon, Textarea } from "native-base";
+
 import ModalComponent from "../components/ModalComponent";
 import styles from "../Styles/Styles";
 
@@ -31,12 +34,26 @@ export default class ForwardQuestion extends Component {
       nome_mae: "",
       modalIsVisible: false,
       data: [],
-      PickerValueHolder: ""
+      PickerValueHolder: "",
+      isEspecialidade: false,
+      isSolicitado: false,
+      question: ""
     };
   }
 
   componentDidMount() {
+    this.setState({
+      question: this.props.navigation.state.params.question
+    });
+
     this.getCBOList();
+  }
+
+  getCPF(cpf) {
+    return cpf
+      .split("")
+      .filter(n => Number(n) || n == false)
+      .join("");
   }
 
   async forwardPacientData() {
@@ -45,7 +62,7 @@ export default class ForwardQuestion extends Component {
     let formdata = new FormData();
 
     formdata.append("token", token);
-    formdata.append("cpf", "27132560387");
+    formdata.append("cpf", this.getCPF(this.state.cpf));
 
     return fetch("http://sofia.huufma.br/api/patient/find", {
       method: "POST",
@@ -62,7 +79,6 @@ export default class ForwardQuestion extends Component {
         console.log(responseJson);
 
         this.setState({
-          cpf: person.cpf,
           cnes: patient.cns,
           nome: person.name,
           data_nasc: person.birthday,
@@ -87,6 +103,34 @@ export default class ForwardQuestion extends Component {
       });
   };
 
+  async onCreateForwardQuestion() {
+    var token = await AsyncStorage.getItem("token");
+    var question = this.state.question;
+
+    NetInfo.fetch().then(state => {
+      if (state.isConnected) {
+        Requests.sendRequest(token, question, this.state.file_ids, true, this.state.isEspecialidade, this.state.isSolicitado, this.state.cbo)
+          .then(response => {
+            this.setState({
+              question: ""
+            });
+
+            shouldUpdate = true;
+            this.props.navigation.navigate("Success", { shouldUpdate });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      } else {
+        this.saveDraftIntoAsyncStorage({
+          id: this.state.question.length + 1,
+          description: question,
+          file_ids: this.state.file_ids
+        });
+      }
+    });
+  }
+
   handleOpen = () => {
     this.setState({ modalIsVisible: true });
   };
@@ -97,15 +141,21 @@ export default class ForwardQuestion extends Component {
 
   render() {
     const { modalIsVisible } = this.state;
+
     let TouchablePlatformSpecific =
       Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
 
     return (
-      <View style={{ backgroundColor: "#FFF" }}>
+      <View>
         <StatusBar backgroundColor="#3c8dbc" barStyle="light-content" />
 
         <ScrollView>
           <View style={localStyles.Container}>
+            <View style={localStyles.Box}>
+              <Text style={[localStyles.Text, localStyles.Title]}>Solicitação</Text>
+              <Text style={[localStyles.Text, localStyles.Question]}>"{this.state.question}"</Text>
+            </View>
+
             <View>
               <Text style={localStyles.Text}>
                 Encaminhamento de paciente em nova solicitação. {"\n"}
@@ -113,31 +163,41 @@ export default class ForwardQuestion extends Component {
             </View>
 
             <View>
-              <Text style={localStyles.Text}>Especialidade solicitada</Text>
-              <Picker
-                style={localStyles.Picker}
-                selectedValue={this.state.PickerValueHolder}
-                onValueChange={(itemValue, itemIndex) =>
-                  this.setState({ PickerValueHolder: itemValue })
-                }
-              >
-                {this.state.data.map((item, key) => (
-                  <Picker.Item
-                    label={item.description}
-                    value={item.description}
-                    key={key}
-                  />
-                ))}
-              </Picker>
-            </View>
-
-            <View>
               <Text style={localStyles.Text}>CPF</Text>
-              <TextInput
-                style={localStyles.Input}
-                value={this.state.cpf}
-                editable={false}
-              />
+              <View
+                style={{ flexDirection: "row", justifyContent: "space-around" }}
+              >
+                <TextInputMask
+                  style={[styles.Input, { width: "80%" }]}
+                  type={"cpf"}
+                  placeholder="000.000.000-00"
+                  value={this.state.cpf}
+                  onChangeText={text => {
+                    this.setState({
+                      cpf: text
+                    });
+                  }}
+                />
+                <TouchablePlatformSpecific
+                  onPress={() => this.forwardPacientData()}
+                >
+                  <View
+                    style={[
+                      styles.Button,
+                      {
+                        width: "18%",
+                        marginTop: 20,
+                        height: 44,
+                        marginBottom: 0
+                      }
+                    ]}
+                  >
+                    <Text style={[styles.TextLight, { fontWeight: "bold" }]}>
+                      ok
+                    </Text>
+                  </View>
+                </TouchablePlatformSpecific>
+              </View>
             </View>
             <View>
               <Text style={localStyles.Text}>CNES</Text>
@@ -184,6 +244,149 @@ export default class ForwardQuestion extends Component {
               />
             </View>
 
+            <View>
+              <Text style={localStyles.Text}>
+                Há inteção de encaminhamento?
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  marginTop: 20
+                }}
+              >
+                <TouchablePlatformSpecific
+                  onPress={() => this.setState({ isEspecialidade: true })}
+                >
+                  <View
+                    style={[
+                      styles.Button,
+                      this.state.isEspecialidade
+                        ? localStyles.Selected
+                        : localStyles.Unselected
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.TextLight,
+                        this.state.isEspecialidade
+                          ? localStyles.TextSelected
+                          : localStyles.TextUnselected
+                      ]}
+                    >
+                      Sim
+                    </Text>
+                  </View>
+                </TouchablePlatformSpecific>
+
+                <TouchablePlatformSpecific
+                  onPress={() => this.setState({ isEspecialidade: false })}
+                >
+                  <View
+                    style={[
+                      styles.Button,
+                      this.state.isEspecialidade
+                        ? localStyles.Unselected
+                        : localStyles.Selected
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.TextLight,
+                        this.state.isEspecialidade
+                          ? localStyles.TextUnselected
+                          : localStyles.TextSelected
+                      ]}
+                    >
+                      Não
+                    </Text>
+                  </View>
+                </TouchablePlatformSpecific>
+              </View>
+            </View>
+
+            {this.state.isEspecialidade && (
+              <View>
+                <Text style={localStyles.Text}>Especialidade solicitada</Text>
+                <Picker
+                  style={localStyles.Picker}
+                  selectedValue={this.state.PickerValueHolder}
+                  onValueChange={(itemValue, itemIndex) =>
+                    this.setState({ PickerValueHolder: itemValue })
+                  }
+                >
+                  {this.state.data.map((item, key) => (
+                    <Picker.Item
+                      label={item.description}
+                      value={item.description}
+                      key={key}
+                    />
+                  ))}
+                </Picker>
+              </View>
+            )}
+
+            <View>
+              <Text style={localStyles.Text}>
+                Encaminhamento já solicitado?
+              </Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  marginTop: 20
+                }}
+              >
+                <TouchablePlatformSpecific
+                  onPress={() => this.setState({ isSolicitado: true })}
+                >
+                  <View
+                    style={[
+                      styles.Button,
+                      this.state.isSolicitado
+                        ? localStyles.Selected
+                        : localStyles.Unselected
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.TextLight,
+                        this.state.isSolicitado
+                          ? localStyles.TextSelected
+                          : localStyles.TextUnselected
+                      ]}
+                    >
+                      Sim
+                    </Text>
+                  </View>
+                </TouchablePlatformSpecific>
+
+                <TouchablePlatformSpecific
+                  onPress={() => this.setState({ isSolicitado: false })}
+                >
+                  <View
+                    style={[
+                      styles.Button,
+                      this.state.isSolicitado
+                        ? localStyles.Unselected
+                        : localStyles.Selected
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.TextLight,
+                        this.state.isSolicitado
+                          ? localStyles.TextUnselected
+                          : localStyles.TextSelected
+                      ]}
+                    >
+                      Não
+                    </Text>
+                  </View>
+                </TouchablePlatformSpecific>
+              </View>
+            </View>
+
             <TouchablePlatformSpecific
               onPress={() => this.forwardPacientData()}
             >
@@ -222,8 +425,18 @@ const signUpStyles = StyleSheet.create({
 const localStyles = StyleSheet.create({
   Container: {
     marginTop: 20,
-    marginLeft: 37,
-    marginRight: 37
+    marginLeft: 27,
+    marginRight: 27
+  },
+
+  Box: {
+    borderWidth: 2,
+    borderColor: "#3c8dbc80",
+    borderStyle: "solid",
+    borderRadius: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 10
   },
 
   Text: {
@@ -232,6 +445,22 @@ const localStyles = StyleSheet.create({
     textAlign: "left",
     color: "#202020",
     marginTop: 10
+  },
+
+  Title: {
+    position: "absolute",
+    top: -22,
+    left: 8,
+    backgroundColor: "#FFF",
+    paddingLeft: 10,
+    paddingRight: 10
+  },
+
+  Question: {
+    paddingRight: 10,
+    paddingLeft: 10,
+    paddingTop: 10,
+    paddingBottom: 10
   },
 
   Input: {
@@ -246,5 +475,25 @@ const localStyles = StyleSheet.create({
     marginTop: 10,
     paddingHorizontal: 15,
     color: "#454545"
+  },
+
+  Selected: {
+    width: "40%",
+    backgroundColor: "#3c8dbc"
+  },
+
+  Unselected: {
+    width: "40%",
+    backgroundColor: "#EEE"
+  },
+
+  TextSelected: {
+    color: "#FFF",
+    fontWeight: "bold"
+  },
+
+  TextUnselected: {
+    color: "#3c8dbc",
+    fontWeight: "bold"
   }
 });

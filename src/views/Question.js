@@ -171,7 +171,7 @@ export default class NewSearch extends Component {
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
 
-    this.setState({ forwardModalIsVisible: false })
+    this.setState({ forwardModalIsVisible: false });
 
     NetInfo.fetch().then(state => {
       if (state.isConnected) {
@@ -222,6 +222,7 @@ export default class NewSearch extends Component {
   render() {
     const { modalIsVisible } = this.state;
     const { forwardModalIsVisible } = this.state;
+    var question = this.state.question;
 
     let TouchablePlatformSpecific =
       Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
@@ -325,11 +326,13 @@ export default class NewSearch extends Component {
                   <View>
                     <TouchablePlatformSpecific
                       onPress={() => {
-                        this.setState({ forwardModalIsVisible: false })
-                        this.props.navigation.navigate("ForwardQuestion");
+                        this.setState({ forwardModalIsVisible: false });
+                        this.props.navigation.navigate("ForwardQuestion", {
+                          question
+                        });
                       }}
                     >
-                      <View style={styles.Button}>
+                      <View style={[styles.Button, { marginBottom: 20 }]}>
                         <Text style={styles.TextLight}>Sim</Text>
                       </View>
                     </TouchablePlatformSpecific>
@@ -338,8 +341,10 @@ export default class NewSearch extends Component {
                         this.onCreateQuestion.bind(this);
                       }}
                     >
-                      <View style={styles.Button}>
-                        <Text style={styles.TextLight}>Não, enviar pergunta agora</Text>
+                      <View style={[styles.Button, { marginBottom: 20 }]}>
+                        <Text style={styles.TextLight}>
+                          Não, enviar pergunta agora
+                        </Text>
                       </View>
                     </TouchablePlatformSpecific>
                   </View>
@@ -360,11 +365,13 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 37,
     marginRight: 37,
-    marginTop: 20
+    marginTop: 20,
+    justifyContent: "center"
   },
 
   Title: {
-    fontSize: 16
+    fontSize: 16,
+    marginBottom: 20
   },
 
   Input: {
