@@ -178,7 +178,8 @@ export default class NewSearch extends Component {
         Requests.sendRequest(token, question, this.state.file_ids)
           .then(response => {
             this.setState({
-              question: ""
+              question: "",
+              file_ids: ""
             });
 
             shouldUpdate = true;
@@ -223,6 +224,7 @@ export default class NewSearch extends Component {
     const { modalIsVisible } = this.state;
     const { forwardModalIsVisible } = this.state;
     var question = this.state.question;
+    var file_ids = this.state.file_ids;
 
     let TouchablePlatformSpecific =
       Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
@@ -328,7 +330,7 @@ export default class NewSearch extends Component {
                       onPress={() => {
                         this.setState({ forwardModalIsVisible: false });
                         this.props.navigation.navigate("ForwardQuestion", {
-                          question
+                          question, file_ids
                         });
                       }}
                     >

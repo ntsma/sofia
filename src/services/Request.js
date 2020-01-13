@@ -225,7 +225,15 @@ exports.getRequest = (token, id) => {
   });
 };
 
-exports.sendForwardRequest = (token, description, file_ids) => {
+exports.sendForwardRequest = (
+  token,
+  description,
+  file_ids,
+  patientId,
+  willForward,
+  wasRequested,
+  cboCode
+) => {
   return new Promise((resolve, reject) => {
     let formdata = new FormData();
 
@@ -234,6 +242,13 @@ exports.sendForwardRequest = (token, description, file_ids) => {
     formdata.append("description", description);
     formdata.append("mobile", 1);
     formdata.append("file_ids", file_ids);
+    formdata.append("patientSearch", patientId);
+    formdata.append("isEspecPatient", "on");
+    formdata.append("forwardIntention", willForward);
+    formdata.append("hasForward", wasRequested);
+    formdata.append("cboEspecialty", cboCode);
+
+    console.log(formdata);
 
     API.post("/solicitation/handle", formdata, {
       headers: {
