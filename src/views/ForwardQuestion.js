@@ -20,6 +20,7 @@ import styles from "../Styles/Styles";
 import AsyncStorage from "@react-native-community/async-storage";
 import { getCBO, sendForwardRequest } from "../services/Request";
 import NetInfo from "@react-native-community/netinfo";
+import ModalComponent from "../components/ModalComponent";
 
 export default class ForwardQuestion extends Component {
   constructor() {
@@ -39,8 +40,9 @@ export default class ForwardQuestion extends Component {
       checkWasRequested: false,
       question: "",
       patientId: "",
-      cboCode: "",
-      file_ids: ""
+      file_ids: "",
+      CPFInvalid: false,
+      modalIsVisible: false
     };
   }
 
@@ -74,7 +76,7 @@ export default class ForwardQuestion extends Component {
       }
     });
 
-    this.setState({ cboCode: code });
+    return code;
   }
 
   getCPFRaw(cpf) {
@@ -84,7 +86,37 @@ export default class ForwardQuestion extends Component {
       .join("");
   }
 
+  validateCPF(strCPF) {
+    var Soma;
+    var Resto;
+    Soma = 0;
+    if (strCPF == "00000000000") return false;
+
+    for (i = 1; i <= 9; i++)
+      Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (11 - i);
+    Resto = (Soma * 10) % 11;
+
+    if (Resto == 10 || Resto == 11) Resto = 0;
+    if (Resto != parseInt(strCPF.substring(9, 10))) return false;
+
+    Soma = 0;
+    for (i = 1; i <= 10; i++)
+      Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (12 - i);
+    Resto = (Soma * 10) % 11;
+
+    if (Resto == 10 || Resto == 11) Resto = 0;
+    if (Resto != parseInt(strCPF.substring(10, 11))) return false;
+    return true;
+  }
+
   async forwardPacientData() {
+    if (!this.validateCPF(this.getCPFRaw(this.state.cpf))) {
+      this.setState({ CPFInvalid: true });
+      return false;
+    } else {
+      this.setState({ CPFInvalid: false });
+    }
+
     var token = await AsyncStorage.getItem("token");
 
     let formdata = new FormData();
@@ -104,8 +136,6 @@ export default class ForwardQuestion extends Component {
         var patient = responseJson.data.patient;
         var person = responseJson.data.person;
 
-        console.log(responseJson);
-
         this.setState({
           cnes: patient.cns,
           nome: person.name,
@@ -121,10 +151,17 @@ export default class ForwardQuestion extends Component {
   }
 
   async onCreateForwardQuestion() {
+    if (!this.validateCPF(this.getCPFRaw(this.state.cpf))) {
+      this.handleOpen();
+      this.setState({ CPFInvalid: true });
+      return false;
+    } else {
+      this.setState({ CPFInvalid: false });
+    }
+
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
-
-    this.getCBOCode(this.state.cboValue);
+    var cboCode = this.getCBOCode(this.state.cboValue);
 
     NetInfo.fetch().then(state => {
       if (state.isConnected) {
@@ -135,7 +172,7 @@ export default class ForwardQuestion extends Component {
           this.state.patientId,
           this.state.willForward,
           this.state.wasRequested,
-          this.state.cboCode
+          cboCode
         )
           .then(response => {
             this.setState({
@@ -145,8 +182,7 @@ export default class ForwardQuestion extends Component {
               willForward: "off",
               checkWillForward: false,
               wasRequested: "off",
-              checkWasRequested: false,
-              cboCode: ""
+              checkWasRequested: false
             });
 
             shouldUpdate = true;
@@ -158,6 +194,14 @@ export default class ForwardQuestion extends Component {
       }
     });
   }
+
+  handleOpen = () => {
+    this.setState({ modalIsVisible: true });
+  };
+
+  handleClose = () => {
+    this.setState({ modalIsVisible: false });
+  };
 
   render() {
     let TouchablePlatformSpecific =
@@ -219,6 +263,11 @@ export default class ForwardQuestion extends Component {
                 </TouchablePlatformSpecific>
               </View>
             </View>
+            {this.state.CPFInvalid && (
+              <Text style={{ marginTop: 5, marginLeft: 10, color: "#c93232" }}>
+                Insira um CPF válido.
+              </Text>
+            )}
             <View>
               <Text style={localStyles.Text}>CNES</Text>
               <TextInput
@@ -276,7 +325,9 @@ export default class ForwardQuestion extends Component {
                 }}
               >
                 <TouchablePlatformSpecific
-                  onPress={() => this.setState({ willForward: "on", checkWillForward: true })}
+                  onPress={() =>
+                    this.setState({ willForward: "on", checkWillForward: true })
+                  }
                 >
                   <View
                     style={[
@@ -300,7 +351,12 @@ export default class ForwardQuestion extends Component {
                 </TouchablePlatformSpecific>
 
                 <TouchablePlatformSpecific
-                  onPress={() => this.setState({ willForward: "off", checkWillForward: false })}
+                  onPress={() =>
+                    this.setState({
+                      willForward: "off",
+                      checkWillForward: false
+                    })
+                  }
                 >
                   <View
                     style={[
@@ -358,7 +414,12 @@ export default class ForwardQuestion extends Component {
                 }}
               >
                 <TouchablePlatformSpecific
-                  onPress={() => this.setState({ wasRequested: "on", checkWasRequested: true })}
+                  onPress={() =>
+                    this.setState({
+                      wasRequested: "on",
+                      checkWasRequested: true
+                    })
+                  }
                 >
                   <View
                     style={[
@@ -382,7 +443,12 @@ export default class ForwardQuestion extends Component {
                 </TouchablePlatformSpecific>
 
                 <TouchablePlatformSpecific
-                  onPress={() => this.setState({ wasRequested: "off", checkWasRequested: false })}
+                  onPress={() =>
+                    this.setState({
+                      wasRequested: "off",
+                      checkWasRequested: false
+                    })
+                  }
                 >
                   <View
                     style={[
@@ -418,6 +484,18 @@ export default class ForwardQuestion extends Component {
             </TouchablePlatformSpecific>
           </View>
         </ScrollView>
+
+        {this.state.modalIsVisible && (
+          <ModalComponent
+            handleClose={this.handleClose}
+            isModalVisible={this.modalIsVisible}
+            content={
+              <View>
+                <Text style={{color: "#202020"}}>Insira um CPF válido.</Text>
+              </View>
+            }
+          />
+        )}
       </View>
     );
   }
