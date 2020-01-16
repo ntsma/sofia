@@ -1,7 +1,6 @@
 /*ShowDetails.js*/
 import React, { Component } from "react";
-import { ThemeProvider, Card, Badge } from "react-native-elements";
-import { Button, Icon, Text } from "native-base";
+import { ThemeProvider, Card, Text } from "react-native-elements";
 
 export default class ShowDetails extends Component {
   render() {

@@ -1,248 +1,246 @@
 import React, { Component } from "react";
-import { StyleSheet } from "react-native";
-import { Badge, Text } from "native-base";
+import { StyleSheet, Text, View } from "react-native";
 
 export default class BadgeContent extends Component {
   render() {
     switch (this.props.status_id) {
       case 1:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>ativo</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>ativo</Text>
+          </View>
         );
         break;
       case 2:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>inativo</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>inativo</Text>
+          </View>
         );
         break;
       case 3:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>aguardando envio</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>aguardando envio</Text>
+          </View>
         );
         break;
       case 4:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>aguardando complemento</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>aguardando complemento</Text>
+          </View>
         );
         break;
       case 5:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>aguardando leitura</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>aguardando leitura</Text>
+          </View>
         );
         break;
       case 6:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>aguardando telerregulação</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>aguardando telerregulação</Text>
+          </View>
         );
         break;
       case 7:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>aceite telerregulação atrasado</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>aceite telerregulação atrasado</Text>
+          </View>
         );
         break;
       case 8:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>em telerregulação</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>em telerregulação</Text>
+          </View>
         );
         break;
       case 9:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>
-              execução telerregulação atrasada
-            </Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>execução telerregulação atrasada</Text>
+          </View>
         );
         break;
       case 10:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#39cccc" }]}>
-            <Text style={styles.badgeText}>aguardando teleconsultor</Text>
-          </Badge>
+          <View style={[styles.Badge, { backgroundColor: "#39cccc" }]}>
+            <Text style={styles.Text}>aguardando teleconsultor</Text>
+          </View>
         );
         break;
       case 11:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>
-              aceite teleconsultoria atrasado
-            </Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>aceite teleconsultoria atrasado</Text>
+          </View>
         );
         break;
       case 12:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>resposta em execução</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>resposta em execução</Text>
+          </View>
         );
         break;
       case 13:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>
-              execução teleconsultoria atrasado
-            </Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>execução teleconsultoria atrasado</Text>
+          </View>
         );
         break;
       case 14:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>aguardando agendamento</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>aguardando agendamento</Text>
+          </View>
         );
         break;
       case 15:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>agendamento atrasado</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>agendamento atrasado</Text>
+          </View>
         );
         break;
       case 16:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>agendamento realizado</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>agendamento realizado</Text>
+          </View>
         );
         break;
       case 18:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>agendamento confirmado</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>agendamento confirmado</Text>
+          </View>
         );
         break;
       case 19:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>
               aguardando leitura justificativa cancelamento
             </Text>
-          </Badge>
+          </View>
         );
         break;
       case 20:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>cancelada</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>cancelada</Text>
+          </View>
         );
         break;
       case 21:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#39cccc" }]}>
-            <Text style={styles.badgeText}>aguardando avaliação</Text>
-          </Badge>
+          <View style={[styles.Badge, { backgroundColor: "#39cccc" }]}>
+            <Text style={styles.Text}>aguardando avaliação</Text>
+          </View>
         );
         break;
       case 22:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#00a65a" }]}>
-            <Text style={styles.badgeText}>avaliada</Text>
-          </Badge>
+          <View style={[styles.Badge, { backgroundColor: "#00a65a" }]}>
+            <Text style={styles.Text}>avaliada</Text>
+          </View>
         );
         break;
       case 23:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>finalizada</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>finalizada</Text>
+          </View>
         );
         break;
       case 24:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>
-              devolvido para o telerregulador
-            </Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>devolvido para o telerregulador</Text>
+          </View>
         );
         break;
       case 25:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>devolvido para o solicitante</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>devolvido para o solicitante</Text>
+          </View>
         );
         break;
       case 27:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>muito satisfeito</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>muito satisfeito</Text>
+          </View>
         );
         break;
       case 28:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>satisfeito</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>satisfeito</Text>
+          </View>
         );
         break;
       case 29:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>indiferente</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>indiferente</Text>
+          </View>
         );
         break;
       case 29:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>insatisfeito</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>insatisfeito</Text>
+          </View>
         );
         break;
       case 29:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>muito insatisfeito</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>muito insatisfeito</Text>
+          </View>
         );
         break;
       case 29:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>atendeu totalmente</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>atendeu totalmente</Text>
+          </View>
         );
         break;
       default:
         return (
-          <Badge style={[styles.badge, { backgroundColor: "#3c8dbc" }]}>
-            <Text style={styles.badgeText}>respondida</Text>
-          </Badge>
+          <View style={styles.Badge}>
+            <Text style={styles.Text}>respondida</Text>
+          </View>
         );
     }
   }
 }
 
 const styles = StyleSheet.create({
-  badge: {
-    height: 20,
-    marginTop: 5,
-    marginBottom: -5
+  Badge: {
+    alignSelf: "flex-start",
+    backgroundColor: "#3c8dbc",
+    borderRadius: 10,
+    marginTop: 5
   },
-  badgeText: {
+
+  Text: {
+    color: "#FFF",
     fontSize: 10,
-    margin: -2
+
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 4,
+    marginBottom: 4
   }
 });

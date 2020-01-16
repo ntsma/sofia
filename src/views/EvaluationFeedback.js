@@ -8,7 +8,7 @@ import {
   TouchableHighlight,
   View
 } from "react-native";
-import { Icon } from "native-base";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 export default class EvaluationFeedback extends Component {
   /*Remove header padrão*/
@@ -21,9 +21,7 @@ export default class EvaluationFeedback extends Component {
       Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
     return (
       <View style={styles.Container}>
-        <Text style={styles.Title}>
-          Avaliação realizada com sucesso!
-        </Text>
+        <Text style={styles.Title}>Avaliação realizada com sucesso!</Text>
         <View style={styles.ButtonContainer}>
           <TouchablePlatformSpecific
             onPress={() => {
@@ -31,11 +29,7 @@ export default class EvaluationFeedback extends Component {
             }}
           >
             <View style={styles.Button}>
-              <Icon
-                style={[styles.Icon, { color: "#FFF" }]}
-                type="MaterialIcons"
-                name="search"
-              />
+              <Icon name="search" style={[styles.Icon, { color: "#FFF" }]} />
               <Text style={styles.TextLight}>
                 Possui outra dúvida?{"\n"}Faça uma nova pergunta
               </Text>
@@ -49,11 +43,7 @@ export default class EvaluationFeedback extends Component {
             }}
           >
             <View style={styles.Button}>
-              <Icon
-                style={[styles.Icon, { color: "#FFF" }]}
-                type="MaterialIcons"
-                name="apps"
-              />
+              <Icon name="apps" style={[styles.Icon, { color: "#FFF" }]} />
               <Text style={styles.TextLight}>Retornar ao menu principal</Text>
             </View>
           </TouchablePlatformSpecific>

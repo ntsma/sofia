@@ -1,24 +1,27 @@
 /*CanceledIssues.js*/
 import React, { Component } from "react";
-import { FlatList } from "react-native";
-import { Container } from "native-base";
+import { FlatList, View } from "react-native";
 
-import CanceledIssue from "../components/CanceledIssue";
+import ListItemComponent from "../components/ListItemComponent";
 
 export default class CanceledIssues extends Component {
   render() {
     const { canceledIssues } = this.props.navigation.state.params;
 
     return (
-      <Container>
+      <View>
         <FlatList
           data={canceledIssues}
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => (
-            <CanceledIssue navigation={this.props.navigation} question={item} />
+            <ListItemComponent
+              navigation={this.props.navigation}
+              page={"ShowObservation"}
+              question={item}
+            />
           )}
         />
-      </Container>
+      </View>
     );
   }
 }

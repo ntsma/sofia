@@ -1,7 +1,6 @@
 /*DraftIssues.js*/
 import React, { Component } from "react";
-import { FlatList, Modal } from "react-native";
-import { Container } from "native-base";
+import { FlatList, Modal, View } from "react-native";
 
 import DraftIssue from "../components/DraftIssue";
 import DraftDeletedPopUp from "../components/DraftDeletedPopUp";
@@ -21,7 +20,7 @@ export default class DraftIssues extends Component {
     const { draftIssues } = this.props.navigation.state.params;
 
     return (
-      <Container>
+      <View>
         <FlatList
           data={draftIssues}
           keyExtractor={item => item.id.toString()}
@@ -49,7 +48,7 @@ export default class DraftIssues extends Component {
             )}
           />
         </Modal>
-      </Container>
+      </View>
     );
   }
 }
