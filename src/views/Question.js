@@ -171,16 +171,15 @@ export default class NewSearch extends Component {
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
 
-    this.setState({ forwardModalIsVisible: false });
-
     NetInfo.fetch().then(state => {
       if (state.isConnected) {
         Requests.sendRequest(token, question, this.state.file_ids)
           .then(response => {
             this.setState({
-              question: ""
+              question: "",
+              file_ids: ""
             });
-
+            console.log(response);
             shouldUpdate = true;
             this.props.navigation.navigate("Success", { shouldUpdate });
           })
@@ -223,6 +222,7 @@ export default class NewSearch extends Component {
     const { modalIsVisible } = this.state;
     const { forwardModalIsVisible } = this.state;
     var question = this.state.question;
+    var file_ids = this.state.file_ids;
 
     let TouchablePlatformSpecific =
       Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
@@ -328,7 +328,7 @@ export default class NewSearch extends Component {
                       onPress={() => {
                         this.setState({ forwardModalIsVisible: false });
                         this.props.navigation.navigate("ForwardQuestion", {
-                          question
+                          question, file_ids
                         });
                       }}
                     >
@@ -336,9 +336,11 @@ export default class NewSearch extends Component {
                         <Text style={styles.TextLight}>Sim</Text>
                       </View>
                     </TouchablePlatformSpecific>
+
                     <TouchablePlatformSpecific
                       onPress={() => {
-                        this.onCreateQuestion.bind(this);
+                        this.setState({ forwardModalIsVisible: false });
+                        this.onCreateQuestion();
                       }}
                     >
                       <View style={[styles.Button, { marginBottom: 20 }]}>

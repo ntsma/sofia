@@ -1,27 +1,27 @@
 /*SubmittedIssues.js*/
 import React, { Component } from "react";
-import { FlatList } from "react-native";
-import { Container } from "native-base";
+import { FlatList, View } from "react-native";
 
-import SubmittedIssue from "../components/SubmittedIssue";
+import ListItemComponent from "../components/ListItemComponent";
 
 export default class SubmittedIssues extends Component {
   render() {
     const submittedIssues = this.props.navigation.state.params.submittedIssues;
 
     return (
-      <Container>
+      <View>
         <FlatList
           data={submittedIssues}
           keyExtractor={item => item.id.toString()}
           renderItem={({ item }) => (
-            <SubmittedIssue
+            <ListItemComponent
               navigation={this.props.navigation}
+              page={"ShowDetails"}
               question={item}
             />
           )}
         />
-      </Container>
+      </View>
     );
   }
 }

@@ -1,7 +1,5 @@
 /*FAQ.js*/
-
 import React, { Component } from "react";
-
 import {
   Platform,
   StyleSheet,
@@ -11,8 +9,7 @@ import {
   TouchableHighlight,
   FlatList
 } from "react-native";
-
-import { Icon } from "native-base";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 export default class FAQ extends Component {
   render() {
@@ -101,11 +98,7 @@ export default class FAQ extends Component {
             >
               <View style={styles.Item}>
                 <Text style={styles.Text}>{item.title}</Text>
-                <Icon
-                  style={styles.Icon}
-                  type="MaterialIcons"
-                  name="chevron-right"
-                />
+                <Icon name="chevron-right" style={styles.Icon} />
               </View>
             </TouchablePlatformSpecific>
           )}

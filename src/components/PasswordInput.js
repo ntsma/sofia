@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { TextInput, View } from "react-native";
 
-import { Icon } from "native-base";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 import styles from "../Styles/Styles";
 
@@ -11,14 +11,14 @@ class PasswordInput extends Component {
 
     this.state = {
       inputIsVisible: true,
-      icon: "eye-off"
+      icon: "visibility-off"
     };
   }
 
   /*Torna a senha vísivel ou não.*/
   changePasswordVisibility = () => {
     this.setState({
-      icon: this.state.icon === "eye" ? "eye-off" : "eye",
+      icon: this.state.icon === "visibility" ? "visibility-off" : "visibility",
       inputIsVisible: !this.state.inputIsVisible
     });
   };
@@ -37,10 +37,11 @@ class PasswordInput extends Component {
           ref={input => (this.props.props.passwordInput = input)}
           onChangeText={password => this.props.props.setState({ password })}
         />
-
         <Icon
-          style={{ paddingTop: 7 }}
           name={this.state.icon}
+          size={25}
+          color="#000"
+          style={{ marginTop: 10 }}
           onPress={() => this.changePasswordVisibility()}
         />
       </View>

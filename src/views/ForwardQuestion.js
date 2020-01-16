@@ -14,13 +14,13 @@ import {
 } from "react-native";
 
 import { TextInputMask } from "react-native-masked-text";
-import { Icon, Textarea } from "native-base";
 
-import ModalComponent from "../components/ModalComponent";
 import styles from "../Styles/Styles";
 
 import AsyncStorage from "@react-native-community/async-storage";
-import { getCBO } from "../services/Request";
+import { getCBO, sendForwardRequest } from "../services/Request";
+import NetInfo from "@react-native-community/netinfo";
+import ModalComponent from "../components/ModalComponent";
 
 export default class ForwardQuestion extends Component {
   constructor() {
@@ -32,63 +32,27 @@ export default class ForwardQuestion extends Component {
       data_nasc: "",
       sexo: "",
       nome_mae: "",
-      modalIsVisible: false,
       data: [],
-      PickerValueHolder: "",
-      isEspecialidade: false,
-      isSolicitado: false,
-      question: ""
+      cboValue: "",
+      willForward: "off",
+      checkWillForward: false,
+      wasRequested: "off",
+      checkWasRequested: false,
+      question: "",
+      patientId: "",
+      file_ids: "",
+      CPFInvalid: false,
+      modalIsVisible: false
     };
   }
 
   componentDidMount() {
     this.setState({
-      question: this.props.navigation.state.params.question
+      question: this.props.navigation.state.params.question,
+      file_ids: this.props.navigation.state.params.file_ids
     });
 
     this.getCBOList();
-  }
-
-  getCPF(cpf) {
-    return cpf
-      .split("")
-      .filter(n => Number(n) || n == false)
-      .join("");
-  }
-
-  async forwardPacientData() {
-    var token = await AsyncStorage.getItem("token");
-
-    let formdata = new FormData();
-
-    formdata.append("token", token);
-    formdata.append("cpf", this.getCPF(this.state.cpf));
-
-    return fetch("http://sofia.huufma.br/api/patient/find", {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + token
-      },
-      body: formdata
-    })
-      .then(response => response.json())
-      .then(responseJson => {
-        var patient = responseJson.data.patient;
-        var person = responseJson.data.person;
-
-        console.log(responseJson);
-
-        this.setState({
-          cnes: patient.cns,
-          nome: person.name,
-          data_nasc: person.birthday,
-          sexo: person.sex,
-          nome_mae: patient.mother_name
-        });
-      })
-      .catch(error => {
-        console.log(error);
-      });
   }
 
   getCBOList = async () => {
@@ -103,16 +67,122 @@ export default class ForwardQuestion extends Component {
       });
   };
 
+  getCBOCode(cbo) {
+    var code = 0;
+
+    this.state.data.forEach(element => {
+      if (cbo == element.description) {
+        code = element.code;
+      }
+    });
+
+    return code;
+  }
+
+  getCPFRaw(cpf) {
+    return cpf
+      .split("")
+      .filter(n => Number(n) || n == false)
+      .join("");
+  }
+
+  validateCPF(strCPF) {
+    var Soma;
+    var Resto;
+    Soma = 0;
+    if (strCPF == "00000000000") return false;
+
+    for (i = 1; i <= 9; i++)
+      Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (11 - i);
+    Resto = (Soma * 10) % 11;
+
+    if (Resto == 10 || Resto == 11) Resto = 0;
+    if (Resto != parseInt(strCPF.substring(9, 10))) return false;
+
+    Soma = 0;
+    for (i = 1; i <= 10; i++)
+      Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (12 - i);
+    Resto = (Soma * 10) % 11;
+
+    if (Resto == 10 || Resto == 11) Resto = 0;
+    if (Resto != parseInt(strCPF.substring(10, 11))) return false;
+    return true;
+  }
+
+  async forwardPacientData() {
+    if (!this.validateCPF(this.getCPFRaw(this.state.cpf))) {
+      this.setState({ CPFInvalid: true });
+      return false;
+    } else {
+      this.setState({ CPFInvalid: false });
+    }
+
+    var token = await AsyncStorage.getItem("token");
+
+    let formdata = new FormData();
+
+    formdata.append("token", token);
+    formdata.append("cpf", this.getCPFRaw(this.state.cpf));
+
+    return fetch("http://sofia.huufma.br/api/patient/find", {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + token
+      },
+      body: formdata
+    })
+      .then(response => response.json())
+      .then(responseJson => {
+        var patient = responseJson.data.patient;
+        var person = responseJson.data.person;
+
+        this.setState({
+          cnes: patient.cns,
+          nome: person.name,
+          data_nasc: person.birthday,
+          sexo: person.sex,
+          nome_mae: patient.mother_name,
+          patientId: person.cpf
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
   async onCreateForwardQuestion() {
+    if (!this.validateCPF(this.getCPFRaw(this.state.cpf))) {
+      this.handleOpen();
+      this.setState({ CPFInvalid: true });
+      return false;
+    } else {
+      this.setState({ CPFInvalid: false });
+    }
+
     var token = await AsyncStorage.getItem("token");
     var question = this.state.question;
+    var cboCode = this.getCBOCode(this.state.cboValue);
 
     NetInfo.fetch().then(state => {
       if (state.isConnected) {
-        Requests.sendRequest(token, question, this.state.file_ids, true, this.state.isEspecialidade, this.state.isSolicitado, this.state.cbo)
+        sendForwardRequest(
+          token,
+          question,
+          this.state.file_ids,
+          this.state.patientId,
+          this.state.willForward,
+          this.state.wasRequested,
+          cboCode
+        )
           .then(response => {
             this.setState({
-              question: ""
+              question: "",
+              file_ids: "",
+              patientId: "",
+              willForward: "off",
+              checkWillForward: false,
+              wasRequested: "off",
+              checkWasRequested: false
             });
 
             shouldUpdate = true;
@@ -121,12 +191,6 @@ export default class ForwardQuestion extends Component {
           .catch(error => {
             console.log(error);
           });
-      } else {
-        this.saveDraftIntoAsyncStorage({
-          id: this.state.question.length + 1,
-          description: question,
-          file_ids: this.state.file_ids
-        });
       }
     });
   }
@@ -140,8 +204,6 @@ export default class ForwardQuestion extends Component {
   };
 
   render() {
-    const { modalIsVisible } = this.state;
-
     let TouchablePlatformSpecific =
       Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
 
@@ -152,14 +214,16 @@ export default class ForwardQuestion extends Component {
         <ScrollView>
           <View style={localStyles.Container}>
             <View style={localStyles.Box}>
-              <Text style={[localStyles.Text, localStyles.Title]}>Solicitação</Text>
-              <Text style={[localStyles.Text, localStyles.Question]}>"{this.state.question}"</Text>
+              <Text style={[localStyles.Text, localStyles.Title]}>
+                Solicitação
+              </Text>
+              <Text style={[localStyles.Text, localStyles.Question]}>
+                "{this.state.question}"
+              </Text>
             </View>
 
-            <View>
-              <Text style={localStyles.Text}>
-                Encaminhamento de paciente em nova solicitação. {"\n"}
-              </Text>
+            <View style={{ marginTop: 10, marginBottom: 10 }}>
+              <Text style={localStyles.Text}>Dados do paciente</Text>
             </View>
 
             <View>
@@ -199,6 +263,11 @@ export default class ForwardQuestion extends Component {
                 </TouchablePlatformSpecific>
               </View>
             </View>
+            {this.state.CPFInvalid && (
+              <Text style={{ marginTop: 5, marginLeft: 10, color: "#c93232" }}>
+                Insira um CPF válido.
+              </Text>
+            )}
             <View>
               <Text style={localStyles.Text}>CNES</Text>
               <TextInput
@@ -256,12 +325,14 @@ export default class ForwardQuestion extends Component {
                 }}
               >
                 <TouchablePlatformSpecific
-                  onPress={() => this.setState({ isEspecialidade: true })}
+                  onPress={() =>
+                    this.setState({ willForward: "on", checkWillForward: true })
+                  }
                 >
                   <View
                     style={[
                       styles.Button,
-                      this.state.isEspecialidade
+                      this.state.checkWillForward
                         ? localStyles.Selected
                         : localStyles.Unselected
                     ]}
@@ -269,7 +340,7 @@ export default class ForwardQuestion extends Component {
                     <Text
                       style={[
                         styles.TextLight,
-                        this.state.isEspecialidade
+                        this.state.checkWillForward
                           ? localStyles.TextSelected
                           : localStyles.TextUnselected
                       ]}
@@ -280,12 +351,17 @@ export default class ForwardQuestion extends Component {
                 </TouchablePlatformSpecific>
 
                 <TouchablePlatformSpecific
-                  onPress={() => this.setState({ isEspecialidade: false })}
+                  onPress={() =>
+                    this.setState({
+                      willForward: "off",
+                      checkWillForward: false
+                    })
+                  }
                 >
                   <View
                     style={[
                       styles.Button,
-                      this.state.isEspecialidade
+                      this.state.checkWillForward
                         ? localStyles.Unselected
                         : localStyles.Selected
                     ]}
@@ -293,7 +369,7 @@ export default class ForwardQuestion extends Component {
                     <Text
                       style={[
                         styles.TextLight,
-                        this.state.isEspecialidade
+                        this.state.checkWillForward
                           ? localStyles.TextUnselected
                           : localStyles.TextSelected
                       ]}
@@ -305,14 +381,14 @@ export default class ForwardQuestion extends Component {
               </View>
             </View>
 
-            {this.state.isEspecialidade && (
+            {this.state.checkWillForward && (
               <View>
                 <Text style={localStyles.Text}>Especialidade solicitada</Text>
                 <Picker
                   style={localStyles.Picker}
-                  selectedValue={this.state.PickerValueHolder}
+                  selectedValue={this.state.cboValue}
                   onValueChange={(itemValue, itemIndex) =>
-                    this.setState({ PickerValueHolder: itemValue })
+                    this.setState({ cboValue: itemValue })
                   }
                 >
                   {this.state.data.map((item, key) => (
@@ -338,12 +414,17 @@ export default class ForwardQuestion extends Component {
                 }}
               >
                 <TouchablePlatformSpecific
-                  onPress={() => this.setState({ isSolicitado: true })}
+                  onPress={() =>
+                    this.setState({
+                      wasRequested: "on",
+                      checkWasRequested: true
+                    })
+                  }
                 >
                   <View
                     style={[
                       styles.Button,
-                      this.state.isSolicitado
+                      this.state.checkWasRequested
                         ? localStyles.Selected
                         : localStyles.Unselected
                     ]}
@@ -351,7 +432,7 @@ export default class ForwardQuestion extends Component {
                     <Text
                       style={[
                         styles.TextLight,
-                        this.state.isSolicitado
+                        this.state.checkWasRequested
                           ? localStyles.TextSelected
                           : localStyles.TextUnselected
                       ]}
@@ -362,12 +443,17 @@ export default class ForwardQuestion extends Component {
                 </TouchablePlatformSpecific>
 
                 <TouchablePlatformSpecific
-                  onPress={() => this.setState({ isSolicitado: false })}
+                  onPress={() =>
+                    this.setState({
+                      wasRequested: "off",
+                      checkWasRequested: false
+                    })
+                  }
                 >
                   <View
                     style={[
                       styles.Button,
-                      this.state.isSolicitado
+                      this.state.checkWasRequested
                         ? localStyles.Unselected
                         : localStyles.Selected
                     ]}
@@ -375,7 +461,7 @@ export default class ForwardQuestion extends Component {
                     <Text
                       style={[
                         styles.TextLight,
-                        this.state.isSolicitado
+                        this.state.checkWasRequested
                           ? localStyles.TextUnselected
                           : localStyles.TextSelected
                       ]}
@@ -388,39 +474,32 @@ export default class ForwardQuestion extends Component {
             </View>
 
             <TouchablePlatformSpecific
-              onPress={() => this.forwardPacientData()}
+              onPress={() => this.onCreateForwardQuestion()}
             >
               <View style={[styles.Button, { marginTop: 40 }]}>
                 <Text style={[styles.TextLight, { fontWeight: "bold" }]}>
-                  Confirmar
+                  Enviar
                 </Text>
               </View>
             </TouchablePlatformSpecific>
-
-            {modalIsVisible && (
-              <ModalComponent
-                handleClose={this.handleClose}
-                isModalVisible={this.modalIsVisible}
-                content={
-                  <View>
-                    <Text>Sucesso!</Text>
-                  </View>
-                }
-              />
-            )}
           </View>
         </ScrollView>
+
+        {this.state.modalIsVisible && (
+          <ModalComponent
+            handleClose={this.handleClose}
+            isModalVisible={this.modalIsVisible}
+            content={
+              <View>
+                <Text style={{color: "#202020"}}>Insira um CPF válido.</Text>
+              </View>
+            }
+          />
+        )}
       </View>
     );
   }
 }
-
-const signUpStyles = StyleSheet.create({
-  Label: {
-    textAlign: "left",
-    marginTop: 10
-  }
-});
 
 const localStyles = StyleSheet.create({
   Container: {

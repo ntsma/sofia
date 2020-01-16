@@ -8,7 +8,7 @@ import {
   TouchableHighlight,
   View
 } from "react-native";
-import { Icon } from "native-base";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 import styles from "../Styles/Styles";
 
@@ -36,11 +36,7 @@ export default class SearchNoResults extends Component {
             }}
           >
             <View style={styles.Button}>
-              <Icon
-                style={[styles.Icon, { color: "#FFF" }]}
-                type="MaterialIcons"
-                name="search"
-              />
+              <Icon name="search" style={[styles.Icon, { color: "#FFF" }]} />
               <Text style={styles.TextLight}>Faça uma nova pergunta</Text>
             </View>
           </TouchablePlatformSpecific>
@@ -50,11 +46,7 @@ export default class SearchNoResults extends Component {
             }
           >
             <View style={styles.Button}>
-              <Icon
-                style={[styles.Icon, { color: "#FFF" }]}
-                type="MaterialIcons"
-                name="launch"
-              />
+              <Icon name="launch" style={[styles.Icon, { color: "#FFF" }]} />
               <Text style={styles.TextLight}>Prosseguir com a solicitação</Text>
             </View>
           </TouchablePlatformSpecific>

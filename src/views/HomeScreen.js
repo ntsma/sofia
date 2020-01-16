@@ -13,7 +13,7 @@ import {
   View
 } from "react-native";
 
-import { Icon } from "native-base";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 import AsyncStorage from "@react-native-community/async-storage";
 import NetInfo from "@react-native-community/netinfo";
@@ -273,11 +273,7 @@ export default class HomeScreen extends Component {
           <TouchablePlatformSpecific onPress={this.logout}>
             <View style={homeStyles.ExitButton}>
               <View>
-                <Icon
-                  style={homeStyles.Icon}
-                  type="MaterialIcons"
-                  name="exit-to-app"
-                />
+                <Icon name="exit-to-app" style={homeStyles.Icon} />
               </View>
               <View>
                 <Text style={styles.TextLight}>Sair</Text>
@@ -288,6 +284,7 @@ export default class HomeScreen extends Component {
 
         <View style={homeStyles.Body}>
           <ErrorNoInternetMessage isConnected={this.state.isConnected} />
+
           <ScrollView
             refreshControl={
               <RefreshControl
@@ -302,9 +299,8 @@ export default class HomeScreen extends Component {
               >
                 <View style={styles.Button}>
                   <Icon
-                    style={[styles.Icon, { color: "#FFF" }]}
-                    type="MaterialIcons"
                     name="question-answer"
+                    style={[styles.Icon, { color: "#FFF" }]}
                   />
                   <Text style={styles.TextLight}>Como posso te ajudar?</Text>
                 </View>
@@ -320,7 +316,7 @@ export default class HomeScreen extends Component {
                 }}
               >
                 <View style={[styles.Button, homeStyles.Gray]}>
-                  <Icon style={styles.Icon} type="MaterialIcons" name="chat" />
+                  <Icon name="chat" style={styles.Icon} />
                   <Text style={styles.TextDark}>Respondidas</Text>
                   <View style={styles.Badge}>
                     <NumberOfIssuesBadge
@@ -343,11 +339,7 @@ export default class HomeScreen extends Component {
                 }}
               >
                 <View style={[styles.Button, homeStyles.Gray]}>
-                  <Icon
-                    style={styles.Icon}
-                    type="MaterialIcons"
-                    name="launch"
-                  />
+                  <Icon name="launch" style={styles.Icon} />
                   <Text style={styles.TextDark}>Enviadas</Text>
                   <View style={styles.Badge}>
                     <NumberOfIssuesBadge
@@ -367,11 +359,7 @@ export default class HomeScreen extends Component {
                 }}
               >
                 <View style={[styles.Button, homeStyles.Gray]}>
-                  <Icon
-                    style={styles.Icon}
-                    type="MaterialIcons"
-                    name="cancel"
-                  />
+                  <Icon name="cancel" style={styles.Icon} />
                   <Text style={styles.TextDark}>Devolvidas</Text>
                   <View style={styles.Badge}>
                     <NumberOfIssuesBadge
@@ -391,11 +379,7 @@ export default class HomeScreen extends Component {
                 }}
               >
                 <View style={[styles.Button, homeStyles.Gray]}>
-                  <Icon
-                    style={styles.Icon}
-                    type="MaterialIcons"
-                    name="create"
-                  />
+                  <Icon name="create" style={styles.Icon} />
                   <Text style={styles.TextDark}>Rascunhos</Text>
                   <View style={styles.Badge}>
                     <NumberOfIssuesBadge

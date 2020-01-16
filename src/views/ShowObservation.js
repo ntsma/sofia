@@ -1,8 +1,4 @@
-/*CanceledIssue.js*/
 import React, { Component } from "react";
-
-import { ThemeProvider, Card } from "react-native-elements";
-
 import {
   Platform,
   Text,
@@ -12,7 +8,9 @@ import {
   Dimensions,
   StyleSheet
 } from "react-native";
-import { Icon } from "native-base";
+import { ThemeProvider, Card } from "react-native-elements";
+
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 export default class ShowObservation extends Component {
   render() {
@@ -41,11 +39,7 @@ export default class ShowObservation extends Component {
               }
             >
               <View style={styles.Button}>
-                <Icon
-                  style={[styles.Icon, { color: "#FFF" }]}
-                  type="MaterialIcons"
-                  name="search"
-                />
+                <Icon name="search" style={[styles.Icon, { color: "#FFF" }]} />
                 <Text style={styles.TextLight}>Editar pergunta</Text>
               </View>
             </TouchablePlatformSpecific>

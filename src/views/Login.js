@@ -6,11 +6,11 @@ import {
   TouchableOpacity,
   TouchableNativeFeedback,
   TouchableHighlight,
+  Text,
   View,
   StyleSheet
 } from "react-native";
 
-import { Button, Text } from "native-base";
 import AsyncStorage from "@react-native-community/async-storage";
 
 import login from "../services/Solicitant";
