@@ -7,7 +7,7 @@ import {
   FlatList,
   StyleSheet,
   TouchableNativeFeedback,
-  TouchableHighlight
+  TouchableOpacity
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -19,7 +19,7 @@ export default class RelatedQuestionsView extends Component {
     const question = this.props.navigation.state.params.question;
 
     let TouchablePlatformSpecific =
-      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+      Platform.OS === "ios" ? TouchableOpacity : TouchableNativeFeedback;
 
     return (
       <View style={{ flex: 1 }}>

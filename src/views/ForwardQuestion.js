@@ -7,7 +7,7 @@ import {
   StatusBar,
   Text,
   TouchableNativeFeedback,
-  TouchableHighlight,
+  TouchableOpacity,
   TextInput,
   View,
   Alert
@@ -205,7 +205,7 @@ export default class ForwardQuestion extends Component {
 
   render() {
     let TouchablePlatformSpecific =
-      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+      Platform.OS === "ios" ? TouchableOpacity : TouchableNativeFeedback;
 
     return (
       <View>
@@ -242,6 +242,7 @@ export default class ForwardQuestion extends Component {
                     });
                   }}
                 />
+                <View style={{width: "18%"}}>
                 <TouchablePlatformSpecific
                   onPress={() => this.forwardPacientData()}
                 >
@@ -249,7 +250,7 @@ export default class ForwardQuestion extends Component {
                     style={[
                       styles.Button,
                       {
-                        width: "18%",
+                        width: "100%",
                         marginTop: 20,
                         height: 44,
                         marginBottom: 0
@@ -261,6 +262,7 @@ export default class ForwardQuestion extends Component {
                     </Text>
                   </View>
                 </TouchablePlatformSpecific>
+                </View>
               </View>
             </View>
             {this.state.CPFInvalid && (
@@ -324,6 +326,7 @@ export default class ForwardQuestion extends Component {
                   marginTop: 20
                 }}
               >
+              <View style={{width: "50%"}}>
                 <TouchablePlatformSpecific
                   onPress={() =>
                     this.setState({ willForward: "on", checkWillForward: true })
@@ -349,7 +352,9 @@ export default class ForwardQuestion extends Component {
                     </Text>
                   </View>
                 </TouchablePlatformSpecific>
+                </View>
 
+                <View style={{width: "50%"}}>
                 <TouchablePlatformSpecific
                   onPress={() =>
                     this.setState({
@@ -378,6 +383,7 @@ export default class ForwardQuestion extends Component {
                     </Text>
                   </View>
                 </TouchablePlatformSpecific>
+                </View>
               </View>
             </View>
 
@@ -413,6 +419,7 @@ export default class ForwardQuestion extends Component {
                   marginTop: 20
                 }}
               >
+              <View style={{width: "50%"}}>
                 <TouchablePlatformSpecific
                   onPress={() =>
                     this.setState({
@@ -441,7 +448,9 @@ export default class ForwardQuestion extends Component {
                     </Text>
                   </View>
                 </TouchablePlatformSpecific>
-
+                </View>
+                
+                <View style={{width: "50%"}}>
                 <TouchablePlatformSpecific
                   onPress={() =>
                     this.setState({
@@ -470,6 +479,7 @@ export default class ForwardQuestion extends Component {
                     </Text>
                   </View>
                 </TouchablePlatformSpecific>
+                </View>
               </View>
             </View>
 

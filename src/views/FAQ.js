@@ -6,7 +6,7 @@ import {
   Text,
   View,
   TouchableNativeFeedback,
-  TouchableHighlight,
+  TouchableOpacity,
   FlatList
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -83,7 +83,7 @@ export default class FAQ extends Component {
     ];
 
     let TouchablePlatformSpecific =
-      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+      Platform.OS === "ios" ? TouchableOpacity : TouchableNativeFeedback;
 
     return (
       <View>

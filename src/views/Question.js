@@ -10,7 +10,7 @@ import {
   Keyboard,
   TextInput,
   TouchableNativeFeedback,
-  TouchableHighlight,
+  TouchableOpacity,
   Text,
   View
 } from "react-native";
@@ -225,7 +225,7 @@ export default class NewSearch extends Component {
     var file_ids = this.state.file_ids;
 
     let TouchablePlatformSpecific =
-      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+      Platform.OS === "ios" ? TouchableOpacity : TouchableNativeFeedback;
 
     return (
       <View onStartShouldSetResponder={this.handleUnhandledTouches}>
@@ -247,13 +247,14 @@ export default class NewSearch extends Component {
 
             <View>
               <View style={styles.ButtonContainer}>
+              <View style={{width: "48%"}}>
                 <TouchablePlatformSpecific
                   onPress={this.onUploadFile.bind(this)}
                 >
                   <View
                     style={[
                       styles.Button,
-                      { width: "48%", backgroundColor: "#eee" }
+                      { width: "100%", backgroundColor: "#eee" }
                     ]}
                   >
                     <Icon
@@ -264,13 +265,15 @@ export default class NewSearch extends Component {
                     <Text style={styles.TextDark}>Inserir{"\n"}anexo</Text>
                   </View>
                 </TouchablePlatformSpecific>
+                </View>
+                <View style={{width: "48%"}}>
                 <TouchablePlatformSpecific
                   onPress={this.onCreateDraftQuestion.bind(this)}
                 >
                   <View
                     style={[
                       styles.Button,
-                      { width: "48%", backgroundColor: "#eee" }
+                      { width: "100%", backgroundColor: "#eee" }
                     ]}
                   >
                     <Icon
@@ -283,6 +286,7 @@ export default class NewSearch extends Component {
                     </Text>
                   </View>
                 </TouchablePlatformSpecific>
+                </View>
               </View>
               <TouchablePlatformSpecific
                 onPress={() => {

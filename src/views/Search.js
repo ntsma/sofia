@@ -6,9 +6,10 @@ import {
   StyleSheet,
   Text,
   TouchableNativeFeedback,
-  TouchableHighlight,
+  TouchableOpacity,
   View,
-  Keyboard
+  Keyboard,
+  ScrollView
 } from "react-native";
 import { Icon, Textarea } from "native-base";
 
@@ -76,7 +77,7 @@ export default class Search extends Component {
 
   render() {
     let TouchablePlatformSpecific =
-      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+      Platform.OS === "ios" ? TouchableOpacity : TouchableNativeFeedback;
 
     return (
       <View onStartShouldSetResponder={this.handleUnhandledTouches}>
@@ -87,6 +88,7 @@ export default class Search extends Component {
             color="#3c8dbc"
           />
         ) : (
+          <ScrollView>
           <View style={searchStyles.Container}>
             <Text style={styles.Title}>
               Digite aqui sua pergunta para que sejam encontradas respostas
@@ -101,7 +103,7 @@ export default class Search extends Component {
               placeholderTextColor="#999"
               bordered
             />
-
+            <View style={{width: "100%"}}>
             <TouchablePlatformSpecific onPress={this.onSearch.bind(this)}>
               <View style={styles.Button}>
                 <Icon
@@ -112,7 +114,9 @@ export default class Search extends Component {
                 <Text style={styles.TextLight}>Pesquisar</Text>
               </View>
             </TouchablePlatformSpecific>
+            </View>
           </View>
+          </ScrollView>
         )}
       </View>
     );
@@ -126,7 +130,7 @@ const searchStyles = StyleSheet.create({
     flex: 1,
     marginLeft: 37,
     marginRight: 37,
-    marginTop: 20
+    marginTop: 20,
   },
 
   Input: {

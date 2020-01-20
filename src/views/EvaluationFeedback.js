@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Text,
   TouchableNativeFeedback,
-  TouchableHighlight,
+  TouchableOpacity,
   View
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -18,7 +18,7 @@ export default class EvaluationFeedback extends Component {
 
   render() {
     let TouchablePlatformSpecific =
-      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+      Platform.OS === "ios" ? TouchableOpacity : TouchableNativeFeedback;
     return (
       <View style={styles.Container}>
         <Text style={styles.Title}>Avaliação realizada com sucesso!</Text>

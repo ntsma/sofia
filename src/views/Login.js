@@ -5,7 +5,6 @@ import {
   StatusBar,
   TouchableOpacity,
   TouchableNativeFeedback,
-  TouchableHighlight,
   Text,
   View,
   StyleSheet
@@ -87,7 +86,7 @@ export default class Login extends Component {
     const { modalIsVisible } = this.state;
 
     let TouchablePlatformSpecific =
-      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+      Platform.OS === "ios" ? TouchableOpacity : TouchableNativeFeedback;
 
     return (
       <KeyboardAvoidingView
@@ -103,6 +102,7 @@ export default class Login extends Component {
 
         <PasswordInput props={this} />
 
+<View style={{ width: "100%"}}>
         <TouchablePlatformSpecific onPress={this.onLoginButtonPress.bind(this)}>
           <View
             style={[
@@ -115,6 +115,7 @@ export default class Login extends Component {
             </Text>
           </View>
         </TouchablePlatformSpecific>
+        </View>
 
         <TouchableOpacity
           onPress={() => {

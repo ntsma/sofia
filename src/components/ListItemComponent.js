@@ -3,7 +3,7 @@ import {
   Platform,
   StyleSheet,
   Text,
-  TouchableHighlight,
+  TouchableOpacity,
   TouchableNativeFeedback,
   View
 } from "react-native";
@@ -17,7 +17,7 @@ export default class ListItemComponent extends Component {
     const item = this.props.question;
 
     let TouchablePlatformSpecific =
-      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+      Platform.OS === "ios" ? TouchableOpacity : TouchableNativeFeedback;
 
     return (
       <TouchablePlatformSpecific

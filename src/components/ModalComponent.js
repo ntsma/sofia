@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   TouchableNativeFeedback,
+  TouchableOpacity,
   TouchableHighlight,
   View
 } from "react-native";
@@ -14,7 +15,7 @@ import Styles from "../Styles/Styles";
 export default class ModalComponent extends Component {
   render() {
     let TouchablePlatformSpecific =
-      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+      Platform.OS === "ios" ? TouchableOpacity : TouchableNativeFeedback;
     return (
       <View>
         <Modal
@@ -25,6 +26,7 @@ export default class ModalComponent extends Component {
           <View style={styles.Container}>
             <View style={styles.Modal}>
               {this.props.content}
+              <View style={{ width: "100%", marginLeft: "20%" }}>
               <TouchablePlatformSpecific onPress={this.props.handleClose}>
                 {this.props.hasButton ? (
                   <View></View>
@@ -34,6 +36,7 @@ export default class ModalComponent extends Component {
                   </View>
                 )}
               </TouchablePlatformSpecific>
+              </View>
             </View>
           </View>
         </Modal>

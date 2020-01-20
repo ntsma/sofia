@@ -10,7 +10,6 @@ import {
   Text,
   View,
   TouchableNativeFeedback,
-  TouchableHighlight
 } from "react-native";
 
 import ModalComponent from "../components/ModalComponent";
@@ -82,7 +81,7 @@ export default class SignUp extends Component {
   render() {
     const { modalIsVisible } = this.state;
     let TouchablePlatformSpecific =
-      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+      Platform.OS === "ios" ? TouchableOpacity : TouchableNativeFeedback;
 
     return (
       <View>
@@ -141,6 +140,7 @@ export default class SignUp extends Component {
             )}
           </View>
 
+          <View style={{ width: "100%"}}>
           <TouchablePlatformSpecific onPress={() => this.signUp()}>
             <View style={[styles.Button, { marginTop: 40 }]}>
               <Text style={[styles.TextLight, { fontWeight: "bold" }]}>
@@ -148,6 +148,7 @@ export default class SignUp extends Component {
               </Text>
             </View>
           </TouchablePlatformSpecific>
+          </View>
 
           {modalIsVisible && (
             <ModalComponent

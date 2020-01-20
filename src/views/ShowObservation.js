@@ -3,7 +3,7 @@ import {
   Platform,
   Text,
   TouchableNativeFeedback,
-  TouchableHighlight,
+  TouchableOpacity,
   View,
   Dimensions,
   StyleSheet
@@ -16,7 +16,7 @@ export default class ShowObservation extends Component {
   render() {
     const item = this.props.navigation.state.params.item;
     let TouchablePlatformSpecific =
-      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+      Platform.OS === "ios" ? TouchableOpacity : TouchableNativeFeedback;
     return (
       <View style={{ flex: 1 }}>
         <Card title="Observação">
@@ -30,6 +30,7 @@ export default class ShowObservation extends Component {
 
         {item.status_id != 20 && (
           <View style={styles.ButtonContainer}>
+          <View style={{width: "100%"}}>
             <TouchablePlatformSpecific
               onPress={() =>
                 this.props.navigation.navigate("EditQuestion", {
@@ -43,6 +44,7 @@ export default class ShowObservation extends Component {
                 <Text style={styles.TextLight}>Editar pergunta</Text>
               </View>
             </TouchablePlatformSpecific>
+            </View>
           </View>
         )}
       </View>

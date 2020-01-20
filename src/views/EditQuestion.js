@@ -7,7 +7,7 @@ import {
   Platform,
   StyleSheet,
   TouchableNativeFeedback,
-  TouchableHighlight,
+  TouchableOpacity,
   Text,
   View
 } from "react-native";
@@ -162,7 +162,7 @@ export default class EditQuestion extends Component {
     const { isReturnedRequest } = this.props.navigation.state.params;
 
     let TouchablePlatformSpecific =
-      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+      Platform.OS === "ios" ? TouchableOpacity : TouchableNativeFeedback;
 
     const { modalIsVisible } = this.state;
 

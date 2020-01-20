@@ -5,7 +5,7 @@ import {
   StyleSheet,
   Text,
   TouchableNativeFeedback,
-  TouchableHighlight,
+  TouchableOpacity,
   View
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -18,7 +18,7 @@ export default class Success extends Component {
 
   render() {
     let TouchablePlatformSpecific =
-      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+      Platform.OS === "ios" ? TouchableOpacity : TouchableNativeFeedback;
     return (
       <View style={styles.Container}>
         <Text style={styles.Title}>
@@ -27,6 +27,7 @@ export default class Success extends Component {
           aplicativo!
         </Text>
         <View style={styles.ButtonContainer}>
+        <View style={{ width: "100%"}}>
           <TouchablePlatformSpecific
             onPress={() => {
               this.props.navigation.navigate("Search", { isConected: true });
@@ -39,6 +40,8 @@ export default class Success extends Component {
               </Text>
             </View>
           </TouchablePlatformSpecific>
+          </View>
+          <View style={{ width: "100%"}}>
           <TouchablePlatformSpecific
             onPress={() => {
               this.props.navigation.navigate("HomeScreen", {
@@ -51,6 +54,7 @@ export default class Success extends Component {
               <Text style={styles.TextLight}>Retornar ao menu principal</Text>
             </View>
           </TouchablePlatformSpecific>
+          </View>
         </View>
       </View>
     );
@@ -72,6 +76,7 @@ const styles = StyleSheet.create({
   },
 
   ButtonContainer: {
+    width: "100%",
     height: height * 0.5,
     alignItems: "center"
   },

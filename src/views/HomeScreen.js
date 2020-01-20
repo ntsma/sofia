@@ -9,7 +9,7 @@ import {
   StatusBar,
   Text,
   TouchableNativeFeedback,
-  TouchableHighlight,
+  TouchableOpacity,
   View
 } from "react-native";
 
@@ -258,7 +258,7 @@ export default class HomeScreen extends Component {
     const estado = this.state;
 
     let TouchablePlatformSpecific =
-      Platform.OS === "ios" ? TouchableHighlight : TouchableNativeFeedback;
+      Platform.OS === "ios" ? TouchableOpacity : TouchableNativeFeedback;
 
     return (
       <View>
