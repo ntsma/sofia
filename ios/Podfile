@@ -12,6 +12,8 @@ target 'app' do
     # Pods for testing
     pod 'RNExitApp', :path => '../node_modules/react-native-exit-app'
 
+    pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
+
   end
 
   target 'appTests' do
