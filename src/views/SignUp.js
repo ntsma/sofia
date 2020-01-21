@@ -9,7 +9,7 @@ import {
   TextInput,
   Text,
   View,
-  TouchableNativeFeedback,
+  TouchableNativeFeedback
 } from "react-native";
 
 import ModalComponent from "../components/ModalComponent";
@@ -18,7 +18,7 @@ import { TextInputMask } from "react-native-masked-text";
 
 import styles from "../Styles/Styles";
 
-import {checkEmailAndCPF} from '../services/Utils';
+import { checkEmailAndCPF } from "../services/Utils";
 
 export default class SignUp extends Component {
   constructor() {
@@ -33,29 +33,29 @@ export default class SignUp extends Component {
   }
 
   signUp = async () => {
-    const {email, cpf} = this.state;
+    const { email, cpf } = this.state;
 
     checkEmailAndCPF(email, cpf)
-    .then(response => {
-      var message = "";
+      .then(response => {
+        var message = "";
 
-      if (response.message == "success") {
-        message =
-          "Iremos confirmar os dados fornecidos nas Bases Públicas de Profissionais de Saúde e em alguns minutos lhe enviaremos um email com a confirmação de acesso a Sofia.";
-      } else {
-        message = "Email e CPF inválidos ou já cadastrados!";
-      }
+        if (response.message == "success") {
+          message =
+            "Iremos confirmar os dados fornecidos nas Bases Públicas de Profissionais de Saúde e em alguns minutos lhe enviaremos um email com a confirmação de acesso a Sofia.";
+        } else {
+          message = "Email e CPF inválidos ou já cadastrados!";
+        }
 
-      this.setState({
-        message: message
+        this.setState({
+          message: message
+        });
+
+        this.handleOpen();
+      })
+      .catch(error => {
+        console.error(error);
       });
-
-      this.handleOpen();
-    })
-    .catch(error => {
-      console.error(error);
-    });
-  }
+  };
 
   handleOpen = value => {
     this.setState({ modalIsVisible: true, value: value });
@@ -140,14 +140,14 @@ export default class SignUp extends Component {
             )}
           </View>
 
-          <View style={{ width: "100%"}}>
-          <TouchablePlatformSpecific onPress={() => this.signUp()}>
-            <View style={[styles.Button, { marginTop: 40 }]}>
-              <Text style={[styles.TextLight, { fontWeight: "bold" }]}>
-                Confirmar
-              </Text>
-            </View>
-          </TouchablePlatformSpecific>
+          <View style={{ width: "100%" }}>
+            <TouchablePlatformSpecific onPress={() => this.signUp()}>
+              <View style={[styles.Button, { marginTop: 40 }]}>
+                <Text style={[styles.TextLight, { fontWeight: "bold" }]}>
+                  Confirmar
+                </Text>
+              </View>
+            </TouchablePlatformSpecific>
           </View>
 
           {modalIsVisible && (

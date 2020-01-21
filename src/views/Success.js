@@ -27,33 +27,33 @@ export default class Success extends Component {
           aplicativo!
         </Text>
         <View style={styles.ButtonContainer}>
-        <View style={{ width: "100%"}}>
-          <TouchablePlatformSpecific
-            onPress={() => {
-              this.props.navigation.navigate("Search", { isConected: true });
-            }}
-          >
-            <View style={styles.Button}>
-              <Icon name="search" style={[styles.Icon, { color: "#FFF" }]} />
-              <Text style={styles.TextLight}>
-                Possui outra dúvida?{"\n"}Faça uma nova pergunta
-              </Text>
-            </View>
-          </TouchablePlatformSpecific>
+          <View style={{ width: "100%" }}>
+            <TouchablePlatformSpecific
+              onPress={() => {
+                this.props.navigation.navigate("Search", { isConected: true });
+              }}
+            >
+              <View style={styles.Button}>
+                <Icon name="search" style={[styles.Icon, { color: "#FFF" }]} />
+                <Text style={styles.TextLight}>
+                  Possui outra dúvida?{"\n"}Faça uma nova pergunta
+                </Text>
+              </View>
+            </TouchablePlatformSpecific>
           </View>
-          <View style={{ width: "100%"}}>
-          <TouchablePlatformSpecific
-            onPress={() => {
-              this.props.navigation.navigate("HomeScreen", {
-                shouldUpdate: true
-              });
-            }}
-          >
-            <View style={styles.Button}>
-              <Icon name="apps" style={[styles.Icon, { color: "#FFF" }]} />
-              <Text style={styles.TextLight}>Retornar ao menu principal</Text>
-            </View>
-          </TouchablePlatformSpecific>
+          <View style={{ width: "100%" }}>
+            <TouchablePlatformSpecific
+              onPress={() => {
+                this.props.navigation.navigate("HomeScreen", {
+                  shouldUpdate: true
+                });
+              }}
+            >
+              <View style={styles.Button}>
+                <Icon name="apps" style={[styles.Icon, { color: "#FFF" }]} />
+                <Text style={styles.TextLight}>Retornar ao menu principal</Text>
+              </View>
+            </TouchablePlatformSpecific>
           </View>
         </View>
       </View>

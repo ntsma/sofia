@@ -247,45 +247,45 @@ export default class NewSearch extends Component {
 
             <View>
               <View style={styles.ButtonContainer}>
-              <View style={{width: "48%"}}>
-                <TouchablePlatformSpecific
-                  onPress={this.onUploadFile.bind(this)}
-                >
-                  <View
-                    style={[
-                      styles.Button,
-                      { width: "100%", backgroundColor: "#eee" }
-                    ]}
+                <View style={{ width: "48%" }}>
+                  <TouchablePlatformSpecific
+                    onPress={this.onUploadFile.bind(this)}
                   >
-                    <Icon
-                      style={[styles.Icon, { left: 10 }]}
-                      type="MaterialIcons"
-                      name="attach-file"
-                    />
-                    <Text style={styles.TextDark}>Inserir{"\n"}anexo</Text>
-                  </View>
-                </TouchablePlatformSpecific>
+                    <View
+                      style={[
+                        styles.Button,
+                        { width: "100%", backgroundColor: "#eee" }
+                      ]}
+                    >
+                      <Icon
+                        style={[styles.Icon, { left: 10 }]}
+                        type="MaterialIcons"
+                        name="attach-file"
+                      />
+                      <Text style={styles.TextDark}>Inserir{"\n"}anexo</Text>
+                    </View>
+                  </TouchablePlatformSpecific>
                 </View>
-                <View style={{width: "48%"}}>
-                <TouchablePlatformSpecific
-                  onPress={this.onCreateDraftQuestion.bind(this)}
-                >
-                  <View
-                    style={[
-                      styles.Button,
-                      { width: "100%", backgroundColor: "#eee" }
-                    ]}
+                <View style={{ width: "48%" }}>
+                  <TouchablePlatformSpecific
+                    onPress={this.onCreateDraftQuestion.bind(this)}
                   >
-                    <Icon
-                      style={[styles.Icon, { left: 6, fontSize: 20 }]}
-                      type="MaterialIcons"
-                      name="create"
-                    />
-                    <Text style={styles.TextDark}>
-                      Salvar como{"\n"}rascunho
-                    </Text>
-                  </View>
-                </TouchablePlatformSpecific>
+                    <View
+                      style={[
+                        styles.Button,
+                        { width: "100%", backgroundColor: "#eee" }
+                      ]}
+                    >
+                      <Icon
+                        style={[styles.Icon, { left: 6, fontSize: 20 }]}
+                        type="MaterialIcons"
+                        name="create"
+                      />
+                      <Text style={styles.TextDark}>
+                        Salvar como{"\n"}rascunho
+                      </Text>
+                    </View>
+                  </TouchablePlatformSpecific>
                 </View>
               </View>
               <TouchablePlatformSpecific
@@ -332,7 +332,8 @@ export default class NewSearch extends Component {
                       onPress={() => {
                         this.setState({ forwardModalIsVisible: false });
                         this.props.navigation.navigate("ForwardQuestion", {
-                          question, file_ids
+                          question,
+                          file_ids
                         });
                       }}
                     >

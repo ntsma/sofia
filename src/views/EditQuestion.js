@@ -21,7 +21,7 @@ import ModalComponent from "../components/ModalComponent";
 
 import Requests from "../services/Request";
 
-import {uploadImages} from '../services/Images';
+import { uploadImages } from "../services/Images";
 
 export default class EditQuestion extends Component {
   constructor() {
@@ -46,15 +46,15 @@ export default class EditQuestion extends Component {
     const description = this.state.description;
 
     Requests.updateRequest(token, description, request_id)
-    .then(response => {
-      this.props.navigation.navigate("HomeScreen", {
-        shouldUpdate: true
+      .then(response => {
+        this.props.navigation.navigate("HomeScreen", {
+          shouldUpdate: true
+        });
+      })
+      .catch(error => {
+        console.error(error);
       });
-    })
-    .catch(error => {
-      console.error(error);
-    });
-  }
+  };
 
   async onCreateQuestion() {
     var token = await AsyncStorage.getItem("token");
@@ -90,15 +90,15 @@ export default class EditQuestion extends Component {
     const description = this.state.description;
 
     Requests.updateDraftRequest(token, description, request_id)
-    .then(response => {
-      this.props.navigation.navigate("HomeScreen", { 
-        shouldUpdate: true
+      .then(response => {
+        this.props.navigation.navigate("HomeScreen", {
+          shouldUpdate: true
+        });
+      })
+      .catch(error => {
+        console.error(error);
       });
-    })
-    .catch(error => {
-      console.error(error);
-    });
-  }
+  };
 
   handleOpen(message, success) {
     this.setState({
@@ -125,7 +125,6 @@ export default class EditQuestion extends Component {
         path: "images"
       }
     };
-  
 
     ImagePicker.launchImageLibrary(options, response => {
       if (response.didCancel) {
@@ -138,22 +137,22 @@ export default class EditQuestion extends Component {
         });
 
         uploadImages(token, response)
-        .then(response => {
-          console.log("upload success", response);
+          .then(response => {
+            console.log("upload success", response);
 
-          this.handleOpen("Foto carregada com sucesso.", false);
+            this.handleOpen("Foto carregada com sucesso.", false);
 
-          ids = "";
-          for (index in response.files) {
-            ids += response.files[index].fileID + ", ";
-          }
+            ids = "";
+            for (index in response.files) {
+              ids += response.files[index].fileID + ", ";
+            }
 
-          this.setState({ file_ids: ids });
-        })
-        .catch(error => {
-          console.log("upload error", error);
-          alert("O carregamento da foto falhou!");
-        });
+            this.setState({ file_ids: ids });
+          })
+          .catch(error => {
+            console.log("upload error", error);
+            alert("O carregamento da foto falhou!");
+          });
       }
     });
   }
@@ -165,7 +164,6 @@ export default class EditQuestion extends Component {
       Platform.OS === "ios" ? TouchableOpacity : TouchableNativeFeedback;
 
     const { modalIsVisible } = this.state;
-
 
     return (
       <View>
@@ -206,9 +204,7 @@ export default class EditQuestion extends Component {
                     <Text style={styles.TextDark}>Inserir{"\n"}anexo</Text>
                   </View>
                 </TouchablePlatformSpecific>
-                <TouchablePlatformSpecific
-                  onPress={this.onUpdateDraftRequest}
-                >
+                <TouchablePlatformSpecific onPress={this.onUpdateDraftRequest}>
                   <View
                     style={[
                       styles.Button,
@@ -263,9 +259,7 @@ export default class EditQuestion extends Component {
             isModalVisible={this.modalIsVisible}
             content={
               <View>
-                <Text>
-                  {this.state.message}
-                </Text>
+                <Text>{this.state.message}</Text>
               </View>
             }
           />

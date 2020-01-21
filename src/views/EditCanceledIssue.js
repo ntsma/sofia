@@ -16,7 +16,7 @@ import {
 
 import AsyncStorage from "@react-native-community/async-storage";
 
-import Requests from '../services/Request';
+import Requests from "../services/Request";
 
 export default class EditQuestion extends Component {
   constructor() {
@@ -38,15 +38,15 @@ export default class EditQuestion extends Component {
     const description = this.state.description;
 
     Requests.updateRequest(token, description, request_id)
-    .then(response => {
-      this.props.navigation.navigate("HomeScreen", {
-        shouldUpdate: true
+      .then(response => {
+        this.props.navigation.navigate("HomeScreen", {
+          shouldUpdate: true
+        });
+      })
+      .catch(error => {
+        console.error(error);
       });
-    })
-    .catch(error => {
-      console.error(error);
-    });
-  }
+  };
 
   render() {
     const item = this.props.navigation.state.params.item;

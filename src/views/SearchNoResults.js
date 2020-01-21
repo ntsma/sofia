@@ -30,29 +30,31 @@ export default class SearchNoResults extends Component {
           base.
         </Text>
         <View style={searchNoReStyles.ButtonContainer}>
-        <View style={{width: "100%"}}>
-          <TouchablePlatformSpecific
-            onPress={() => {
-              this.props.navigation.navigate("Search", { isConected: true });
-            }}
-          >
-            <View style={styles.Button}>
-              <Icon name="search" style={[styles.Icon, { color: "#FFF" }]} />
-              <Text style={styles.TextLight}>Faça uma nova pergunta</Text>
-            </View>
-          </TouchablePlatformSpecific>
+          <View style={{ width: "100%" }}>
+            <TouchablePlatformSpecific
+              onPress={() => {
+                this.props.navigation.navigate("Search", { isConected: true });
+              }}
+            >
+              <View style={styles.Button}>
+                <Icon name="search" style={[styles.Icon, { color: "#FFF" }]} />
+                <Text style={styles.TextLight}>Faça uma nova pergunta</Text>
+              </View>
+            </TouchablePlatformSpecific>
           </View>
-          <View style={{width: "100%"}}>
-          <TouchablePlatformSpecific
-            onPress={() =>
-              this.props.navigation.navigate("Question", { question })
-            }
-          >
-            <View style={styles.Button}>
-              <Icon name="launch" style={[styles.Icon, { color: "#FFF" }]} />
-              <Text style={styles.TextLight}>Prosseguir com a solicitação</Text>
-            </View>
-          </TouchablePlatformSpecific>
+          <View style={{ width: "100%" }}>
+            <TouchablePlatformSpecific
+              onPress={() =>
+                this.props.navigation.navigate("Question", { question })
+              }
+            >
+              <View style={styles.Button}>
+                <Icon name="launch" style={[styles.Icon, { color: "#FFF" }]} />
+                <Text style={styles.TextLight}>
+                  Prosseguir com a solicitação
+                </Text>
+              </View>
+            </TouchablePlatformSpecific>
           </View>
         </View>
       </View>

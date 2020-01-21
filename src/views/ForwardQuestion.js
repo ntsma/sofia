@@ -242,26 +242,26 @@ export default class ForwardQuestion extends Component {
                     });
                   }}
                 />
-                <View style={{width: "18%"}}>
-                <TouchablePlatformSpecific
-                  onPress={() => this.forwardPacientData()}
-                >
-                  <View
-                    style={[
-                      styles.Button,
-                      {
-                        width: "100%",
-                        marginTop: 20,
-                        height: 44,
-                        marginBottom: 0
-                      }
-                    ]}
+                <View style={{ width: "18%" }}>
+                  <TouchablePlatformSpecific
+                    onPress={() => this.forwardPacientData()}
                   >
-                    <Text style={[styles.TextLight, { fontWeight: "bold" }]}>
-                      ok
-                    </Text>
-                  </View>
-                </TouchablePlatformSpecific>
+                    <View
+                      style={[
+                        styles.Button,
+                        {
+                          width: "100%",
+                          marginTop: 20,
+                          height: 44,
+                          marginBottom: 0
+                        }
+                      ]}
+                    >
+                      <Text style={[styles.TextLight, { fontWeight: "bold" }]}>
+                        ok
+                      </Text>
+                    </View>
+                  </TouchablePlatformSpecific>
                 </View>
               </View>
             </View>
@@ -326,63 +326,66 @@ export default class ForwardQuestion extends Component {
                   marginTop: 20
                 }}
               >
-              <View style={{width: "50%"}}>
-                <TouchablePlatformSpecific
-                  onPress={() =>
-                    this.setState({ willForward: "on", checkWillForward: true })
-                  }
-                >
-                  <View
-                    style={[
-                      styles.Button,
-                      this.state.checkWillForward
-                        ? localStyles.Selected
-                        : localStyles.Unselected
-                    ]}
+                <View style={{ width: "50%" }}>
+                  <TouchablePlatformSpecific
+                    onPress={() =>
+                      this.setState({
+                        willForward: "on",
+                        checkWillForward: true
+                      })
+                    }
                   >
-                    <Text
+                    <View
                       style={[
-                        styles.TextLight,
+                        styles.Button,
                         this.state.checkWillForward
-                          ? localStyles.TextSelected
-                          : localStyles.TextUnselected
+                          ? localStyles.Selected
+                          : localStyles.Unselected
                       ]}
                     >
-                      Sim
-                    </Text>
-                  </View>
-                </TouchablePlatformSpecific>
+                      <Text
+                        style={[
+                          styles.TextLight,
+                          this.state.checkWillForward
+                            ? localStyles.TextSelected
+                            : localStyles.TextUnselected
+                        ]}
+                      >
+                        Sim
+                      </Text>
+                    </View>
+                  </TouchablePlatformSpecific>
                 </View>
 
-                <View style={{width: "50%"}}>
-                <TouchablePlatformSpecific
-                  onPress={() =>
-                    this.setState({
-                      willForward: "off",
-                      checkWillForward: false
-                    })
-                  }
-                >
-                  <View
-                    style={[
-                      styles.Button,
-                      this.state.checkWillForward
-                        ? localStyles.Unselected
-                        : localStyles.Selected
-                    ]}
+                <View style={{ width: "50%" }}>
+                  <TouchablePlatformSpecific
+                    onPress={() =>
+                      this.setState({
+                        willForward: "off",
+                        checkWillForward: false
+                      })
+                    }
                   >
-                    <Text
+                    <View
                       style={[
-                        styles.TextLight,
+                        styles.Button,
                         this.state.checkWillForward
-                          ? localStyles.TextUnselected
-                          : localStyles.TextSelected
+                          ? localStyles.Unselected
+                          : localStyles.Selected
                       ]}
                     >
-                      Não
-                    </Text>
-                  </View>
-                </TouchablePlatformSpecific>
+                      <Text
+                        style={[
+                          styles.TextLight,
+                          this.state.checkWillForward
+                            ? localStyles.TextUnselected
+                            : localStyles.TextSelected
+                        ]}
+                      >
+                        Não
+                      </Text>
+                    </View>
+                  </TouchablePlatformSpecific>
                 </View>
               </View>
             </View>
@@ -419,66 +422,66 @@ export default class ForwardQuestion extends Component {
                   marginTop: 20
                 }}
               >
-              <View style={{width: "50%"}}>
-                <TouchablePlatformSpecific
-                  onPress={() =>
-                    this.setState({
-                      wasRequested: "on",
-                      checkWasRequested: true
-                    })
-                  }
-                >
-                  <View
-                    style={[
-                      styles.Button,
-                      this.state.checkWasRequested
-                        ? localStyles.Selected
-                        : localStyles.Unselected
-                    ]}
+                <View style={{ width: "50%" }}>
+                  <TouchablePlatformSpecific
+                    onPress={() =>
+                      this.setState({
+                        wasRequested: "on",
+                        checkWasRequested: true
+                      })
+                    }
                   >
-                    <Text
+                    <View
                       style={[
-                        styles.TextLight,
+                        styles.Button,
                         this.state.checkWasRequested
-                          ? localStyles.TextSelected
-                          : localStyles.TextUnselected
+                          ? localStyles.Selected
+                          : localStyles.Unselected
                       ]}
                     >
-                      Sim
-                    </Text>
-                  </View>
-                </TouchablePlatformSpecific>
+                      <Text
+                        style={[
+                          styles.TextLight,
+                          this.state.checkWasRequested
+                            ? localStyles.TextSelected
+                            : localStyles.TextUnselected
+                        ]}
+                      >
+                        Sim
+                      </Text>
+                    </View>
+                  </TouchablePlatformSpecific>
                 </View>
-                
-                <View style={{width: "50%"}}>
-                <TouchablePlatformSpecific
-                  onPress={() =>
-                    this.setState({
-                      wasRequested: "off",
-                      checkWasRequested: false
-                    })
-                  }
-                >
-                  <View
-                    style={[
-                      styles.Button,
-                      this.state.checkWasRequested
-                        ? localStyles.Unselected
-                        : localStyles.Selected
-                    ]}
+
+                <View style={{ width: "50%" }}>
+                  <TouchablePlatformSpecific
+                    onPress={() =>
+                      this.setState({
+                        wasRequested: "off",
+                        checkWasRequested: false
+                      })
+                    }
                   >
-                    <Text
+                    <View
                       style={[
-                        styles.TextLight,
+                        styles.Button,
                         this.state.checkWasRequested
-                          ? localStyles.TextUnselected
-                          : localStyles.TextSelected
+                          ? localStyles.Unselected
+                          : localStyles.Selected
                       ]}
                     >
-                      Não
-                    </Text>
-                  </View>
-                </TouchablePlatformSpecific>
+                      <Text
+                        style={[
+                          styles.TextLight,
+                          this.state.checkWasRequested
+                            ? localStyles.TextUnselected
+                            : localStyles.TextSelected
+                        ]}
+                      >
+                        Não
+                      </Text>
+                    </View>
+                  </TouchablePlatformSpecific>
                 </View>
               </View>
             </View>
@@ -501,7 +504,7 @@ export default class ForwardQuestion extends Component {
             isModalVisible={this.modalIsVisible}
             content={
               <View>
-                <Text style={{color: "#202020"}}>Insira um CPF válido.</Text>
+                <Text style={{ color: "#202020" }}>Insira um CPF válido.</Text>
               </View>
             }
           />

@@ -30,20 +30,23 @@ export default class ShowObservation extends Component {
 
         {item.status_id != 20 && (
           <View style={styles.ButtonContainer}>
-          <View style={{width: "100%"}}>
-            <TouchablePlatformSpecific
-              onPress={() =>
-                this.props.navigation.navigate("EditQuestion", {
-                  item,
-                  isReturnedRequest: true
-                })
-              }
-            >
-              <View style={styles.Button}>
-                <Icon name="search" style={[styles.Icon, { color: "#FFF" }]} />
-                <Text style={styles.TextLight}>Editar pergunta</Text>
-              </View>
-            </TouchablePlatformSpecific>
+            <View style={{ width: "100%" }}>
+              <TouchablePlatformSpecific
+                onPress={() =>
+                  this.props.navigation.navigate("EditQuestion", {
+                    item,
+                    isReturnedRequest: true
+                  })
+                }
+              >
+                <View style={styles.Button}>
+                  <Icon
+                    name="search"
+                    style={[styles.Icon, { color: "#FFF" }]}
+                  />
+                  <Text style={styles.TextLight}>Editar pergunta</Text>
+                </View>
+              </TouchablePlatformSpecific>
             </View>
           </View>
         )}

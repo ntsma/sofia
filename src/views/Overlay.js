@@ -11,7 +11,7 @@ import { Container, Content, Text } from "native-base";
 import Evaluation from "../components/Evaluation";
 import AsyncStorage from "@react-native-community/async-storage";
 
-import Requests from '../services/Request';
+import Requests from "../services/Request";
 
 export default class Overlay extends Component {
   constructor(props) {
@@ -41,22 +41,22 @@ export default class Overlay extends Component {
     const request_id = this.props.navigation.state.params.item.id;
 
     Requests.getRequest(token, request_id)
-    .then(response => {
-      this.setState({
-        data: response.data,
-        status_description: response.data.status_description,
-        answer: response.data.answer,
-        complement: response.data.complement,
-        attributes: response.data.attributes,
-        permanent_education: response.data.permanent_education,
-        references: response.data.references,
-        showME: false
+      .then(response => {
+        this.setState({
+          data: response.data,
+          status_description: response.data.status_description,
+          answer: response.data.answer,
+          complement: response.data.complement,
+          attributes: response.data.attributes,
+          permanent_education: response.data.permanent_education,
+          references: response.data.references,
+          showME: false
+        });
+      })
+      .catch(error => {
+        console.error(error);
       });
-    })
-    .catch(error => {
-      console.error(error);
-    });
-  }
+  };
 
   render() {
     return (
