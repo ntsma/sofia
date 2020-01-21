@@ -61,9 +61,12 @@ export default class Login extends Component {
     try {
       await AsyncStorage.setItem("token", token);
       await AsyncStorage.setItem("logging", "true");
-      await AsyncStorage.setItem("forwards_indications", forwards_indications.toString());
+      await AsyncStorage.setItem(
+        "forwards_indications",
+        forwards_indications.toString()
+      );
 
-      console.log("ENCAMINHAMENTO ------------")
+      console.log("ENCAMINHAMENTO ------------");
       console.log(await AsyncStorage.getItem("forwards_indications"));
 
       this.props.navigation.navigate("HomeScreen");
@@ -102,19 +105,21 @@ export default class Login extends Component {
 
         <PasswordInput props={this} />
 
-<View style={{ width: "100%"}}>
-        <TouchablePlatformSpecific onPress={this.onLoginButtonPress.bind(this)}>
-          <View
-            style={[
-              styles.Button,
-              { backgroundColor: "#3c8dbc", marginTop: 20 }
-            ]}
+        <View style={{ width: "100%" }}>
+          <TouchablePlatformSpecific
+            onPress={this.onLoginButtonPress.bind(this)}
           >
-            <Text style={[styles.TextLight, { fontWeight: "600" }]}>
-              Entrar
-            </Text>
-          </View>
-        </TouchablePlatformSpecific>
+            <View
+              style={[
+                styles.Button,
+                { backgroundColor: "#3c8dbc", marginTop: 20 }
+              ]}
+            >
+              <Text style={[styles.TextLight, { fontWeight: "600" }]}>
+                Entrar
+              </Text>
+            </View>
+          </TouchablePlatformSpecific>
         </View>
 
         <TouchableOpacity

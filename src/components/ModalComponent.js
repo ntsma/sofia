@@ -27,15 +27,15 @@ export default class ModalComponent extends Component {
             <View style={styles.Modal}>
               {this.props.content}
               <View style={{ width: "100%", marginLeft: "20%" }}>
-              <TouchablePlatformSpecific onPress={this.props.handleClose}>
-                {this.props.hasButton ? (
-                  <View></View>
-                ) : (
-                  <View style={styles.Button}>
-                    <Text style={Styles.TextLight}>OK</Text>
-                  </View>
-                )}
-              </TouchablePlatformSpecific>
+                <TouchablePlatformSpecific onPress={this.props.handleClose}>
+                  {this.props.hasButton ? (
+                    <View></View>
+                  ) : (
+                    <View style={styles.Button}>
+                      <Text style={Styles.TextLight}>OK</Text>
+                    </View>
+                  )}
+                </TouchablePlatformSpecific>
               </View>
             </View>
           </View>

@@ -20,7 +20,7 @@ import ModalComponent from "../components/ModalComponent";
 
 import AsyncStorage from "@react-native-community/async-storage";
 
-import {getRequest} from "../services/Request";
+import { getRequest } from "../services/Request";
 
 export default class RelatedIssueView extends Component {
   static navigationOptions = {
@@ -69,22 +69,22 @@ export default class RelatedIssueView extends Component {
     const request_id = this.props.navigation.state.params.item.id;
 
     getRequest(token, request_id)
-    .then(response => {
-      this.setState({
-        answer_id: response.data.answer_id,
-        data: response.data,
-        status_description: response.data.status_description,
-        answer: response.data.answer,
-        complement: response.data.complement,
-        attributes: response.data.attributes,
-        permanent_education: response.data.permanent_education,
-        references: response.data.references,
-        showME: false
+      .then(response => {
+        this.setState({
+          answer_id: response.data.answer_id,
+          data: response.data,
+          status_description: response.data.status_description,
+          answer: response.data.answer,
+          complement: response.data.complement,
+          attributes: response.data.attributes,
+          permanent_education: response.data.permanent_education,
+          references: response.data.references,
+          showME: false
+        });
+      })
+      .catch(error => {
+        console.error(error);
       });
-    })
-    .catch(error => {
-      console.error(error);
-    });
   }
 
   render() {

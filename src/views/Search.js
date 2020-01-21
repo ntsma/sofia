@@ -89,33 +89,33 @@ export default class Search extends Component {
           />
         ) : (
           <ScrollView>
-          <View style={searchStyles.Container}>
-            <Text style={styles.Title}>
-              Digite aqui sua pergunta para que sejam encontradas respostas
-              adequadas
-            </Text>
+            <View style={searchStyles.Container}>
+              <Text style={styles.Title}>
+                Digite aqui sua pergunta para que sejam encontradas respostas
+                adequadas
+              </Text>
 
-            <Textarea
-              style={searchStyles.Input}
-              value={this.state.question}
-              onChangeText={question => this.setState({ question })}
-              placeholder="Digite aqui ..."
-              placeholderTextColor="#999"
-              bordered
-            />
-            <View style={{width: "100%"}}>
-            <TouchablePlatformSpecific onPress={this.onSearch.bind(this)}>
-              <View style={styles.Button}>
-                <Icon
-                  style={[styles.Icon, { color: "#FFF" }]}
-                  type="MaterialIcons"
-                  name="search"
-                />
-                <Text style={styles.TextLight}>Pesquisar</Text>
+              <Textarea
+                style={searchStyles.Input}
+                value={this.state.question}
+                onChangeText={question => this.setState({ question })}
+                placeholder="Digite aqui ..."
+                placeholderTextColor="#999"
+                bordered
+              />
+              <View style={{ width: "100%" }}>
+                <TouchablePlatformSpecific onPress={this.onSearch.bind(this)}>
+                  <View style={styles.Button}>
+                    <Icon
+                      style={[styles.Icon, { color: "#FFF" }]}
+                      type="MaterialIcons"
+                      name="search"
+                    />
+                    <Text style={styles.TextLight}>Pesquisar</Text>
+                  </View>
+                </TouchablePlatformSpecific>
               </View>
-            </TouchablePlatformSpecific>
             </View>
-          </View>
           </ScrollView>
         )}
       </View>
@@ -130,7 +130,7 @@ const searchStyles = StyleSheet.create({
     flex: 1,
     marginLeft: 37,
     marginRight: 37,
-    marginTop: 20,
+    marginTop: 20
   },
 
   Input: {
