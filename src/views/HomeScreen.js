@@ -26,6 +26,8 @@ import Requests from "../services/Request";
 import homeStyles from "../Styles/HomeScreen";
 import styles from "../Styles/Styles";
 
+import { AppEventsLogger } from "react-native-fbsdk";
+
 export default class HomeScreen extends Component {
   constructor(props) {
     super(props);
@@ -295,7 +297,10 @@ export default class HomeScreen extends Component {
           >
             <View style={homeStyles.Container}>
               <TouchablePlatformSpecific
-                onPress={() => this.props.navigation.navigate("Search")}
+                onPress={() => {
+                  this.props.navigation.navigate("Search");
+                  AppEventsLogger.logEvent('some_eventy');
+                }}
               >
                 <View style={styles.Button}>
                   <Icon
