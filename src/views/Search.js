@@ -19,6 +19,8 @@ import NetInfo from "@react-native-community/netinfo";
 import Requests from "../services/Request";
 import styles from "../Styles/Styles";
 
+import {AppEventsLogger} from 'react-native-fbsdk';  
+
 export default class Search extends Component {
   constructor() {
     super();
@@ -38,6 +40,9 @@ export default class Search extends Component {
 
   /*Procura solicitações semelhantes.*/
   onSearch = async () => {
+
+    AppEventsLogger.logEvent('track', 'Search');
+
     var question = this.state.question;
     var token = await AsyncStorage.getItem("token");
 
