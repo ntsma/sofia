@@ -75,6 +75,16 @@ const styles = StyleSheet.create({
     color: "#202020",
     fontWeight: "600",
     textAlign: "center"
+  },
+
+  loginLogoContainer: {
+    flexDirection: "row",
+    marginBottom: 100,
+  },
+
+  loginLogo: {
+    width: 490,
+    height: 180
   }
 });
 
