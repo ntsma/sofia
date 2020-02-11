@@ -31,10 +31,26 @@ import RelatedIssueView from "./src/views/RelatedIssueView";
 import FAQ from "./src/views/FAQ";
 import FaqElement from "./src/views/FaqElement";
 import Success from "./src/views/Success";
-import EvaluationFeedback from './src/views/EvaluationFeedback';
-import ForwardQuestion from './src/views/ForwardQuestion';
+import EvaluationFeedback from "./src/views/EvaluationFeedback";
+import ForwardQuestion from "./src/views/ForwardQuestion";
+import NotifService from "./src/components/NotifService";
+import Pusher from "pusher-js/react-native";
+import FixTimeOut from "./src/components/FixTimeOut";
 
+// Enable pusher logging - don't include this in production
+Pusher.logToConsole = true;
 
+var pusher = new Pusher("8608bc96717dc55b1d8d", {
+  cluster: "us2",
+  forceTLS: true
+});
+
+var channel = pusher.subscribe("my-channel");
+channel.bind("my-event", function(data) {
+  this.notif = new NotifService(this.onRegister, this.onNotif);
+  this.notif.localNotif();
+  // alert(JSON.stringify(data));
+});
 
 class Home extends Component {
   state = {

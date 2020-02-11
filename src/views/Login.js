@@ -98,12 +98,10 @@ export default class Login extends Component {
         behavior="padding"
         enabled={Platform.OS == "ios"}
         style={styles.Container}
-      > 
+      >
         <StatusBar backgroundColor="#3c8dbc" barStyle="light-content" />
 
-        <View style={styles.loginLogoContainer}>
-          <Image style={styles.loginLogo} source={logo} />
-        </View>
+        <Image style={styles.loginLogo} source={logo} />
 
         <EmailInput props={this} />
 
