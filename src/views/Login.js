@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  Image,
   KeyboardAvoidingView,
   Platform,
   StatusBar,
@@ -18,8 +19,9 @@ import styles from "../Styles/Styles";
 
 import EmailInput from "../components/EmailInput";
 import PasswordInput from "../components/PasswordInput";
-import LoginHeader from "../components/LoginHeader";
 import ModalComponent from "../components/ModalComponent";
+
+import logo from "../resources/SOFIA.png";
 
 export default class Login extends Component {
   constructor(props) {
@@ -99,7 +101,7 @@ export default class Login extends Component {
       >
         <StatusBar backgroundColor="#3c8dbc" barStyle="light-content" />
 
-        <LoginHeader />
+        <Image style={styles.loginLogo} source={logo} />
 
         <EmailInput props={this} />
 

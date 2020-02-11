@@ -3,6 +3,10 @@ import { Dimensions, StyleSheet } from "react-native";
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
+const widthSize = width - 70;
+
+const ratio = widthSize / 2110;
+
 const styles = StyleSheet.create({
   Container: {
     flex: 1,
@@ -75,6 +79,17 @@ const styles = StyleSheet.create({
     color: "#202020",
     fontWeight: "600",
     textAlign: "center"
+  },
+
+  loginLogoContainer: {
+    flexDirection: "row",
+    marginBottom: 100
+  },
+
+  loginLogo: {
+    width: widthSize,
+    height: 738 * ratio,
+    marginBottom: 50
   }
 });
 

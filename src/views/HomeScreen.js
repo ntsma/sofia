@@ -269,7 +269,7 @@ export default class HomeScreen extends Component {
         <View style={homeStyles.Header}>
           <Image
             style={homeStyles.Image}
-            source={require("../resources/logo.png")}
+            source={require("../resources/ICONE.png")}
           />
           <Text style={[styles.TextLight, homeStyles.Title]}>Sofia</Text>
           <TouchablePlatformSpecific onPress={this.logout}>

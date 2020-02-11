@@ -23,9 +23,9 @@ const styles = StyleSheet.create({
   },
 
   Image: {
-    width: 40,
+    width: 35,
     height: 40,
-    marginLeft: 10
+    marginLeft: 20
   },
 
   Title: {
