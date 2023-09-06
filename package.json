@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "android": "react-native run-android",
+    "clean:android": "cd android && ./gradlew clean && cd ../"
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.4.0",
