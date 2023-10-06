@@ -24,7 +24,7 @@ Execute using React Native:
 Links
 -----
 
-* Website: http://telessaude.huufma.br/
+* Website: https://sofia.telessaude.ufma.br
 * Documentation: 
 * Releases: 
 * Code: https://github.com/ntsma/sofia
